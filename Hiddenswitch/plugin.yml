@@ -1,0 +1,36 @@
+name: HiddenSwitch
+main: lc.Luphie.hiddenswitch.HiddenSwitch
+version: 0.0.1
+author: devLuphie (Luphie)
+description: 'Make your secret passages even more secret by hiding the switches that open them.'
+commands:
+permissions:
+    hiddenswitch.use:
+        description: Allows users to use hidden switches
+        default: true
+    hiddenswitch.admin:
+        description: Grants ALL admin permmissions
+        default: op
+        children:
+            hiddenswitch.admin.ignorekeys.user: true
+            hiddenswitch.admin.ignorekeys.key: true
+            hiddenswitch.admin.reload: true
+            hiddenswitch.admin.reloaddb: true
+    hiddenswitch.admin.ignorekeys:
+        description: Allow user to ignore player set restrictions
+        default: false
+        children:
+            hiddenswitch.admin.ignorekeys.user: true
+            hiddenswitch.admin.ignorekeys.key: true
+    hiddenswitch.admin.ignorekeys.key:
+        description: Allow user to ignore key item restrictions
+        default: false
+    hiddenswitch.admin.ignorekeys.user:
+        description: Allow user to ignore user restrictions
+        default: false
+    hiddenswitch.admin.reload:
+        description: Allow user to reload config file
+        default: false
+    hiddenswitch.admin.reloaddb:
+        description: Allow user to reload database
+        default: false
