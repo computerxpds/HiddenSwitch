@@ -6,6 +6,9 @@ lchs:
         # Allow left clicks?
         left-clicks: true
 
+        # Is the username checking case sensitive?
+        case-sensitive-names: false
+        
     signcontrol:
         # Allow sign control?
         allow-signs: true
@@ -19,7 +22,9 @@ lchs:
         # Allow signs to require 'key' items (sign will only function if holding the specified item)
         allow-item-lock: true
         
-        # Use this specific item, or let the users choose their own (0 = users can set their own items, any other number = item id of the 'key')
+        # Use this specific item, or let the users choose their own
+        # (0 = users can set their own items, any other number = item id of the 'key')
+        # IMPORTANT: THIS ONLY WORKS IF allow-item-lock IS TRUE!
         item-lock-override: 0
     blockcontrol:
         # Allow block control? (DOES NOT WORK)

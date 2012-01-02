@@ -28,6 +28,10 @@ public class playerListener extends PlayerListener {
 		Block iblock = event.getClickedBlock();
 		Player playa = event.getPlayer();
 		
+		if(playa.hasPermission("hiddenswitch.use") == false) {
+			return;
+		}
+		
 		Boolean gogogo = false;
 
 		// Are left clicks allowed?
@@ -44,7 +48,7 @@ public class playerListener extends PlayerListener {
 			}
 		}
 		
-		
+	
 		// See if the block that was clicked is a useable block
 		try {
 			if(!plugin.confV.useableBlocks.contains(iblock.getTypeId())) {
@@ -57,17 +61,15 @@ public class playerListener extends PlayerListener {
 		// if we are still good to go then continue
 		if(gogogo == true) {
 
-
-			BlockFace[] faces;
-			faces = new BlockFace[6];
-			
-			// Faces to check for signs
-			faces[0] = BlockFace.UP;
-			faces[1] = BlockFace.DOWN;
-			faces[2] = BlockFace.NORTH;
-			faces[3] = BlockFace.SOUTH;
-			faces[4] = BlockFace.EAST;
-			faces[5] = BlockFace.WEST;
+			// Faces to check
+			BlockFace[] faces = {
+				BlockFace.UP,
+				BlockFace.DOWN,
+				BlockFace.NORTH,
+				BlockFace.SOUTH,
+				BlockFace.EAST,
+				BlockFace.WEST
+			};
 			
 			for(BlockFace holder : faces) {
 
@@ -96,30 +98,41 @@ public class playerListener extends PlayerListener {
 		// Is this a lchs sign?
 		if(slappyFace.equals(plugin.getConfig().getString("lchs.signcontrol.sign-text").toLowerCase())) {
 			
-			
-
 			// So it is, now do we allow per player restrictions?
 			if(plugin.getConfig().getBoolean("lchs.signcontrol.allow-user-lock")) {
 
 				String slappyTorso = hola.getLine(1);
 				
-				// If line 2 is not blank see if it matches the player
-				if(!slappyTorso.isEmpty() && !slappyTorso.equals(playa.getDisplayName())) {
+				// Check to see if line 2 has text, if it does and the player doesn't have the ignorekeys.user permission
+				// then check their name against the sign.
+				if(!slappyTorso.isEmpty() && !playa.hasPermission("hiddenswitch.admin.ignorekeys.user")) {
 					
-					failed = true;
+					// Fail if names ARE case sensitive and the name on the sign DOES NOT match the player name
+					if(plugin.getConfig().getBoolean("lchs.config.case-sensitive-names") && !slappyTorso.equals(playa.getDisplayName())) {
 					
+						failed = true;
+						
+					// Fail if names ARE NOT case sensitive and the name on the sign DOES NOT match the player name
+					} else if(!plugin.getConfig().getBoolean("lchs.config.case-sensitive-names") && !slappyTorso.equalsIgnoreCase(playa.getDisplayName())) {
+
+						failed = true;
+						
+					}
 				}
-				
 			}
 			
 			// What about held item restrictions?
 			if(plugin.getConfig().getBoolean("lchs.signcontrol.allow-item-lock")) {
 			
 				String slappyLegs = hola.getLine(2).toUpperCase();
-				if(!slappyLegs.isEmpty()) {
-					// Are we using the default or player set items
+				
+				// if line 3 IS NOT blank and the user DOES NOT have the ignorekeys.key permission
+				if(!slappyLegs.isEmpty() && !playa.hasPermission("hiddenswitch.admin.ignorekeys.key")) {
+
+					// Is the key item override set?
 					if(plugin.getConfig().getInt("lchs.signcontrol.item-lock-override") != 0) {
 	
+						// If so then is the player holding the specified key item?
 						if(playa.getItemInHand().getTypeId() != plugin.getConfig().getInt("lchs.signcontrol.item-lock-override")) {
 						
 							failed = true;
@@ -127,7 +140,7 @@ public class playerListener extends PlayerListener {
 						}
 					
 					// If it's player set items
-					} else if(!slappyLegs.equals(playa.getItemInHand().getType().toString().toUpperCase())) {
+					} else if(!slappyLegs.equalsIgnoreCase(playa.getItemInHand().getType().toString())) {
 					
 						failed = true;
 						
@@ -138,20 +151,19 @@ public class playerListener extends PlayerListener {
 
 			// Flippa da switch
 			if(failed == false) {
+
 				// Is there a button or switch nearby?
-				BlockFace[] faces;
 				Block levers;
 				
-				// # of search locations = # of possible hits
-				faces = new BlockFace[6];
-
-				// Faces we check
-				faces[0] = BlockFace.UP;
-				faces[1] = BlockFace.DOWN;
-				faces[2] = BlockFace.NORTH;
-				faces[3] = BlockFace.SOUTH;
-				faces[4] = BlockFace.EAST;
-				faces[5] = BlockFace.WEST;
+				// Faces to check
+				BlockFace[] faces = {
+					BlockFace.UP,
+					BlockFace.DOWN,
+					BlockFace.NORTH,
+					BlockFace.SOUTH,
+					BlockFace.EAST,
+					BlockFace.WEST
+				};
 				
 				for(BlockFace holder : faces) {
 					
@@ -177,11 +189,19 @@ public class playerListener extends PlayerListener {
 						levers = signToSlap.getRelative(holder);
 						BlockState statte = levers.getState();
 						Button lerer = (Button)statte.getData();
-
-						// Toggle Lever
-						if(lerer.isPowered()) lerer.setPowered(false); else lerer.setPowered(true);
 						
 
+						// Toggle Lever
+						if(lerer.isPowered()) {
+							lerer.setPowered(false);
+						} else {
+							lerer.setPowered(true);
+						}
+						
+						// Update Lever and block it is attached to
+						statte.update();
+
+						
 						// Cheat to pass vars into new runnable
 						class RunShot implements Runnable {
 							Button lerer;
@@ -191,7 +211,7 @@ public class playerListener extends PlayerListener {
 								this.statte = re;
 							}
 							public void run() {
-								if(lerer.isPowered()) lerer.setPowered(false); else lerer.setPowered(true);
+								lerer.setPowered(false);
 								statte.update();
 							}
 						}

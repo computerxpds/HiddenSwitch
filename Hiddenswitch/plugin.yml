@@ -1,9 +1,14 @@
 name: HiddenSwitch
 main: lc.Luphie.hiddenswitch.HiddenSwitch
-version: 0.0.3
+version: 0.0.4
 author: devLuphie (Luphie)
 description: 'Make your secret passages even more secret by hiding the switches that open them.'
 commands:
+    lchsreload:
+        description: Reloads the config
+        permission: hiddenswitch.admin.reload
+        usage: /lchsreload
+        
 permissions:
     hiddenswitch.use:
         description: Allows users to use hidden switches
@@ -16,6 +21,7 @@ permissions:
             hiddenswitch.admin.ignorekeys.key: true
             hiddenswitch.admin.reload: true
             hiddenswitch.admin.reloaddb: true
+            hiddenswitch.use: true
     hiddenswitch.admin.ignorekeys:
         description: Allow user to ignore player set restrictions
         default: false
