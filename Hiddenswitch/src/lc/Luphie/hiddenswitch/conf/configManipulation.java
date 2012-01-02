@@ -1,3 +1,23 @@
+/* *
+
+ * HiddenSwitch - Hidden switches and buttons for Bukkit 
+ * Copyright (C) 2011  Luphie (devLuphie) luphie@lumpcraft.com
+
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+* */
 package lc.Luphie.hiddenswitch.conf;
 
 import java.io.File;
@@ -29,13 +49,34 @@ public class configManipulation {
 	public configManipulation(HiddenSwitch instance) {
 		me = instance;
 	}
-	public void blockString(String string) {
+	
+	/**
+	 * setBlockList()
+	 * 
+	 * 	Sets configManipulation.useableBlocks to a list of integers retrieved
+	 * from the config field lchs.config.useable-blocks.
+	 * 
+	 * @param string
+	 */
+	public void setBlockList(String string) {
+		
+		// Empty the list (in case of reloads)
+		useableBlocks.clear();
+		
 		String[] strings = string.split(",");
 		for(String toInt : strings) {
 			useableBlocks.add(Integer.parseInt(toInt));
 		}
 	}
 	
+	/**
+	 * reloadConfig
+	 * 
+	 * Reloads the configuration from file.
+	 * 
+	 * @param sender Source of the command
+	 * @return Integer
+	 */
 	public int reloadConfig(CommandSender sender) {
 		
 	
@@ -51,11 +92,10 @@ public class configManipulation {
 
 		me.logger.info(me.logName+" Attempting to reload configuration.");
 
-		//YamlConfiguration conf = YamlConfiguration.loadConfiguration(new File(me.getDataFolder(), "config.yml"));
-		
-		//me.getConfig().setDefaults(conf);
-		
 		me.reloadConfig();
+		
+		// Update the allowed blocks
+		setBlockList(me.getConfig().getString("lchs.config.useable-blocks"));
 		
 		
 		return 0;
@@ -109,8 +149,6 @@ public class configManipulation {
 	
 	public boolean recreateConfigFile() {
 
-			me.logger.info(me.logName+" Config invalid Attempting to recreate");
-			
 			// Read the included copy of config.yml
 			InputStream configEmb = me.getResource("config.yml");
 

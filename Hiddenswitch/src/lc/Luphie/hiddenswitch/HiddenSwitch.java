@@ -1,3 +1,23 @@
+/* *
+
+ * HiddenSwitch - Hidden switches and buttons for Bukkit 
+ * Copyright (C) 2011  Luphie (devLuphie) luphie@lumpcraft.com
+
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+* */
 package lc.Luphie.hiddenswitch;
 
 import java.io.File;
@@ -46,6 +66,9 @@ public class HiddenSwitch extends JavaPlugin {
 			
 			//TODO config: Verify all settings and fill in the blanks
 			if(!conf.contains("lchs.config")) {
+
+				logger.info(logName+" Config invalid Attempting to recreate");
+
 				if(!confV.recreateConfigFile()) {
 					pm.disablePlugin(this);
 				}
@@ -57,7 +80,7 @@ public class HiddenSwitch extends JavaPlugin {
 		}
 
 		// Load Allowed Blocks to confV
-		confV.blockString(getConfig().getString("lchs.config.useable-blocks"));
+		confV.setBlockList(getConfig().getString("lchs.config.useable-blocks"));
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Normal, this);
 	}
 	

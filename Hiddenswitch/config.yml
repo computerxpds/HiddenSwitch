@@ -1,7 +1,7 @@
 lchs:
     config:
         # What blocks can be hidden switches
-        useable-blocks: 1,2,3,4,5,7,12,13,17,22,24,35,41,42,43,45,47,48,49,53,57,67,80,82,87,88,98,108,109,110,114,121
+        usable-blocks: 1,2,3,4,5,7,12,13,17,22,24,35,41,42,43,45,47,48,49,53,57,67,80,82,87,88,98,108,109,110,114,121
 
         # Allow left clicks?
         left-clicks: true
