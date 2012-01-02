@@ -24,7 +24,7 @@ public class playerListener extends PlayerListener {
 	}
 	
 	public void onPlayerInteract (PlayerInteractEvent event) {
-		
+				
 		Block iblock = event.getClickedBlock();
 		Player playa = event.getPlayer();
 		
@@ -46,8 +46,12 @@ public class playerListener extends PlayerListener {
 		
 		
 		// See if the block that was clicked is a useable block
-		if(!plugin.confV.useableBlocks.contains(iblock.getTypeId())) {
-			gogogo = false;
+		try {
+			if(!plugin.confV.useableBlocks.contains(iblock.getTypeId())) {
+				gogogo = false;
+			}
+		} catch(NullPointerException e) {
+			gogogo=false;
 		}
 
 		// if we are still good to go then continue
@@ -184,9 +188,17 @@ public class playerListener extends PlayerListener {
 						// Get the block that the lever is attached to
 						Block attachedTo = levers.getRelative(lerer.getAttachedFace().getOppositeFace());
 
+						// Force powered state change in attached block
+						
 						// Update Lever and block it is attached to
 						statte.update();
 						attachedTo.getState().update();
+						
+						plugin.logger.info("lState: "+Boolean.toString(lerer.isPowered())+
+								" bState: "+Boolean.toString(attachedTo.isBlockPowered())+
+								" biState: "+Boolean.toString(attachedTo.isBlockIndirectlyPowered())+
+								" bfState: "+Boolean.toString(attachedTo.isBlockFacePowered(lerer.getAttachedFace()))+
+								" bifState: "+Boolean.toString(attachedTo.isBlockFaceIndirectlyPowered(lerer.getAttachedFace())));
 						
 						// Cheat to pass vars into new runnable
 						class RunShot implements Runnable {
