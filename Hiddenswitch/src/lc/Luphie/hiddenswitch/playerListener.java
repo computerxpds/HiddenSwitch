@@ -181,9 +181,7 @@ public class playerListener extends PlayerListener {
 						// Toggle Lever
 						if(lerer.isPowered()) lerer.setPowered(false); else lerer.setPowered(true);
 						
-						// Update Lever and block it is attached to
-						statte.update();
-							
+
 						// Cheat to pass vars into new runnable
 						class RunShot implements Runnable {
 							Button lerer;
