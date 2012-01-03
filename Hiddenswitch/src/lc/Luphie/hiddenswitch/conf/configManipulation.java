@@ -37,7 +37,7 @@ public class configManipulation {
 	
 	private static HiddenSwitch me;
 
-	public List<Integer> useableBlocks = new ArrayList<Integer>();
+	public List<Integer> usableBlocks = new ArrayList<Integer>();
 	public boolean confLeftClicks;
 	public boolean signAllowSigns;
 	public String signSignText;
@@ -53,19 +53,19 @@ public class configManipulation {
 	/**
 	 * setBlockList()
 	 * 
-	 * 	Sets configManipulation.useableBlocks to a list of integers retrieved
-	 * from the config field lchs.config.useable-blocks.
+	 * 	Sets configManipulation.usableBlocks to a list of integers retrieved
+	 * from the config field lchs.config.usable-blocks.
 	 * 
 	 * @param string
 	 */
 	public void setBlockList(String string) {
 		
 		// Empty the list (in case of reloads)
-		useableBlocks.clear();
+		usableBlocks.clear();
 		
 		String[] strings = string.split(",");
 		for(String toInt : strings) {
-			useableBlocks.add(Integer.parseInt(toInt));
+			usableBlocks.add(Integer.parseInt(toInt));
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class configManipulation {
 		me.reloadConfig();
 		
 		// Update the allowed blocks
-		setBlockList(me.getConfig().getString("lchs.config.useable-blocks"));
+		setBlockList(me.getConfig().getString("lchs.config.usable-blocks"));
 		
 		
 		return 0;

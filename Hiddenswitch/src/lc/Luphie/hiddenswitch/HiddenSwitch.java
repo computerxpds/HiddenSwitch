@@ -80,7 +80,7 @@ public class HiddenSwitch extends JavaPlugin {
 		}
 
 		// Load Allowed Blocks to confV
-		confV.setBlockList(getConfig().getString("lchs.config.useable-blocks"));
+		confV.setBlockList(getConfig().getString("lchs.config.usable-blocks"));
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Normal, this);
 	}
 	

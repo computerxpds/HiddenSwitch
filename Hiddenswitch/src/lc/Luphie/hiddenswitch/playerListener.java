@@ -69,9 +69,9 @@ public class playerListener extends PlayerListener {
 		}
 		
 	
-		// See if the block that was clicked is a useable block
+		// See if the block that was clicked is a usable block
 		try {
-			if(!plugin.confV.useableBlocks.contains(iblock.getTypeId())) {
+			if(!plugin.confV.usableBlocks.contains(iblock.getTypeId())) {
 				gogogo = false;
 			}
 		} catch(NullPointerException e) {
