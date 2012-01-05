@@ -81,7 +81,9 @@ public class HiddenSwitch extends JavaPlugin {
 
 		// Load Allowed Blocks to confV
 		confV.setBlockList(getConfig().getString("lchs.config.usable-blocks"));
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Normal, this);
+		
+		// Set on highest priority since we are not changing the event we just need to know that it actually happened
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Highest, this);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] mods) {
@@ -104,6 +106,13 @@ public class HiddenSwitch extends JavaPlugin {
 		
 		return true;
 		
+	}
+	
+	public void dBugMes(String message) {
+		
+		if(getConfig().getBoolean("lchs.config.debug-messages", false)) {
+			this.logger.info(logName + "[dBug] " + message);
+		}
 	}
 
 }

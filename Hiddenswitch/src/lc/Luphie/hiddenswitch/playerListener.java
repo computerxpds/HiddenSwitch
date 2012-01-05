@@ -44,27 +44,32 @@ public class playerListener extends PlayerListener {
 	}
 	
 	public void onPlayerInteract (PlayerInteractEvent event) {
-				
-		Block iblock = event.getClickedBlock();
-		Player playa = event.getPlayer();
 		
+		//If event was cancelled, then nothing to do here
+		if(event.isCancelled()) {
+			return;
+		}
+		
+		Player playa = event.getPlayer();
+
+		// If the player doesn't have permissions to do this then nope out of it
 		if(playa.hasPermission("hiddenswitch.use") == false) {
 			return;
 		}
 		
-		Boolean gogogo = false;
-
+		Block iblock = event.getClickedBlock();
+		
 		// Are left clicks allowed?
 		Boolean cclicks = plugin.getConfig().getBoolean("lchs.config.left-clicks");
 
 		// Compare action to allowed clicks:
 		if(cclicks) {
-			if(event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-				gogogo = true;
+			if(!event.getAction().equals(Action.LEFT_CLICK_BLOCK) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+				return;
 			}
 		} else {
-			if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-				gogogo = true;
+			if(!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+				return;
 			}
 		}
 		
@@ -72,43 +77,40 @@ public class playerListener extends PlayerListener {
 		// See if the block that was clicked is a usable block
 		try {
 			if(!plugin.confV.usableBlocks.contains(iblock.getTypeId())) {
-				gogogo = false;
+				return;
 			}
 		} catch(NullPointerException e) {
-			gogogo=false;
+			plugin.logger.info(plugin.logName +" iblock NullPointerExeption");
+			return;
 		}
 
-		// if we are still good to go then continue
-		if(gogogo == true) {
+		// Faces to check
+		BlockFace[] faces = {
+			BlockFace.UP,
+			BlockFace.DOWN,
+			BlockFace.NORTH,
+			BlockFace.SOUTH,
+			BlockFace.EAST,
+			BlockFace.WEST
+		};
+		
+		for(BlockFace holder : faces) {
 
-			// Faces to check
-			BlockFace[] faces = {
-				BlockFace.UP,
-				BlockFace.DOWN,
-				BlockFace.NORTH,
-				BlockFace.SOUTH,
-				BlockFace.EAST,
-				BlockFace.WEST
-			};
-			
-			for(BlockFace holder : faces) {
+			// Are we looking for signs?
+			if(plugin.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
+				
 
-				// Are we looking for signs?
-				if(plugin.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
+				// Try and find a sign post next to the clicked block
+				if (iblock.getRelative(holder).getTypeId() == 63 ||
+					iblock.getRelative(holder).getTypeId() == 68 ){
+
+					signSlapper(iblock.getRelative(holder),playa);
 					
-
-					// Try and find a sign post next to the clicked block
-					if (iblock.getRelative(holder).getTypeId() == 63 ||
-						iblock.getRelative(holder).getTypeId() == 68 ){
-
-						signSlapper(iblock.getRelative(holder),playa);
-						
-					}
 				}
-			} //END FOR
-		}
+			}
+		} //END FOR
 	}
-	
+
 	public void signSlapper(Block signToSlap, Player playa) {
 		
 		Sign hola = (Sign)signToSlap.getState();
