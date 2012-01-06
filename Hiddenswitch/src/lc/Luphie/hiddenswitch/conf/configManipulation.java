@@ -1,6 +1,6 @@
 /* *
 
- * HiddenSwitch - Hidden switches and buttons for Bukkit 
+ * HiddenSwitch - Hidden switches and buttons for Bukkit.
  * Copyright (C) 2011  Luphie (devLuphie) luphie@lumpcraft.com
 
  * This program is free software; you can redistribute it and/or
@@ -37,13 +37,18 @@ public class configManipulation {
 	
 	private static HiddenSwitch me;
 
-	public List<Integer> usableBlocks = new ArrayList<Integer>();
+	// config.yml Config section
+	private List<Integer> usableBlocks = new ArrayList<Integer>();
 	public boolean confLeftClicks;
+	
+	// config.yml Signs Section
 	public boolean signAllowSigns;
 	public String signSignText;
 	public boolean signAllowULock;
 	public boolean signAllowILock;
 	public int signILockOverride;
+	
+	// config.yml Block Section
 	public boolean blockAllowBlocks;
 
 	public configManipulation(HiddenSwitch instance) {

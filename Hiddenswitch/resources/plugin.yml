@@ -13,6 +13,9 @@ permissions:
     hiddenswitch.use:
         description: Allows users to use hidden switches
         default: true
+        children:
+            hiddenswitch.user.setkeys.user: true
+            hiddenswitch.user.setkeys.user: true
     hiddenswitch.admin:
         description: Grants ALL admin permmissions
         default: op
