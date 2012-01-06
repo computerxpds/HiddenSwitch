@@ -38,7 +38,7 @@ public class configManipulation {
 	private static HiddenSwitch me;
 
 	// config.yml Config section
-	private List<Integer> usableBlocks = new ArrayList<Integer>();
+	public List<Integer> usableBlocks = new ArrayList<Integer>();
 	public boolean confLeftClicks;
 	
 	// config.yml Signs Section

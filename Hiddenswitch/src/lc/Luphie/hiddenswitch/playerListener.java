@@ -23,14 +23,13 @@ package lc.Luphie.hiddenswitch;
 
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.craftbukkit.CraftWorld;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
-import org.bukkit.material.Button;
-import org.bukkit.material.Lever;
 
 
 public class playerListener extends PlayerListener {
@@ -177,7 +176,7 @@ public class playerListener extends PlayerListener {
 		}
 
 
-		// Flippa da switch
+		// Flip the switch
 		if(failed == false) {
 
 			// Is there a button or switch nearby?
@@ -193,58 +192,27 @@ public class playerListener extends PlayerListener {
 				BlockFace.WEST
 			};
 			
+			// TODO Simplify this to a single statement
 			for(BlockFace holder : faces) {
 				
 				// find all the levers next to the sign
 				if (signToSlap.getRelative(holder).getTypeId() == 69) {
 					
 					levers = signToSlap.getRelative(holder);
-					BlockState statte = levers.getState();
-					Lever lerer = (Lever)statte.getData();
+
+					// Imitate a player interaction with the lever to properly get block state changes
+					net.minecraft.server.Block.LEVER.interact(((CraftWorld)levers.getWorld()).getHandle(),levers.getX(), levers.getY(), levers.getZ(),((CraftPlayer)playa.getPlayer()).getHandle());
 					
-					// Toggle Lever
-					if(lerer.isPowered()) lerer.setPowered(false); else lerer.setPowered(true);
-					
-					// Update Lever and block it is attached to
-					statte.update();
-					
-					
-					//Try and power the block the switch is on.
-						
+											
 				}
 				if (signToSlap.getRelative(holder).getTypeId() == 77) {
 					
 					levers = signToSlap.getRelative(holder);
-					BlockState statte = levers.getState();
-					Button lerer = (Button)statte.getData();
-					
 
-					// Toggle Lever
-					if(lerer.isPowered()) {
-						lerer.setPowered(false);
-					} else {
-						lerer.setPowered(true);
-					}
-					
-					// Update Lever and block it is attached to
-					statte.update();
+					// Imitate a player interaction with the button to properly get block state changes
+					net.minecraft.server.Block.STONE_BUTTON.interact(((CraftWorld)levers.getWorld()).getHandle(),levers.getX(), levers.getY(), levers.getZ(),((CraftPlayer)playa.getPlayer()).getHandle());
 
-					
-					// Cheat to pass vars into new runnable
-					class RunShot implements Runnable {
-						Button lerer;
-						BlockState statte;
-						RunShot(Button df, BlockState re) {
-							this.lerer = df;
-							this.statte = re;
-						}
-						public void run() {
-							lerer.setPowered(false);
-							statte.update();
-						}
-					}
-					
-					plugin.getServer().getScheduler().scheduleAsyncDelayedTask(plugin, new RunShot(lerer,statte), 18L);
+
 				}
 			}
 		}
