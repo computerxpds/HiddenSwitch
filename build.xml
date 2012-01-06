@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ====================================================================== 
+     Jan 5, 2012 5:14:27 PM                                                        
+
+     HiddenSwitch    
+     A plugin for Bukkit, allowing players to create hidden levers and buttons.
+                   
+     Luphie                                                                
+     ====================================================================== -->
+<project name="HiddenSwitch" default="default">
+    <description>
+            A plugin for Bukkit, allowing players to create hidden levers and buttons.
+    </description>
+    
+    <property name="baseFolder" location="Hiddenswitch/" />
+    <property name="buildFolder" location="build/" />
+    <property name="resourceFolder" location="${baseFolder}/resources/" />
+    <property name="sourceFolder" location="${baseFolder}/src/"/>
+
+
+
+    <!-- ================================= 
+          target: default              
+         ================================= -->
+    <target name="compile" description="A plugin for Bukkit, allowing players to create hidden levers and buttons.">
+        <mkdir dir="${buildFolder}" />
+        <mkdir dir="${buildFolder}/src" />
+        <mkdir dir="${buildFolder}/src/resources" />
+        <copy file="${resourceFolder}/plugin.yml" todir="${buildFolder}/src/resources/" overwrite="true"/>
+        <copy file="${resourceFolder}/config.yml" todir="${buildFolder}/src/resources/" overwrite="true"/>
+        <javac source="1.6" target="1.6" srcdir="${sourceFolder}" destdir="${buildFolder}/src" debug="true" debuglevel="lines,vars,source"  deprecation="true" includeantruntime="true">
+            <compilerarg value="-Xlint:-options"/>
+            <classpath>
+                <fileset dir="libs">
+                    <include name="CraftBukkit.jar"/>
+                </fileset>
+            </classpath>
+        </javac>
+    </target>
+    <target name="default" depends="compile">
+        <jar jarfile="${buildFolder}/HiddenSwitch.jar">
+            <fileset dir="${buildFolder}/src/resources/">
+                <include name="config.yml"/>
+                <include name="plugin.yml"/>
+            </fileset>
+            <fileset dir="${buildFolder}/src/" excludes="resources/**" />
+        </jar>
+    </target>
+
+</project>
