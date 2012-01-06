@@ -1,6 +1,6 @@
 name: HiddenSwitch
 main: lc.Luphie.hiddenswitch.HiddenSwitch
-version: 0.0.4
+version: 0.0.5
 author: devLuphie (Luphie)
 description: 'Make your secret passages even more secret by hiding the switches that open them.'
 commands:
