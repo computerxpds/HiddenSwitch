@@ -15,7 +15,7 @@ permissions:
         default: true
         children:
             hiddenswitch.user.setkeys.user: true
-            hiddenswitch.user.setkeys.user: true
+            hiddenswitch.user.setkeys.key: true
     hiddenswitch.admin:
         description: Grants ALL admin permmissions
         default: op

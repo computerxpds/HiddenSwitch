@@ -64,7 +64,7 @@ public class HiddenSwitch extends JavaPlugin {
 
 			FileConfiguration conf = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
 			
-			//TODO config: Verify all settings and fill in the blanks
+			//TODO Verify all entries in config and fill in the blanks
 			if(!conf.contains("lchs.config")) {
 
 				logger.info(logName+" Config invalid Attempting to recreate");

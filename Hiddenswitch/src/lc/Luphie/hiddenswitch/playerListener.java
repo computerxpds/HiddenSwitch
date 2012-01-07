@@ -72,7 +72,6 @@ public class playerListener extends PlayerListener {
 			}
 		}
 		
-	
 		// See if the block that was clicked is a usable block
 		try {
 			if(!plugin.confV.usableBlocks.contains(iblock.getTypeId())) {
@@ -124,7 +123,7 @@ public class playerListener extends PlayerListener {
 		}
 			
 		// So it is, now do we allow per player restrictions?
-		// TODO: Set this to a permission
+		//PERMS Set this to a permission
 		if(plugin.getConfig().getBoolean("lchs.signcontrol.allow-user-lock")) {
 
 			String slappyTorso = hola.getLine(1);
@@ -216,6 +215,5 @@ public class playerListener extends PlayerListener {
 				}
 			}
 		}
-
 	}
 }
