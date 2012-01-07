@@ -1,6 +1,6 @@
 name: HiddenSwitch
 main: lc.Luphie.hiddenswitch.HiddenSwitch
-version: 0.0.5
+version: 0.0.6
 author: devLuphie (Luphie)
 description: 'Make your secret passages even more secret by hiding the switches that open them.'
 commands:
@@ -8,14 +8,33 @@ commands:
         description: Reloads the config
         permission: hiddenswitch.admin.reload
         usage: /lchsreload
-        
+
 permissions:
+# #
+# User Permission Groups
+# #
+
+# Use group
     hiddenswitch.use:
         description: Allows users to use hidden switches
         default: true
         children:
-            hiddenswitch.user.setkeys.user: true
-            hiddenswitch.user.setkeys.key: true
+            hiddenswitch.user.use: true
+            hiddenswitch.user.create: true
+            hiddenswitch.user.locks: true
+
+# Setkeys Group
+    hiddenswitch.user.locks:
+        description: Allows users to set locks on their switches
+        default: false
+        children:
+            hiddenswitch.user.lockitem: true
+            hiddenswitch.user.lockuser: false
+# #
+# Admin Permission Groups
+# #
+
+# Admin group
     hiddenswitch.admin:
         description: Grants ALL admin permmissions
         default: op
@@ -24,22 +43,67 @@ permissions:
             hiddenswitch.admin.ignorekeys.key: true
             hiddenswitch.admin.reload: true
             hiddenswitch.admin.reloaddb: true
+            hiddenswitch.admin.save: true
             hiddenswitch.use: true
+
+# IgnoreKeys Group
     hiddenswitch.admin.ignorekeys:
         description: Allow user to ignore player set restrictions
         default: false
         children:
             hiddenswitch.admin.ignorekeys.user: true
             hiddenswitch.admin.ignorekeys.key: true
+
+# #
+# Individual User Permissions
+# #
+
+# Use Hiddenswitches
+    hiddenswitch.user.use:
+        description: Allow user to use a hidden switch
+        default: false
+
+# Create Hiddenswitches
+    hiddenswitch.user.create:
+        description: Allow user to create a hiddenswitch
+        default: false
+
+# Lock By Item
+    hiddenswitch.user.lockitem:
+        description: Allow user to lock their hidden switch by held item
+        default: false
+
+# Lock By Username
+    hiddenswitch.user.lockuser:
+        description.user.lockuser:
+        default: false
+
+# #
+# Individual Admin Permissions
+# #
+
+# Admin Ignore Key (Held Item) Lock
     hiddenswitch.admin.ignorekeys.key:
         description: Allow user to ignore key item restrictions
         default: false
+
+# Admin Ignore User Lock
     hiddenswitch.admin.ignorekeys.user:
         description: Allow user to ignore user restrictions
         default: false
+
+# Admin Reload Config
     hiddenswitch.admin.reload:
         description: Allow user to reload config file
         default: false
+
+# Admin Reload Database
+# TODO Implement Database Reloads
     hiddenswitch.admin.reloaddb:
         description: Allow user to reload database
+        default: false
+
+# Admin Save Database
+    hiddenswitch.admin.save:
+        description: Allow user to save database
         default: false
