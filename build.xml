@@ -32,7 +32,7 @@
             <compilerarg value="-Xlint:-options"/>
             <classpath>
                 <fileset dir="libs">
-                    <include name="CraftBukkit.jar"/>
+                    <include name="scubs.jar"/>
                 </fileset>
             </classpath>
         </javac>

@@ -38,6 +38,7 @@ public class HiddenSwitch extends JavaPlugin {
 	public static HiddenSwitch lcHS;
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public final playerListener blLs = new playerListener(this);
+	public final BrockListener brLs = new BrockListener(this);
 	public final configManipulation confV = new configManipulation(this);
 	protected static FileConfiguration conf;
 	protected PluginManager pm;
@@ -84,6 +85,9 @@ public class HiddenSwitch extends JavaPlugin {
 		
 		// Set on highest priority since we are not changing the event we just need to know that it actually happened
 		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Highest, this);
+		
+		// Set on low priority, since we may cancel the event. (low is behind protection plugins hopefully)
+		pm.registerEvent(Event.Type.SIGN_CHANGE, this.brLs, Event.Priority.Normal, this);
 	}
 	
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] mods) {
