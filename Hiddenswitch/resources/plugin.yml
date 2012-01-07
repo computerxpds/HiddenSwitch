@@ -17,19 +17,19 @@ permissions:
 # Use group
     hiddenswitch.use:
         description: Allows users to use hidden switches
-        default: false
+        default: true
         children:
             hiddenswitch.user.use: true
             hiddenswitch.user.create: true
             hiddenswitch.user.locks: true
 
-# Setkeys Group
+# Locks Group
     hiddenswitch.user.locks:
         description: Allows users to set locks on their switches
         default: false
         children:
             hiddenswitch.user.lockitem: true
-            hiddenswitch.user.lockuser: false
+            hiddenswitch.user.lockuser: true
 # #
 # Admin Permission Groups
 # #
@@ -37,7 +37,7 @@ permissions:
 # Admin group
     hiddenswitch.admin:
         description: Grants ALL admin permmissions
-        default: false
+        default: op
         children:
             hiddenswitch.admin.ignorekeys.user: true
             hiddenswitch.admin.ignorekeys.key: true
