@@ -1,0 +1,4 @@
+== HiddenSwitch
+----
+
+[HiddenSwitch](http://dev.bukkit.org/server-mods/hiddenswitch/) is a plugin for [Bukkit](https://github.com/Bukkit/CraftBukkit) Minecraft servers that allows players to set up hidden levers and buttons.
