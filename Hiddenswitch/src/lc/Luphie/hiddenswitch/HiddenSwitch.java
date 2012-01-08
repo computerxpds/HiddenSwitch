@@ -17,7 +17,7 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-* */
+ * */
 package lc.Luphie.hiddenswitch;
 
 import java.io.File;
@@ -34,7 +34,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class HiddenSwitch extends JavaPlugin {
-	
+
 	public static HiddenSwitch lcHS;
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public final playerListener blLs = new playerListener(this);
@@ -42,39 +42,39 @@ public class HiddenSwitch extends JavaPlugin {
 	public final configManipulation confV = new configManipulation(this);
 	protected static FileConfiguration conf;
 	protected PluginManager pm;
-	
+
 	public String logName = "[HiddenSwitch]";
-	
-	
+
 	public void onDisable() {
 
-		
 		this.logger.info(logName + " is offline.");
-		
+
 	}
 
 	public void onEnable() {
 
 		pm = getServer().getPluginManager();
-		
+
 		// Announce Ourselves
 		this.logger.info(logName + " v:" + getDescription().getVersion() + " is online.");
-		
+
 		// Try and find the config.yml
-		if(confV.createConfigFile()) {
+		if (confV.createConfigFile()) {
 
-			FileConfiguration conf = YamlConfiguration.loadConfiguration(new File(getDataFolder(), "config.yml"));
-			
-			//TODO Verify all entries in config and fill in the blanks
-			if(!conf.contains("lchs.config")) {
+			FileConfiguration conf = YamlConfiguration.loadConfiguration(new File(
+				getDataFolder(),
+				"config.yml"));
 
-				logger.info(logName+" Config invalid Attempting to recreate");
+			// TODO Verify all entries in config and fill in the blanks
+			if (!conf.contains("lchs.config")) {
 
-				if(!confV.recreateConfigFile()) {
+				logger.info(logName + " Config invalid Attempting to recreate");
+
+				if (!confV.recreateConfigFile()) {
 					pm.disablePlugin(this);
 				}
 			}
-			
+
 			getConfig().setDefaults(conf);
 		} else {
 			pm.disablePlugin(this);
@@ -82,19 +82,29 @@ public class HiddenSwitch extends JavaPlugin {
 
 		// Load Allowed Blocks to confV
 		confV.setBlockList(getConfig().getString("lchs.config.usable-blocks"));
-		
-		// Set on highest priority since we are not changing the event we just need to know that it actually happened
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Highest, this);
-		
-		// Set on low priority, since we may cancel the event. (low is behind protection plugins hopefully)
+
+		// Set on highest priority since we are not changing the event we just
+		// need to know that it actually happened
+		pm.registerEvent(
+			Event.Type.PLAYER_INTERACT,
+			this.blLs,
+			Event.Priority.Highest,
+			this);
+
+		// Set on low priority, since we may cancel the event. (low is behind
+		// protection plugins hopefully)
 		pm.registerEvent(Event.Type.SIGN_CHANGE, this.brLs, Event.Priority.Normal, this);
 	}
-	
-	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] mods) {
 
-		if(cmd.getName().toLowerCase().equals("lchsreload")) {
-			
-			switch(confV.reloadConfig(sender)) {
+	public boolean onCommand(
+		CommandSender sender,
+		Command cmd,
+		String cmdLabel,
+		String[] mods) {
+
+		if (cmd.getName().toLowerCase().equals("lchsreload")) {
+
+			switch (confV.reloadConfig(sender)) {
 			// Worked Fine
 			case 0:
 				break;
@@ -107,14 +117,14 @@ public class HiddenSwitch extends JavaPlugin {
 				break;
 			}
 		}
-		
+
 		return true;
-		
+
 	}
-	
+
 	public void dBugMes(String message) {
-		
-		if(getConfig().getBoolean("lchs.config.debug-messages", false)) {
+
+		if (getConfig().getBoolean("lchs.config.debug-messages", false)) {
 			this.logger.info(logName + "[dBug] " + message);
 		}
 	}
