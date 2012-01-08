@@ -20,6 +20,7 @@
  * */
 package lc.Luphie.hiddenswitch;
 
+import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
@@ -45,6 +46,11 @@ public class playerListener extends PlayerListener {
 
 		// If event was cancelled, then nothing to do here
 		if (event.isCancelled()) {
+			return;
+		}
+
+		// Are sign base hidden switches enabled?
+		if (!plugin.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
 			return;
 		}
 
@@ -94,20 +100,27 @@ public class playerListener extends PlayerListener {
 
 		for (BlockFace holder : faces) {
 
-			// Are we looking for signs?
-			if (plugin.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
+			// Try and find a sign post next to the clicked block
+			if (iblock.getRelative(holder).getTypeId() == 63
+				|| iblock.getRelative(holder).getTypeId() == 68) {
 
-				// Try and find a sign post next to the clicked block
-				if (iblock.getRelative(holder).getTypeId() == 63
-					|| iblock.getRelative(holder).getTypeId() == 68) {
+				signSlapper(iblock.getRelative(holder), playa);
 
-					signSlapper(iblock.getRelative(holder), playa);
-
-				}
 			}
+
 		} // END FOR
 	}
 
+	/**
+	 * Sign slapper.
+	 * 
+	 * Checks the sign to see if it is an lchs sign.
+	 * 
+	 * @param signToSlap
+	 *            Sign
+	 * @param playa
+	 *            the Player
+	 */
 	public void signSlapper(Block signToSlap, Player playa) {
 
 		Sign hola = (Sign) signToSlap.getState();
@@ -157,6 +170,7 @@ public class playerListener extends PlayerListener {
 
 		// What about held item restrictions?
 		// TODO: Set this to a permission
+		// DEPRECIATED
 		if (plugin.getConfig().getBoolean("lchs.signcontrol.allow-item-lock")) {
 
 			String slappyLegs = hola.getLine(2).toUpperCase();
@@ -193,7 +207,7 @@ public class playerListener extends PlayerListener {
 		if (failed == false) {
 
 			// Is there a button or switch nearby?
-			Block levers;
+			Location loc;
 
 			// Faces to check
 			BlockFace[] faces = {
@@ -207,36 +221,62 @@ public class playerListener extends PlayerListener {
 			// TODO Simplify this to a single statement
 			for (BlockFace holder : faces) {
 
-				// find all the levers next to the sign
+				// Look for levers
 				if (signToSlap.getRelative(holder).getTypeId() == 69) {
 
-					levers = signToSlap.getRelative(holder);
-
-					// Imitate a player interaction with the lever to properly
-					// get block state changes
-					net.minecraft.server.Block.LEVER.interact(
-						((CraftWorld) levers.getWorld()).getHandle(),
-						levers.getX(),
-						levers.getY(),
-						levers.getZ(),
-						((CraftPlayer) playa.getPlayer()).getHandle());
-
+					loc = signToSlap.getRelative(holder).getLocation();
+					flipLever(loc, playa);
 				}
+
+				// Look for buttons
 				if (signToSlap.getRelative(holder).getTypeId() == 77) {
 
-					levers = signToSlap.getRelative(holder);
-
-					// Imitate a player interaction with the button to properly
-					// get block state changes
-					net.minecraft.server.Block.STONE_BUTTON.interact(
-						((CraftWorld) levers.getWorld()).getHandle(),
-						levers.getX(),
-						levers.getY(),
-						levers.getZ(),
-						((CraftPlayer) playa.getPlayer()).getHandle());
-
+					loc = signToSlap.getRelative(holder).getLocation();
+					pushButton(loc, playa);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Push button.
+	 * 
+	 * Imitate a player interaction with a button at the given location.
+	 * 
+	 * @param loc
+	 *            The location of the button.
+	 * @param player
+	 *            The activating player.
+	 */
+	private void pushButton(Location loc, Player player) {
+
+		net.minecraft.server.Block.STONE_BUTTON.interact(
+			((CraftWorld) loc.getWorld()).getHandle(),
+			loc.getBlockX(),
+			loc.getBlockY(),
+			loc.getBlockZ(),
+			((CraftPlayer) player.getPlayer()).getHandle());
+
+	}
+
+	/**
+	 * Flip lever.
+	 * 
+	 * Imitate a player interaction with a lever at the given location
+	 * 
+	 * @param loc
+	 *            The location of the button.
+	 * @param player
+	 *            The activating player.
+	 */
+	private void flipLever(Location loc, Player player) {
+
+		net.minecraft.server.Block.LEVER.interact(
+			((CraftWorld) loc.getWorld()).getHandle(),
+			loc.getBlockX(),
+			loc.getBlockY(),
+			loc.getBlockZ(),
+			((CraftPlayer) player.getPlayer()).getHandle());
+
 	}
 }
