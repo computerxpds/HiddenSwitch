@@ -87,7 +87,7 @@ public class configManipulation {
 		// Set the defaults 
 		me.getConfig().setDefaults(conf);
 
-		if(checkConfig(me.getConfig())) {
+		if(!checkConfig(me.getConfig())) {
 			me.logger.info(me.logName + "[WARNING] Config may be corrupted.");
 		}
 
