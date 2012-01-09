@@ -15,7 +15,7 @@
 	
 	<property environment="env" />
 	
-	<condition property="jarName" value="HiddenSwitch-${env.BUILD_NUMBER}.jar" else="HiddenSwitch.jar">
+	<condition property="jarName" value="HiddenSwitch-dev.jar" else="HiddenSwitch.jar">
 		<equals arg1="${env.GIT_BRANCH}" arg2="develop"/>
 	</condition>
 
@@ -28,6 +28,7 @@
 		<mkdir dir="${buildFolder}" />
 		<mkdir dir="${buildFolder}/src" />
 		<mkdir dir="${buildFolder}/src/resources" />
+		<delete></delete>
 		<copy file="${resourceFolder}/plugin.yml" todir="${buildFolder}/src/resources/"
 			overwrite="true" />
 		<copy file="${resourceFolder}/config.yml" todir="${buildFolder}/src/resources/"
