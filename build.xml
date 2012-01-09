@@ -12,6 +12,12 @@
 	<property name="buildFolder" location="build/" />
 	<property name="resourceFolder" location="${baseFolder}/resources/" />
 	<property name="sourceFolder" location="${baseFolder}/src/" />
+	
+	<property environment="env" />
+	
+	<condition property="jarName" value="HiddenSwitch-${env.BUILD_NUMBER}.jar" else="HiddenSwitch.jar">
+		<equals arg1="${env.GIT_BRANCH}" arg2="develop"/>
+	</condition>
 
 
 
