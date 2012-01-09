@@ -28,7 +28,6 @@
 		<mkdir dir="${buildFolder}" />
 		<mkdir dir="${buildFolder}/src" />
 		<mkdir dir="${buildFolder}/src/resources" />
-		<delete></delete>
 		<copy file="${resourceFolder}/plugin.yml" todir="${buildFolder}/src/resources/"
 			overwrite="true" />
 		<copy file="${resourceFolder}/config.yml" todir="${buildFolder}/src/resources/"
