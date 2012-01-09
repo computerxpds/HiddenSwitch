@@ -45,6 +45,7 @@ public class HiddenSwitch extends JavaPlugin {
 
 	public void onDisable() {
 
+		confV.saveConfigToFile(getConfig());
 		this.logger.info(logName + " is offline.");
 
 	}

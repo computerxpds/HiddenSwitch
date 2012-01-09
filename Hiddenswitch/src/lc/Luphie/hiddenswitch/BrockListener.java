@@ -82,6 +82,13 @@ public class BrockListener extends BlockListener {
 			return;
 		}
 
+		// Check if username shortcuts are enabled, and if so and they are using
+		// one, replace the shortcut with their name
+		if (me.getConfig().getBoolean("lchs.signcontrol.allow-username-shortcut")
+			&& lns[1].equalsIgnoreCase(me.getConfig().getString(
+				"lchs.signcontrol.username-shortcut"))) {
+			lns[1] = pl.getDisplayName();
+		}
 	}
 
 	public void signBreak(Block sign, Player pl) {
