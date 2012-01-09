@@ -43,7 +43,7 @@
 		</javac>
 	</target>
 	<target name="default" depends="compile">
-		<jar jarfile="${buildFolder}/HiddenSwitch.jar">
+		<jar jarfile="${buildFolder}/${jarName}">
 			<fileset dir="${buildFolder}/src/resources/">
 				<include name="config.yml" />
 				<include name="plugin.yml" />
