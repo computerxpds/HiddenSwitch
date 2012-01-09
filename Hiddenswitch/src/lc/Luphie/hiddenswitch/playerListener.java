@@ -20,9 +20,6 @@
  * */
 package lc.Luphie.hiddenswitch;
 
-import lc.Luphie.hiddenswitch.conf.ConfigLogging;
-import lc.Luphie.hiddenswitch.conf.ConfigLogging.mLevel;
-
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -88,7 +85,7 @@ public class playerListener extends PlayerListener {
 				return;
 			}
 		} catch (NullPointerException e) {
-			ConfigLogging.logMes("iblock NullPointerExeption",mLevel.WARNING);
+			HiddenSwitch.log.warning(HiddenSwitch.logName+"iblock NullPointerExeption");
 			return;
 		}
 

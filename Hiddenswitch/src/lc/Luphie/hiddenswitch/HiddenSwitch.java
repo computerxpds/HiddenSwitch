@@ -20,9 +20,9 @@
  * */
 package lc.Luphie.hiddenswitch;
 
+import java.util.logging.Logger;
+
 import lc.Luphie.hiddenswitch.conf.ConfigHandler;
-import lc.Luphie.hiddenswitch.conf.ConfigLogging;
-import lc.Luphie.hiddenswitch.conf.ConfigLogging.mLevel;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -35,6 +35,8 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class HiddenSwitch extends JavaPlugin {
 
+	public static final Logger log = Logger.getLogger("Minecraft");
+	public static String logName; 
 	/** Player Listener */
 	public final playerListener blLs = new playerListener(this);
 	
@@ -47,25 +49,23 @@ public class HiddenSwitch extends JavaPlugin {
 	/** PluginManager */
 	public static PluginManager pm;
 
-	/** The log name. */
-	public String logName = "[HiddenSwitch]";
-
 	/* (non-Javadoc)
 	 * @see org.bukkit.plugin.Plugin#onDisable()
 	 */
 	public void onDisable() {
 
 		confV.saveConfigToFile(getConfig());
-		ConfigLogging.logMes(" is offline.",mLevel.MESSAGE);
+		log.info(logName+" is offline.");
 
 	}
 
 	public void onEnable() {
 
 		pm = getServer().getPluginManager();
+		logName = "["+getDescription().getName()+"]";
 
 		// Announce Ourselves
-		ConfigLogging.logMes("v:" + getDescription().getVersion() + " is online.",mLevel.MESSAGE);
+		log.info(logName+"v:" + getDescription().getVersion() + " is online.");
 
 		// Try and load the config file
 		if (!confV.loadConfig()) {
@@ -102,7 +102,7 @@ public class HiddenSwitch extends JavaPlugin {
 		if (cmd.getName().toLowerCase().equals("lchsreload")) {
 
 			if(!confV.reloadConfig(sender)) {
-				ConfigLogging.logMes("Could not reload config.", mLevel.ERROR);
+				log.warning(logName+"Could not reload config.");
 			}
 		}
 
