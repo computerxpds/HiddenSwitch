@@ -20,6 +20,9 @@
  * */
 package lc.Luphie.hiddenswitch;
 
+import lc.Luphie.hiddenswitch.conf.ConfigLogging;
+import lc.Luphie.hiddenswitch.conf.ConfigLogging.mLevel;
+
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
@@ -33,11 +36,11 @@ import org.bukkit.event.player.PlayerListener;
 
 public class playerListener extends PlayerListener {
 
-	public static HiddenSwitch plugin;
+	public static HiddenSwitch me;
 
 	public playerListener(HiddenSwitch instance) {
 
-		plugin = instance;
+		me = instance;
 
 	}
 
@@ -50,7 +53,7 @@ public class playerListener extends PlayerListener {
 		}
 
 		// Are sign base hidden switches enabled?
-		if (!plugin.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
+		if (!me.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
 			return;
 		}
 
@@ -65,7 +68,7 @@ public class playerListener extends PlayerListener {
 		Block iblock = event.getClickedBlock();
 
 		// Are left clicks allowed?
-		Boolean cclicks = plugin.getConfig().getBoolean("lchs.config.left-clicks");
+		Boolean cclicks = me.getConfig().getBoolean("lchs.config.left-clicks");
 
 		// Compare action to allowed clicks:
 		if (cclicks) {
@@ -81,11 +84,11 @@ public class playerListener extends PlayerListener {
 
 		// See if the block that was clicked is a usable block
 		try {
-			if (!plugin.confV.usableBlocks.contains(iblock.getTypeId())) {
+			if (!me.confV.usableBlocks.contains(iblock.getTypeId())) {
 				return;
 			}
 		} catch (NullPointerException e) {
-			plugin.logger.info(plugin.logName + " iblock NullPointerExeption");
+			ConfigLogging.logMes("iblock NullPointerExeption",mLevel.WARNING);
 			return;
 		}
 
@@ -128,7 +131,7 @@ public class playerListener extends PlayerListener {
 		Boolean failed = false;
 
 		// Check the first line of the sign to see if we need to run
-		if (!slappyFace.equals(plugin
+		if (!slappyFace.equals(me
 			.getConfig()
 			.getString("lchs.signcontrol.sign-text")
 			.toLowerCase())) {
@@ -139,7 +142,7 @@ public class playerListener extends PlayerListener {
 
 		// So it is, now do we allow per player restrictions?
 		// PERMS Set this to a permission
-		if (plugin.getConfig().getBoolean("lchs.signcontrol.allow-user-lock")) {
+		if (me.getConfig().getBoolean("lchs.signcontrol.allow-user-lock")) {
 
 			// Check to see if line 2 has text, if it does and the player
 			// doesn't have the ignorekeys.user permission
@@ -149,14 +152,14 @@ public class playerListener extends PlayerListener {
 
 				// Fail if names ARE case sensitive and the name on the sign
 				// DOES NOT match the player name
-				if (plugin.getConfig().getBoolean("lchs.config.case-sensitive-names")
+				if (me.getConfig().getBoolean("lchs.config.case-sensitive-names")
 					&& !hola.getLine(1).equals(playa.getDisplayName())) {
 
 					failed = true;
 
 					// Fail if names ARE NOT case sensitive and the name on the
 					// sign DOES NOT match the player name
-				} else if (!plugin.getConfig().getBoolean(
+				} else if (!me.getConfig().getBoolean(
 					"lchs.config.case-sensitive-names")
 					&& !hola.getLine(1).equalsIgnoreCase(playa.getDisplayName())) {
 
@@ -169,7 +172,7 @@ public class playerListener extends PlayerListener {
 		// What about held item restrictions?
 		// TODO: Set this to a permission
 		// DEPRECIATED
-		if (plugin.getConfig().getBoolean("lchs.signcontrol.allow-item-lock")) {
+		if (me.getConfig().getBoolean("lchs.signcontrol.allow-item-lock")) {
 
 
 			// if line 3 IS NOT blank and the user DOES NOT have the
@@ -178,10 +181,10 @@ public class playerListener extends PlayerListener {
 				&& !playa.hasPermission("hiddenswitch.admin.ignorekeys.key")) {
 
 				// Is the key item override set?
-				if (plugin.getConfig().getInt("lchs.signcontrol.item-lock-override") != 0) {
+				if (me.getConfig().getInt("lchs.signcontrol.item-lock-override") != 0) {
 
 					// If so then is the player holding the specified key item?
-					if (playa.getItemInHand().getTypeId() != plugin.getConfig().getInt(
+					if (playa.getItemInHand().getTypeId() != me.getConfig().getInt(
 						"lchs.signcontrol.item-lock-override")) {
 
 						failed = true;

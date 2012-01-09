@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
+import lc.Luphie.hiddenswitch.conf.ConfigLogging.mLevel;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -91,7 +92,7 @@ public class ConfigHandler {
 		me.getConfig().setDefaults(conf);
 
 		if(!checkConfig(me.getConfig())) {
-			me.logger.info(me.logName + "[WARNING] Config may be corrupted.");
+			ConfigLogging.logMes("Config may be corrupted.",mLevel.WARNING);
 		}
 
 		return true;
@@ -141,7 +142,7 @@ public class ConfigHandler {
 			}
 		}
 
-		me.logger.info(me.logName + " Attempting to reload configuration.");
+		ConfigLogging.logMes("Attempting to reload configuration.");
 
 		me.reloadConfig();
 
@@ -162,26 +163,24 @@ public class ConfigHandler {
 		if (makeDir) {
 
 			// Directory not found, say some words
-			me.logger.info(me.logName
-				+ " Couldn't find config directory; creating a new one.");
+			ConfigLogging.logMes("Couldn't find config directory; creating a new one.");
 			try {
 
 				me.getDataFolder().mkdir();
 
 			} catch (Exception e) {
 
-				me.logger.info(me.logName + "[ERROR] Could not create data directory \""
-					+ me.getDataFolder().toString() + "\"");
+				ConfigLogging.logMes("Could not create data directory \""
+					+ me.getDataFolder().toString() + "\"",mLevel.ERROR);
 				return false;
 
 			}
 		}
 
 		// Time to make the config, say words to the console
-		me.logger.info(me.logName
-			+ " Data directory created, attempting to write config.yml");
+		ConfigLogging.logMes("Data directory created, attempting to write config.yml");
 		if (recreateConfigFile()) {
-			me.logger.info(me.logName + " Config file and directory created.");
+			ConfigLogging.logMes("Config file and directory created.");
 			return true;
 		}
 
@@ -201,8 +200,8 @@ public class ConfigHandler {
 		try {
 			defConf = loadDefaults();
 		} catch (ConfigurationException e1) {
-			me.logger.info(me.logName + e1.getMessage());
-			me.pm.disablePlugin(me);
+			ConfigLogging.logMes(e1.getMessage(),mLevel.SEVERE);
+			HiddenSwitch.pm.disablePlugin(me);
 			return false;
 		}
 		
@@ -232,7 +231,7 @@ public class ConfigHandler {
 		}
 
 		throw new ConfigurationException(
-			"[ERROR] Could not find a required resource, please redownload the newest version or report this error.");
+			"Could not find a required resource, please redownload the newest version or report this error.");
 	}
 
 	/**
@@ -251,7 +250,8 @@ public class ConfigHandler {
 		try {
 			defConf = loadDefaults();
 		} catch (ConfigurationException e1) {
-			me.logger.info(me.logName + e1.getMessage());
+			ConfigLogging.logMes(e1.getMessage(),mLevel.SEVERE);
+			HiddenSwitch.pm.disablePlugin(me);
 			return false;
 		}
 
@@ -343,10 +343,9 @@ public class ConfigHandler {
 		 * If anything was updated save the config to file.
 		 */
 		if (saveConf) {
-			me.logger.info(me.logName
-				+ "[Info] Missing conf entries found, filling in the blanks...");
+			ConfigLogging.logMes("Missing conf entries found, filling in the blanks...",mLevel.INFO);
 			saveConfigToFile(config);
-			me.logger.info(me.logName + "[Info] Config successfully written");
+			ConfigLogging.logMes("Config successfully written",mLevel.INFO);
 		}
 		
 		return true;

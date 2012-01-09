@@ -20,32 +20,43 @@
  * */
 package lc.Luphie.hiddenswitch;
 
-import java.util.logging.Logger;
-
 import lc.Luphie.hiddenswitch.conf.ConfigHandler;
+import lc.Luphie.hiddenswitch.conf.ConfigLogging;
+import lc.Luphie.hiddenswitch.conf.ConfigLogging.mLevel;
+
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
+/**
+ * Primary Plugin Class
+ */
 public class HiddenSwitch extends JavaPlugin {
 
-	public static HiddenSwitch lcHS;
-	public final Logger logger = Logger.getLogger("Minecraft");
+	/** Player Listener */
 	public final playerListener blLs = new playerListener(this);
+	
+	/** Block Listener */
 	public final BrockListener brLs = new BrockListener(this);
+	
+	/** Config Handler */
 	public final ConfigHandler confV = new ConfigHandler(this);
-	protected static FileConfiguration conf;
-	public PluginManager pm;
+	
+	/** PluginManager */
+	public static PluginManager pm;
 
+	/** The log name. */
 	public String logName = "[HiddenSwitch]";
 
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.Plugin#onDisable()
+	 */
 	public void onDisable() {
 
 		confV.saveConfigToFile(getConfig());
-		this.logger.info(logName + " is offline.");
+		ConfigLogging.logMes(" is offline.",mLevel.MESSAGE);
 
 	}
 
@@ -54,7 +65,7 @@ public class HiddenSwitch extends JavaPlugin {
 		pm = getServer().getPluginManager();
 
 		// Announce Ourselves
-		this.logger.info(logName + " v:" + getDescription().getVersion() + " is online.");
+		ConfigLogging.logMes("v:" + getDescription().getVersion() + " is online.",mLevel.MESSAGE);
 
 		// Try and load the config file
 		if (!confV.loadConfig()) {
@@ -79,6 +90,9 @@ public class HiddenSwitch extends JavaPlugin {
 		pm.registerEvent(Event.Type.SIGN_CHANGE, this.brLs, Event.Priority.Normal, this);
 	}
 
+	/* (non-Javadoc)
+	 * @see org.bukkit.plugin.java.JavaPlugin#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+	 */
 	public boolean onCommand(
 		CommandSender sender,
 		Command cmd,
@@ -88,19 +102,12 @@ public class HiddenSwitch extends JavaPlugin {
 		if (cmd.getName().toLowerCase().equals("lchsreload")) {
 
 			if(!confV.reloadConfig(sender)) {
-				logger.info(logName + "[ERROR] Could not reload config.");
+				ConfigLogging.logMes("Could not reload config.", mLevel.ERROR);
 			}
 		}
 
 		return true;
 
-	}
-
-	public void dBugMes(String message) {
-
-		if (getConfig().getBoolean("lchs.config.debug-messages", false)) {
-			this.logger.info(logName + "[dBug] " + message);
-		}
 	}
 
 }
