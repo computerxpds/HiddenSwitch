@@ -141,18 +141,16 @@ public class playerListener extends PlayerListener {
 		// PERMS Set this to a permission
 		if (plugin.getConfig().getBoolean("lchs.signcontrol.allow-user-lock")) {
 
-			String slappyTorso = hola.getLine(1);
-
 			// Check to see if line 2 has text, if it does and the player
 			// doesn't have the ignorekeys.user permission
 			// then check their name against the sign.
-			if (!slappyTorso.isEmpty()
+			if (!hola.getLine(1).isEmpty()
 				&& !playa.hasPermission("hiddenswitch.admin.ignorekeys.user")) {
 
 				// Fail if names ARE case sensitive and the name on the sign
 				// DOES NOT match the player name
 				if (plugin.getConfig().getBoolean("lchs.config.case-sensitive-names")
-					&& !slappyTorso.equals(playa.getDisplayName())) {
+					&& !hola.getLine(1).equals(playa.getDisplayName())) {
 
 					failed = true;
 
@@ -160,7 +158,7 @@ public class playerListener extends PlayerListener {
 					// sign DOES NOT match the player name
 				} else if (!plugin.getConfig().getBoolean(
 					"lchs.config.case-sensitive-names")
-					&& !slappyTorso.equalsIgnoreCase(playa.getDisplayName())) {
+					&& !hola.getLine(1).equalsIgnoreCase(playa.getDisplayName())) {
 
 					failed = true;
 
@@ -173,11 +171,10 @@ public class playerListener extends PlayerListener {
 		// DEPRECIATED
 		if (plugin.getConfig().getBoolean("lchs.signcontrol.allow-item-lock")) {
 
-			String slappyLegs = hola.getLine(2).toUpperCase();
 
 			// if line 3 IS NOT blank and the user DOES NOT have the
 			// ignorekeys.key permission
-			if (!slappyLegs.isEmpty()
+			if (!hola.getLine(2).isEmpty()
 				&& !playa.hasPermission("hiddenswitch.admin.ignorekeys.key")) {
 
 				// Is the key item override set?
@@ -192,7 +189,7 @@ public class playerListener extends PlayerListener {
 					}
 
 					// If it's player set items
-				} else if (!slappyLegs.equalsIgnoreCase(playa
+				} else if (!hola.getLine(2).equalsIgnoreCase(playa
 					.getItemInHand()
 					.getType()
 					.toString())) {

@@ -34,24 +34,27 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.util.config.ConfigurationException;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class configManipulation.
- */
-public class configManipulation {
 
-	/** The me. */
+/**
+ * configManipulation
+ * 
+ * A set of tools for working with the config.
+ * 
+ */
+public class ConfigHandler {
+
+	/** The main class. */
 	private static HiddenSwitch me;
 
-	/** The usable blocks. */
+	/** A list of allowed hiddenswitch blocks. */
 	public List<Integer> usableBlocks = new ArrayList<Integer>();
 
 	/**
 	 * Instantiates a new config manipulation.
 	 *
-	 * @param instance the instance
+	 * @param instance The calling instance of HiddenSwitch
 	 */
-	public configManipulation(HiddenSwitch instance) {
+	public ConfigHandler(HiddenSwitch instance) {
 
 		me = instance;
 

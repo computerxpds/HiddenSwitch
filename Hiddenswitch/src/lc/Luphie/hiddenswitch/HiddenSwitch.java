@@ -22,8 +22,7 @@ package lc.Luphie.hiddenswitch;
 
 import java.util.logging.Logger;
 
-import lc.Luphie.hiddenswitch.conf.configManipulation;
-
+import lc.Luphie.hiddenswitch.conf.ConfigHandler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,7 +36,7 @@ public class HiddenSwitch extends JavaPlugin {
 	public final Logger logger = Logger.getLogger("Minecraft");
 	public final playerListener blLs = new playerListener(this);
 	public final BrockListener brLs = new BrockListener(this);
-	public final configManipulation confV = new configManipulation(this);
+	public final ConfigHandler confV = new ConfigHandler(this);
 	protected static FileConfiguration conf;
 	public PluginManager pm;
 
