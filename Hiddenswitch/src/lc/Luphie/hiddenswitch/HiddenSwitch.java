@@ -20,7 +20,6 @@
  * */
 package lc.Luphie.hiddenswitch;
 
-import java.io.File;
 import java.util.logging.Logger;
 
 import lc.Luphie.hiddenswitch.conf.configManipulation;
@@ -28,7 +27,6 @@ import lc.Luphie.hiddenswitch.conf.configManipulation;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -41,7 +39,7 @@ public class HiddenSwitch extends JavaPlugin {
 	public final BrockListener brLs = new BrockListener(this);
 	public final configManipulation confV = new configManipulation(this);
 	protected static FileConfiguration conf;
-	protected PluginManager pm;
+	public PluginManager pm;
 
 	public String logName = "[HiddenSwitch]";
 
@@ -58,26 +56,11 @@ public class HiddenSwitch extends JavaPlugin {
 		// Announce Ourselves
 		this.logger.info(logName + " v:" + getDescription().getVersion() + " is online.");
 
-		// Try and find the config.yml
-		if (confV.createConfigFile()) {
+		// Try and load the config file
+		if (!confV.loadConfig()) {
 
-			FileConfiguration conf = YamlConfiguration.loadConfiguration(new File(
-				getDataFolder(),
-				"config.yml"));
-
-			// TODO Verify all entries in config and fill in the blanks
-			if (!conf.contains("lchs.config")) {
-
-				logger.info(logName + " Config invalid Attempting to recreate");
-
-				if (!confV.recreateConfigFile()) {
-					pm.disablePlugin(this);
-				}
-			}
-
-			getConfig().setDefaults(conf);
-		} else {
 			pm.disablePlugin(this);
+			
 		}
 
 		// Load Allowed Blocks to confV
@@ -104,17 +87,8 @@ public class HiddenSwitch extends JavaPlugin {
 
 		if (cmd.getName().toLowerCase().equals("lchsreload")) {
 
-			switch (confV.reloadConfig(sender)) {
-			// Worked Fine
-			case 0:
-				break;
-			// Exception thrown while trying to reload
-			case 1:
-				pm.disablePlugin(this);
-				break;
-			// Does not have permission
-			case 2:
-				break;
+			if(!confV.reloadConfig(sender)) {
+				logger.info(logName + "[ERROR] Could not reload config.");
 			}
 		}
 

@@ -1,4 +1,4 @@
-lchs:
+sinlchs:
     config:
         # What blocks can be hidden switches
         usable-blocks: 1,2,3,4,5,7,17,22,24,35,41,42,43,45,47,48,49,53,57,67,80,82,87,88,98,108,109,110,114,121
@@ -8,25 +8,32 @@ lchs:
 
         # Is the username checking case sensitive?
         case-sensitive-names: false
-        
+
     signcontrol:
         # Allow sign control?
         allow-signs: true
-        
+
         # What trigger should HiddenSwitch look for? Default:[lchs]
         sign-text: '[lchs]'
-        
+
         # Allow users to lock their signs so only they can use them?
         allow-user-lock: true
         
         # Allow signs to require 'key' items (sign will only function if holding the specified item)
         allow-item-lock: true
-        
+
         # Use this specific item, or let the users choose their own
         # (0 = users can set their own items, any other number = item id of the 'key')
         # IMPORTANT: THIS ONLY WORKS IF allow-item-lock IS TRUE!
         item-lock-override: 0
-    blockcontrol:
-        # Allow block control? (DOES NOT WORK)
-        allow-blocks: false
-                
+
+        # Username Shortcut
+        ##
+        # Allows players to type <username-shortcut> on the second line of a
+        # sign to auto set their name to the sign
+        ##
+        # Allow username shortcut?
+        allow-username-shortcut: false
+        
+        # Username Shortcut word
+        username-shortcut: 'me'

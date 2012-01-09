@@ -32,37 +32,75 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.util.config.ConfigurationException;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class configManipulation.
+ */
 public class configManipulation {
 
+	/** The me. */
 	private static HiddenSwitch me;
 
-	// config.yml Config section
+	/** The usable blocks. */
 	public List<Integer> usableBlocks = new ArrayList<Integer>();
-	public boolean confLeftClicks;
 
-	// config.yml Signs Section
-	public boolean signAllowSigns;
-	public String signSignText;
-	public boolean signAllowULock;
-	public boolean signAllowILock;
-	public int signILockOverride;
-
-	// config.yml Block Section
-	public boolean blockAllowBlocks;
-
+	/**
+	 * Instantiates a new config manipulation.
+	 *
+	 * @param instance the instance
+	 */
 	public configManipulation(HiddenSwitch instance) {
 
 		me = instance;
+
 	}
 
+	/**
+	 * Load config.
+	 * 
+	 * Attempts to load the configuration from file.
+	 *
+	 * @return true if successful, otherwise false
+	 */
+	public boolean loadConfig() {
+
+		// Check to see if the data folder exists
+		if (!me.getDataFolder().exists()) {
+
+			// Then try and create it
+			return createConfigFile(true);
+		}
+
+		// Check to see if the config file exists
+		if (!(new File(me.getDataFolder(), "config.yml")).exists()) {
+
+			// If not then try and create it
+			return createConfigFile(false);
+		}
+
+		// If we made it this far then the file probably exists so go ahead and load it
+		FileConfiguration conf = YamlConfiguration.loadConfiguration(new File(me
+			.getDataFolder(), "config.yml"));
+
+		// Set the defaults 
+		me.getConfig().setDefaults(conf);
+
+		if(checkConfig(me.getConfig())) {
+			me.logger.info(me.logName + "[WARNING] Config may be corrupted.");
+		}
+
+		return true;
+	}
+	
 	/**
 	 * setBlockList()
 	 * 
 	 * Sets configManipulation.usableBlocks to a list of integers retrieved from
 	 * the config field lchs.config.usable-blocks.
-	 * 
-	 * @param string
+	 *
+	 * @param string the new block list
 	 */
 	public void setBlockList(String string) {
 
@@ -80,11 +118,14 @@ public class configManipulation {
 	 * 
 	 * Reloads the configuration from file.
 	 * 
+	 * TODO:
+	 *		Separate this into a command handler and the config reloader.
+	 * 
 	 * @param sender
 	 *            Source of the command
 	 * @return Integer
 	 */
-	public int reloadConfig(CommandSender sender) {
+	public boolean reloadConfig(CommandSender sender) {
 
 		// If the command was issued by a player, check to make sure they have
 		// the permission
@@ -93,7 +134,7 @@ public class configManipulation {
 			if (player.hasPermission("hiddenswitch.admin.reload")) {
 				player.sendMessage("Reloading HiddenSwitch Config...");
 			} else {
-				return 2;
+				return false;
 			}
 		}
 
@@ -104,15 +145,20 @@ public class configManipulation {
 		// Update the allowed blocks
 		setBlockList(me.getConfig().getString("lchs.config.usable-blocks"));
 
-		return 0;
+		return true;
 	}
 
-	public boolean createConfigFile() {
+	/**
+	 * Creates the config file.
+	 *
+	 * @param makeDir Whether or not a default directory needs to be made
+	 * @return true if successful
+	 */
+	public boolean createConfigFile(boolean makeDir) {
 
-		// Check to see if there is a data folder
-		if (!me.getDataFolder().exists()) {
+		if (makeDir) {
 
-			// If not, inform the console and try and make one
+			// Directory not found, say some words
 			me.logger.info(me.logName
 				+ " Couldn't find config directory; creating a new one.");
 			try {
@@ -126,69 +172,200 @@ public class configManipulation {
 				return false;
 
 			}
+		}
 
-			// If there was no directory then there is no config file so create
-			// that too
-			me.logger.info(me.logName
-				+ " Data directory created, attempting to write config.yml");
-			if (recreateConfigFile()) {
-				me.logger.info(me.logName + " Config file and directory created.");
-				return true;
-			}
+		// Time to make the config, say words to the console
+		me.logger.info(me.logName
+			+ " Data directory created, attempting to write config.yml");
+		if (recreateConfigFile()) {
+			me.logger.info(me.logName + " Config file and directory created.");
+			return true;
+		}
 
-			return false;
+		return false;
 
-		} // end 'no directory'
-
-		// Verify the existence of the config file.
-		if (!(new File(me.getDataFolder(), "config.yml")).exists()) {
-
-			// If it doesn't exist try and create it
-			me.logger.info(me.logName + " No config found, attempting to create");
-
-			if (recreateConfigFile()) {
-				return true;
-			}
-
-			return false;
-
-		} // end 'no config file'
-
-		return true;
 	}
 
+	/**
+	 * Recreate config file.
+	 *
+	 * @return true if successful, otherwise false
+	 */
 	public boolean recreateConfigFile() {
+
+		FileConfiguration defConf;
+		
+		try {
+			defConf = loadDefaults();
+		} catch (ConfigurationException e1) {
+			me.logger.info(me.logName + e1.getMessage());
+			me.pm.disablePlugin(me);
+			return false;
+		}
+		
+		return saveConfigToFile(defConf);
+		
+	}
+
+	/**
+	 * Load defaults
+	 * 
+	 * Load the default configuration settings from the included config.yml
+	 * file.
+	 *
+	 * @return FileConfiguration the default config.yml loaded into a FileConfiguration
+	 * @throws ConfigurationException with message
+	 */
+	public YamlConfiguration loadDefaults() throws ConfigurationException {
 
 		// Read the included copy of config.yml
 		InputStream configEmb = me.getResource("config.yml");
 
-		// If it exsists then write it to the external file
+		// If it exists then return it
 		if (configEmb != null) {
 
-			FileConfiguration conf = YamlConfiguration.loadConfiguration(configEmb);
-			try {
+			return YamlConfiguration.loadConfiguration(configEmb);
 
-				conf.save(new File(me.getDataFolder(), "config.yml"));
+		}
 
-			} catch (IOException e1) {
+		throw new ConfigurationException(
+			"[ERROR] Could not find a required resource, please redownload the newest version or report this error.");
+	}
 
-				me.logger
-					.info(me.logName
-						+ "[ERROR] No config found or created! Please redownload the latest version of HiddenSwitch.");
-				return false;
+	/**
+	 * Check config.
+	 * 
+	 * Checks the configuration to make sure everything is set, and fills in the
+	 * blanks where needed.
+	 *
+	 * @param config FileConfiguration to check
+	 * @return true if successful, otherwise false
+	 */
+	public boolean checkConfig(FileConfiguration config) {
 
-			}
+		FileConfiguration defConf;
 
-		} else {
-
-			me.logger
-				.info(me.logName
-					+ "[ERROR] No config found or created! Please redownload the latest version of HiddenSwitch.");
+		try {
+			defConf = loadDefaults();
+		} catch (ConfigurationException e1) {
+			me.logger.info(me.logName + e1.getMessage());
 			return false;
+		}
 
+		boolean saveConf = false;
+
+		/*
+		 * Config
+		 */
+
+		// Allow Left Clicks
+		if (!config.isSet("lchs.config.left-clicks")) {
+			config.set(
+				"lchs.config.left-clicks",
+				defConf.getBoolean("lchs.config.left-clicks", true));
+			saveConf = true;
+		}
+
+		// Case Sensitive name checking
+		if (!config.isSet("lchs.config.case-sensitive-names")) {
+			config.set(
+				"lchs.config.case-sensitive-names",
+				defConf.getBoolean("lchs.config.case-sensitive-names", false));
+			saveConf = true;
+		}
+
+		/*
+		 * SignControl
+		 */
+
+		// Allow Signs
+		if (!config.isSet("lchs.signcontrol.allow-signs")) {
+			config.set(
+				"lchs.signcontrol.allow-signs",
+				defConf.getBoolean("lchs.signcontrol.allow-signs", true));
+			saveConf = true;
+		}
+
+		// Sign Header Text
+		if (!config.isSet("lchs.signcontrol.sign-text")) {
+			config.set(
+				"lchs.signcontrol.sign-text",
+				defConf.getString("lchs.signcontrol.sign-text", "[lchs]"));
+			saveConf = true;
+		}
+
+		// Allow User Locks TODO: Phase Out
+		if (!config.isSet("lchs.signcontrol.allow-user-lock")) {
+			config.set(
+				"lchs.signcontrol.allow-user-lock",
+				defConf.getBoolean("lchs.signcontrol.allow-user-lock", true));
+			saveConf = true;
+		}
+
+		// Allow Item Locks TODO: Phase Out
+		if (!config.isSet("lchs.signcontrol.allow-item-lock")) {
+			config.set(
+				"lchs.signcontrol.allow-item-lock",
+				defConf.getBoolean("lchs.signcontrol.allow-item-lock", true));
+			saveConf = true;
+		}
+
+		// Item Lock Override Item TODO: Reconsider usefulness
+		if (!config.isSet("lchs.signcontrol.item-lock-override")) {
+			config.set(
+				"lchs.signcontrol.item-lock-override",
+				defConf.getInt("lchs.signcontrol.item-lock-override", 0));
+			saveConf = true;
+		}
+
+		// Allow Username Shortcuts
+		if (!config.isSet("lchs.signcontrol.allow-username-shortcut")) {
+			config.set(
+				"lchs.signcontrol.allow-username-shortcut",
+				defConf.getBoolean("lchs.signcontrol.allow-username-shortcut", false));
+			saveConf = true;
+		}
+
+		// Username Shortcut text
+		if (!config.isSet("lchs.signcontrol.username-shortcut")) {
+			config.set(
+				"lchs.signcontrol.username-shortcut",
+				defConf.getString("lchs.signcontrol.username-shortcut", "me"));
+			saveConf = true;
+		}
+
+		/*
+		 * Save Config
+		 * 
+		 * If anything was updated save the config to file.
+		 */
+		if (saveConf) {
+			me.logger.info(me.logName
+				+ "[Info] Missing conf entries found, filling in the blanks...");
+			saveConfigToFile(config);
+			me.logger.info(me.logName + "[Info] Config successfully written");
+		}
+		
+		return true;
+	}
+
+	/**
+	 * Save config.
+	 * 
+	 * Saves the configuration to file.
+	 *
+	 * @param conf FileConfiguration to save
+	 * @return true if successful, otherwise false
+	 */
+	public boolean saveConfigToFile(FileConfiguration conf) {
+
+		try {
+			conf.save(new File(me.getDataFolder(), "config.yml"));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return false;
 		}
 
 		return true;
 	}
-
 }
