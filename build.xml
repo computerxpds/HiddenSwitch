@@ -14,16 +14,12 @@
 	<property environment="env" />
 	<loadfile property="VERSION" srcFile="version" />
 
-	<condition property="jarName" value="HiddenSwitch-dev.jar" else="HiddenSwitch.jar">
-		<equals arg1="${env.GIT_BRANCH}" arg2="develop" />
-	</condition>
 	<condition property="verName" value="${VERSION}-b${env.BUILD_NUMBER}" else="${VERSION}">
 		<equals arg1="${env.GIT_BRANCH}" arg2="master" />
 	</condition>
-
-
-	<echoproperties prefix="env" />
 	
+	<property name="jarName" value="HiddenSwitch_${verName}" />
+
 	<target name="compile" description="A plugin for Bukkit, allowing players to create hidden levers and buttons.">
 		<echo>Git Branch: ${env.GIT_BRANCH}</echo>
 		<delete dir="${buildFolder}/src"/>
