@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- ====================================================================== 
-	Jan 5, 2012 5:14:27 PM HiddenSwitch A plugin for Bukkit, allowing players 
-	to create hidden levers and buttons. Luphie ====================================================================== -->
+
 <project name="HiddenSwitch" default="default">
 	<description>
 		A plugin for Bukkit, allowing players to create hidden levers and
@@ -14,17 +12,16 @@
 	<property name="sourceFolder" location="${baseFolder}/src/" />
 
 	<property environment="env" />
+	<loadfile property="VERSION" srcFile="version" />
 
 	<condition property="jarName" value="HiddenSwitch-dev.jar" else="HiddenSwitch.jar">
 		<equals arg1="${env.GIT_BRANCH}" arg2="develop" />
 	</condition>
-	<condition property="verName" value="${VERSION} (b#${env.BUILD_NUMBER})" else="${VERSION}">
-		<equals arg1="${env.GIT_BRANCH}" arg2="develop" />
+	<condition property="verName" value="${VERSION}-b${env.BUILD_NUMBER}" else="${VERSION}">
+		<equals arg1="${env.GIT_BRANCH}" arg2="master" />
 	</condition>
 
-	<loadfile property="VERSION" srcFile="version" />
 
-	<!-- ================================= target: default ================================= -->
 	<target name="compile" description="A plugin for Bukkit, allowing players to create hidden levers and buttons.">
 		<echo>Git Branch: ${env.GIT_BRANCH}</echo>
 		<delete dir="${buildFolder}/src"/>
