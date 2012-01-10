@@ -85,7 +85,7 @@ public class playerListener extends PlayerListener {
 				return;
 			}
 		} catch (NullPointerException e) {
-			HiddenSwitch.log.warning(HiddenSwitch.logName+"iblock NullPointerExeption");
+			me.log.warning(HiddenSwitch.logName+"iblock NullPointerExeption");
 			return;
 		}
 

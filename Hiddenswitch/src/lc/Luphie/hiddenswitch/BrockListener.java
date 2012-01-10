@@ -28,7 +28,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class BrockListener extends BlockListener {
 
-	public static HiddenSwitch me;
+	private HiddenSwitch me;
 
 	public BrockListener(HiddenSwitch instance) {
 

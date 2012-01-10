@@ -35,7 +35,7 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class HiddenSwitch extends JavaPlugin {
 
-	public static final Logger log = Logger.getLogger("Minecraft");
+	public Logger log = Logger.getLogger("Minecraft");
 	public static String logName; 
 	/** Player Listener */
 	public final playerListener blLs = new playerListener(this);
@@ -74,9 +74,6 @@ public class HiddenSwitch extends JavaPlugin {
 			
 		}
 
-		// Load Allowed Blocks to confV
-		confV.setBlockList(getConfig().getString("lchs.config.usable-blocks"));
-
 		// Set on highest priority since we are not changing the event we just
 		// need to know that it actually happened
 		pm.registerEvent(
@@ -84,10 +81,7 @@ public class HiddenSwitch extends JavaPlugin {
 			this.blLs,
 			Event.Priority.Highest,
 			this);
-
-		// Set on low priority, since we may cancel the event. (low is behind
-		// protection plugins hopefully)
-		pm.registerEvent(Event.Type.SIGN_CHANGE, this.brLs, Event.Priority.Normal, this);
+		pm.registerEvent(Event.Type.SIGN_CHANGE, this.brLs, Event.Priority.Highest, this);
 	}
 
 	/* (non-Javadoc)

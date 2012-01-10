@@ -52,5 +52,4 @@
 			<fileset dir="${buildFolder}/src/" excludes="resources/**" />
 		</jar>
 	</target>
-
 </project>

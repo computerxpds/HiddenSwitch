@@ -90,7 +90,7 @@ public class ConfigHandler {
 		me.getConfig().setDefaults(conf);
 
 		if(!checkConfig(me.getConfig())) {
-			HiddenSwitch.log.warning(HiddenSwitch.logName+"Config may be corrupted.");
+			me.log.warning(HiddenSwitch.logName+"Config may be corrupted.");
 		}
 
 		return true;
@@ -140,8 +140,10 @@ public class ConfigHandler {
 			}
 		}
 
-		HiddenSwitch.log.info(HiddenSwitch.logName+"Attempting to reload configuration.");
+		me.log.info(HiddenSwitch.logName+"Attempting to reload configuration.");
 
+		checkConfig(me.getConfig());
+		
 		me.reloadConfig();
 
 		// Update the allowed blocks
@@ -161,14 +163,14 @@ public class ConfigHandler {
 		if (makeDir) {
 
 			// Directory not found, say some words
-			HiddenSwitch.log.info(HiddenSwitch.logName+"Couldn't find config directory; creating a new one.");
+			me.log.info(HiddenSwitch.logName+"Couldn't find config directory; creating a new one.");
 			try {
 
 				me.getDataFolder().mkdir();
 
 			} catch (Exception e) {
 
-				HiddenSwitch.log.warning(HiddenSwitch.logName+"Could not create data directory \""
+				me.log.warning(HiddenSwitch.logName+"Could not create data directory \""
 					+ me.getDataFolder().toString() + "\"");
 				return false;
 
@@ -176,9 +178,9 @@ public class ConfigHandler {
 		}
 
 		// Time to make the config, say words to the console
-		HiddenSwitch.log.info(HiddenSwitch.logName+"Data directory created, attempting to write config.yml");
+		me.log.info(HiddenSwitch.logName+"Data directory created, attempting to write config.yml");
 		if (recreateConfigFile()) {
-			HiddenSwitch.log.info(HiddenSwitch.logName+"Config file and directory created.");
+			me.log.info(HiddenSwitch.logName+"Config file and directory created.");
 			return true;
 		}
 
@@ -198,7 +200,7 @@ public class ConfigHandler {
 		try {
 			defConf = loadDefaults();
 		} catch (ConfigurationException e1) {
-			HiddenSwitch.log.severe(HiddenSwitch.logName+e1.getMessage());
+			me.log.severe(HiddenSwitch.logName+e1.getMessage());
 			HiddenSwitch.pm.disablePlugin(me);
 			return false;
 		}
@@ -248,7 +250,7 @@ public class ConfigHandler {
 		try {
 			defConf = loadDefaults();
 		} catch (ConfigurationException e1) {
-			HiddenSwitch.log.severe(HiddenSwitch.logName+e1.getMessage());
+			me.log.severe(HiddenSwitch.logName+e1.getMessage());
 			HiddenSwitch.pm.disablePlugin(me);
 			return false;
 		}
@@ -341,9 +343,9 @@ public class ConfigHandler {
 		 * If anything was updated save the config to file.
 		 */
 		if (saveConf) {
-			HiddenSwitch.log.info(HiddenSwitch.logName+"Missing conf entries found, filling in the blanks...");
+			me.log.info(HiddenSwitch.logName+"Missing conf entries found, filling in the blanks...");
 			saveConfigToFile(config);
-			HiddenSwitch.log.info(HiddenSwitch.logName+"Config successfully written");
+			me.log.info(HiddenSwitch.logName+"Config successfully written");
 		}
 		
 		return true;
