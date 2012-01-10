@@ -30,7 +30,7 @@
 		<mkdir dir="${buildFolder}/src/resources" />
 		<copy file="${resourceFolder}/plugin.yml" todir="${buildFolder}/src/resources/" overwrite="true" />
 		<copy file="${resourceFolder}/config.yml" todir="${buildFolder}/src/resources/" overwrite="true" />
-		<replace file="${buildFolder}/src/resources/plugin.yml" value="${VERSION} b${BUILD_NUMBER}">
+		<replace file="${buildFolder}/src/resources/plugin.yml" value="${VERSION} b${env.BUILD_NUMBER}">
 			<replacefilter token="@VERSION@" />
 		</replace>
 		<javac source="1.6" target="1.6" srcdir="${sourceFolder}" destdir="${buildFolder}/src" debug="true" debuglevel="lines,vars,source" deprecation="true" includeantruntime="true">
