@@ -36,67 +36,65 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class HiddenSwitch extends JavaPlugin {
 
 	public Logger log = Logger.getLogger("Minecraft");
-	public static String logName; 
+	public static String logName;
 	/** Player Listener */
 	public final playerListener blLs = new playerListener(this);
-	
+
 	/** Block Listener */
 	public final BrockListener brLs = new BrockListener(this);
-	
+
 	/** Config Handler */
 	public final ConfigHandler confV = new ConfigHandler(this);
-	
+
 	/** PluginManager */
 	public static PluginManager pm;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.bukkit.plugin.Plugin#onDisable()
 	 */
 	public void onDisable() {
 
 		confV.saveConfigToFile(getConfig());
-		log.info(logName+" is offline.");
+		log.info(logName + " is offline.");
 
 	}
 
 	public void onEnable() {
 
 		pm = getServer().getPluginManager();
-		logName = "["+getDescription().getName()+"]";
+		logName = "[" + getDescription().getName() + "] ";
 
 		// Announce Ourselves
-		log.info(logName+"v:" + getDescription().getVersion() + " is online.");
+		log.info(logName + "v:" + getDescription().getVersion() + " is online.");
 
 		// Try and load the config file
 		if (!confV.loadConfig()) {
 
 			pm.disablePlugin(this);
-			
+
 		}
 
 		// Set on highest priority since we are not changing the event we just
 		// need to know that it actually happened
-		pm.registerEvent(
-			Event.Type.PLAYER_INTERACT,
-			this.blLs,
-			Event.Priority.Highest,
-			this);
+		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Highest, this);
 		pm.registerEvent(Event.Type.SIGN_CHANGE, this.brLs, Event.Priority.Highest, this);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.bukkit.plugin.java.JavaPlugin#onCommand(org.bukkit.command.CommandSender, org.bukkit.command.Command, java.lang.String, java.lang.String[])
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.bukkit.plugin.java.JavaPlugin#onCommand(org.bukkit.command.CommandSender
+	 * , org.bukkit.command.Command, java.lang.String, java.lang.String[])
 	 */
-	public boolean onCommand(
-		CommandSender sender,
-		Command cmd,
-		String cmdLabel,
-		String[] mods) {
+	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] mods) {
 
 		if (cmd.getName().toLowerCase().equals("lchsreload")) {
 
-			if(!confV.reloadConfig(sender)) {
-				log.warning(logName+"Could not reload config.");
+			if (!confV.reloadConfig(sender)) {
+				log.warning(logName + "Could not reload config.");
 			}
 		}
 

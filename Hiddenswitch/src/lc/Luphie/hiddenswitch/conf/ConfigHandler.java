@@ -82,17 +82,16 @@ public class ConfigHandler {
 			return createConfigFile(false);
 		}
 
-		// If we made it this far then the file probably exists so go ahead and load it
-		FileConfiguration conf = YamlConfiguration.loadConfiguration(new File(me
-			.getDataFolder(), "config.yml"));
-
 		// Set the defaults 
-		me.getConfig().setDefaults(conf);
+		me.reloadConfig();
 
 		if(!checkConfig(me.getConfig())) {
 			me.log.warning(HiddenSwitch.logName+"Config may be corrupted.");
 		}
-
+		
+		// Update the allowed blocks
+		setBlockList(me.getConfig().getString("lchs.config.usable-blocks"));
+		
 		return true;
 	}
 	
@@ -142,7 +141,10 @@ public class ConfigHandler {
 
 		me.log.info(HiddenSwitch.logName+"Attempting to reload configuration.");
 
-		checkConfig(me.getConfig());
+		if(!checkConfig(YamlConfiguration.loadConfiguration(new File(me.getDataFolder(), "config.yml")))) {
+			me.log.warning(HiddenSwitch.logName+"Error while attempting to reload config.");
+			return false;
+		}
 		
 		me.reloadConfig();
 
@@ -261,8 +263,18 @@ public class ConfigHandler {
 		 * Config
 		 */
 
+		// Check Usable Blocks
+		if (!config.isSet("lchs.config.usable-blocks")) {
+
+			config.set(
+				"lchs.config.usable-blocks",
+				defConf.getString("lchs.config.usable-blocks", "1,2,3,4,5,7,17,22,24,35,41,42,43,45,47,48,49,53,57,67,80,82,87,88,98,108,109,110,114,121"));
+			saveConf = true;
+		}
+
 		// Allow Left Clicks
 		if (!config.isSet("lchs.config.left-clicks")) {
+
 			config.set(
 				"lchs.config.left-clicks",
 				defConf.getBoolean("lchs.config.left-clicks", true));
@@ -271,6 +283,7 @@ public class ConfigHandler {
 
 		// Case Sensitive name checking
 		if (!config.isSet("lchs.config.case-sensitive-names")) {
+
 			config.set(
 				"lchs.config.case-sensitive-names",
 				defConf.getBoolean("lchs.config.case-sensitive-names", false));
@@ -283,6 +296,7 @@ public class ConfigHandler {
 
 		// Allow Signs
 		if (!config.isSet("lchs.signcontrol.allow-signs")) {
+
 			config.set(
 				"lchs.signcontrol.allow-signs",
 				defConf.getBoolean("lchs.signcontrol.allow-signs", true));
@@ -291,6 +305,7 @@ public class ConfigHandler {
 
 		// Sign Header Text
 		if (!config.isSet("lchs.signcontrol.sign-text")) {
+
 			config.set(
 				"lchs.signcontrol.sign-text",
 				defConf.getString("lchs.signcontrol.sign-text", "[lchs]"));
@@ -299,6 +314,7 @@ public class ConfigHandler {
 
 		// Allow User Locks TODO: Phase Out
 		if (!config.isSet("lchs.signcontrol.allow-user-lock")) {
+
 			config.set(
 				"lchs.signcontrol.allow-user-lock",
 				defConf.getBoolean("lchs.signcontrol.allow-user-lock", true));
@@ -307,6 +323,7 @@ public class ConfigHandler {
 
 		// Allow Item Locks TODO: Phase Out
 		if (!config.isSet("lchs.signcontrol.allow-item-lock")) {
+
 			config.set(
 				"lchs.signcontrol.allow-item-lock",
 				defConf.getBoolean("lchs.signcontrol.allow-item-lock", true));
@@ -315,6 +332,7 @@ public class ConfigHandler {
 
 		// Item Lock Override Item TODO: Reconsider usefulness
 		if (!config.isSet("lchs.signcontrol.item-lock-override")) {
+
 			config.set(
 				"lchs.signcontrol.item-lock-override",
 				defConf.getInt("lchs.signcontrol.item-lock-override", 0));
@@ -323,6 +341,7 @@ public class ConfigHandler {
 
 		// Allow Username Shortcuts
 		if (!config.isSet("lchs.signcontrol.allow-username-shortcut")) {
+
 			config.set(
 				"lchs.signcontrol.allow-username-shortcut",
 				defConf.getBoolean("lchs.signcontrol.allow-username-shortcut", false));
@@ -331,6 +350,7 @@ public class ConfigHandler {
 
 		// Username Shortcut text
 		if (!config.isSet("lchs.signcontrol.username-shortcut")) {
+
 			config.set(
 				"lchs.signcontrol.username-shortcut",
 				defConf.getString("lchs.signcontrol.username-shortcut", "me"));
@@ -343,8 +363,12 @@ public class ConfigHandler {
 		 * If anything was updated save the config to file.
 		 */
 		if (saveConf) {
+
 			me.log.info(HiddenSwitch.logName+"Missing conf entries found, filling in the blanks...");
-			saveConfigToFile(config);
+			if(!saveConfigToFile(config)) {
+				me.log.warning(HiddenSwitch.logName+"Config could not be written!");
+				return false;
+			}
 			me.log.info(HiddenSwitch.logName+"Config successfully written");
 		}
 		
