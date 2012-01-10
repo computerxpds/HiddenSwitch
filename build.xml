@@ -22,6 +22,8 @@
 	</condition>
 
 
+	<echoproperties prefix="env" />
+	
 	<target name="compile" description="A plugin for Bukkit, allowing players to create hidden levers and buttons.">
 		<echo>Git Branch: ${env.GIT_BRANCH}</echo>
 		<delete dir="${buildFolder}/src"/>
