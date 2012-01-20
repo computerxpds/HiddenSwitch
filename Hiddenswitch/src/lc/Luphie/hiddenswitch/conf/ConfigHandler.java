@@ -24,6 +24,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
@@ -47,6 +48,9 @@ public class ConfigHandler {
 
 	/** A list of allowed hiddenswitch blocks. */
 	public List<Integer> usableBlocks = new ArrayList<Integer>();
+	
+	/** Preloaded key blocks */
+	public HashMap<String, KeyBlock> keyblocks = new HashMap<String, KeyBlock>();
 
 	/**
 	 * Instantiates a new config manipulation.
@@ -394,4 +398,6 @@ public class ConfigHandler {
 
 		return true;
 	}
+	
 }
+

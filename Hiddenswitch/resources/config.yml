@@ -9,6 +9,9 @@ lchs:
         # Is the username checking case sensitive?
         case-sensitive-names: false
 
+        # For different languages
+        language-file: eng.yml
+        
     signcontrol:
         # Allow sign control?
         allow-signs: true
@@ -37,3 +40,11 @@ lchs:
         
         # Username Shortcut word
         username-shortcut: 'me'
+
+    # Command based hidden switches
+    dbcontrol:
+        # Allow command based switches (WARNING!! HAS NOT BEEN FULLY TESTED)
+        allow-db: true
+        
+        # Autosave interval (0 = disable, disabling not recommended)
+        autosave: 0

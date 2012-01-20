@@ -20,23 +20,29 @@
  * */
 package lc.Luphie.hiddenswitch;
 
+import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockBurnEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class BrockListener extends BlockListener {
+public class BrockListener implements Listener {
 
 	private HiddenSwitch me;
 
-	public BrockListener(HiddenSwitch instance) {
+	public BrockListener() {
 
-		me = instance;
+		me = HiddenSwitch.instance;
+		Bukkit.getServer().getPluginManager().registerEvents(this, me);
 
 	}
 
-	@Override
+	@EventHandler(priority = EventPriority.HIGHEST)
 	public void onSignChange(SignChangeEvent ev) {
 
 		// Make sure the event wasn't canceled before this
@@ -98,4 +104,40 @@ public class BrockListener extends BlockListener {
 		pl.getWorld().dropItem(sign.getLocation(), signdrop);
 	}
 
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockBreak(BlockBreakEvent ev) {
+		
+		if(ev.isCancelled()) {return;}
+		
+		if(!checkDB(ev.getBlock())) {return;}
+
+	}
+
+	@EventHandler(priority = EventPriority.HIGHEST)
+	public void onBlockBurn(BlockBurnEvent ev) {
+		
+		if(ev.isCancelled()) {return;}
+		
+		if(!checkDB(ev.getBlock())) {return;}
+		
+	}
+	
+	// TODO Secure this
+	public boolean checkDB(Block block) {
+
+		// See if it is a useable block
+		if(!me.confV.usableBlocks.contains(block.getTypeId())) {return false;}
+		
+		// See if it is in the hashmap
+		
+		String id = block.getWorld().getName() + Integer.toString(block.getX()) + Integer.toString(block.getY()) + Integer.toString(block.getZ());
+		
+		// If it's found remove it from the hashmap
+		if(!me.confV.keyblocks.containsKey(id)) {return false;}
+		else {
+			me.confV.keyblocks.remove(id);
+		}
+		
+		return true;
+	}
 }

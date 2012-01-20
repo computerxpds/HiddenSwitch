@@ -63,6 +63,11 @@ permissions:
         description: Allow user to use a hidden switch
         default: false
 
+# Use /lchs Command
+    hiddenswitch.user.command:
+        description: Allow user to create command based hiddenswitches
+        default: false
+
 # Create Hiddenswitches
     hiddenswitch.user.create:
         description: Allow user to create a hiddenswitch
