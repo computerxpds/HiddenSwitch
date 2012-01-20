@@ -18,7 +18,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
  * */
-package lc.Luphie.hiddenswitch;
+package lc.Luphie.hiddenswitch.activity;
+
+import lc.Luphie.hiddenswitch.HiddenSwitch;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -136,6 +138,7 @@ public class BrockListener implements Listener {
 		if(!me.confV.keyblocks.containsKey(id)) {return false;}
 		else {
 			me.confV.keyblocks.remove(id);
+			me.DBH.dropRecord(id); //TODO verify the record was dropped
 		}
 		
 		return true;

@@ -32,7 +32,7 @@ public class Lang {
 	public Lang() {
 		File file = new File(HiddenSwitch.instance.getDataFolder(), "lang/"+HiddenSwitch.instance.getConfig().getString("lchs.config.language-file"));
 		if(!file.exists()){
-			
+			loadDefaults();
 		}
 	}
 	// Based off the getConfig // reloadConfig methods in bukkit's JavaPlugin.java
@@ -48,7 +48,7 @@ public class Lang {
 		File langFile = new File(HiddenSwitch.instance.getDataFolder(), "lang/"+file);
 		if(!langFile.exists()) {
 			HiddenSwitch.instance.log.warning(HiddenSwitch.logName + "Could not find language file specified in config.yml defaulting to english.");
-			langFile = new File(HiddenSwitch.instance.getDataFolder(), "lang/eng.yml");
+			loadDefaults();
 		}
 		text = YamlConfiguration.loadConfiguration(langFile);
 	}

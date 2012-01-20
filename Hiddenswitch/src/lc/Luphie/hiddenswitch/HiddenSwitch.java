@@ -22,7 +22,11 @@ package lc.Luphie.hiddenswitch;
 
 import java.util.logging.Logger;
 
+import lc.Luphie.hiddenswitch.activity.BrockListener;
+import lc.Luphie.hiddenswitch.activity.PlayerListener;
 import lc.Luphie.hiddenswitch.conf.ConfigHandler;
+import lc.Luphie.hiddenswitch.conf.DatabaseHandler;
+import lc.Luphie.hiddenswitch.conf.Lang;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -51,6 +55,12 @@ public class HiddenSwitch extends JavaPlugin {
 	
 	/** This Instance */
 	public static HiddenSwitch instance;
+	
+	/** Database Handler */
+	public DatabaseHandler DBH = new DatabaseHandler();
+	
+	/** Lang Class */
+	public Lang lang;
 
 	public HiddenSwitch() {
 		instance = this;
@@ -72,15 +82,20 @@ public class HiddenSwitch extends JavaPlugin {
 		pm = getServer().getPluginManager();
 		logName = "[" + getDescription().getName() + "] ";
 
-		// Announce Ourselves
-		log.info(logName + "v:" + getDescription().getVersion() + " is online.");
-
 		// Try and load the config file
 		if (!confV.loadConfig()) {
 
 			pm.disablePlugin(this);
+			return;
 
 		}
+
+		lang = new Lang();
+		
+		// Announce Ourselves
+		log.info(logName + "v:" + getDescription().getVersion() + " " + lang.getLang().getString("language.messages.online"));
+
+		// Set Language
 				
 	}
 

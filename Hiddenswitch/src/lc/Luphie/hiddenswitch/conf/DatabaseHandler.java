@@ -36,13 +36,18 @@ public class DatabaseHandler {
 	private Statement statement;
 	private HiddenSwitch me;
 
-	public DatabaseHandler(HiddenSwitch instance) throws Exception {
-		me = instance;
+	public DatabaseHandler() {
+		me = HiddenSwitch.instance;
 		
-		Class.forName("org.sqlite.JDBC");
-		connection = DriverManager.getConnection("jbdc:sqlite:data.db");
-		statement = connection.createStatement();
-		statement.executeUpdate("CREATE TABLE IF NOT EXISTS blocks (idstring text, world text, x integer, y integer, z integer, user text, key text");
+		try {
+			Class.forName("org.sqlite.JDBC");
+			connection = DriverManager.getConnection("jbdc:sqlite:data.db");
+			statement = connection.createStatement();
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS blocks (idstring text, world text, x integer, y integer, z integer, user text, key text");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	public boolean load(){
 		try {
@@ -74,5 +79,13 @@ public class DatabaseHandler {
 	private boolean portMLtoSL(){return false;}
 	private boolean portSLtoML(){return false;}
 	public boolean save() {return false;}
+	public void dropRecord(String stringid) {
+		try {
+			statement.executeUpdate("DELETE FROM blocks WHERE idstring="+stringid);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 }
