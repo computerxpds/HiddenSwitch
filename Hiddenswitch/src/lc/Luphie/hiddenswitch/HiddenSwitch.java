@@ -55,15 +55,12 @@ public class HiddenSwitch extends JavaPlugin {
 	
 	/** This Instance */
 	public static HiddenSwitch instance;
-<<<<<<< HEAD
 	
 	/** Database Handler */
 	public DatabaseHandler DBH = new DatabaseHandler();
 	
 	/** Lang Class */
 	public Lang lang;
-=======
->>>>>>> refs/remotes/origin/development
 
 	public HiddenSwitch() {
 		instance = this;
@@ -92,17 +89,12 @@ public class HiddenSwitch extends JavaPlugin {
 			return;
 
 		}
-<<<<<<< HEAD
-
 		lang = new Lang();
 		
 		// Announce Ourselves
 		log.info(logName + "v:" + getDescription().getVersion() + " " + lang.getLang().getString("language.messages.online"));
 
 		// Set Language
-=======
->>>>>>> refs/remotes/origin/development
-				
 	}
 
 	/*

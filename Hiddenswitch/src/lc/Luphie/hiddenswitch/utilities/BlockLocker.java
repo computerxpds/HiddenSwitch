@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* *
 
  * HiddenSwitch - Hidden switches and buttons for Bukkit 
@@ -18,10 +17,8 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
- * */package lc.Luphie.hiddenswitch.utilities;
-=======
+ * */
 package lc.Luphie.hiddenswitch.utilities;
->>>>>>> refs/remotes/origin/development
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
