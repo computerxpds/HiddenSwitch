@@ -1,7 +1,7 @@
 /* *
 
- * HiddenSwitch - Hidden switches and buttons for Bukkit.
- * Copyright (C) 2011  Luphie (devLuphie) luphie@lumpcraft.com
+ * HiddenSwitch - Hidden switches and buttons for Bukkit 
+ * Copyright (C) 2011-2012  Luphie (devLuphie) luphie@lumpcraft.com
 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License

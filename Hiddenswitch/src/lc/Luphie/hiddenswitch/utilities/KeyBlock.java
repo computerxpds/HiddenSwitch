@@ -19,21 +19,23 @@
 
  * */package lc.Luphie.hiddenswitch.utilities;
 
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-
-public class BlockLocker {
-	public void lockBlock(Block block) {
-		// Check to see if block locking is allowed
-		// Check to see if the user has permissions
-		// Check to see if the block lockable
-		// Check to see if the block is locked
-		// Lock the block
-			// Enter lock into hashmap
-			// save database
+public class KeyBlock {
+	public String id;
+	public String users;
+	public String key;
+	public int x;
+	public int y;
+	public int z;
+	public String world;
+	
+	public KeyBlock(String id, String world, int x, int y, int z, String users, String key){
+		this.id = id;
+		this.world = world;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.users = users;
+		this.key = key;
 	}
-	public static Block getBlock(Player player) {
-		Block block = player.getTargetBlock(null,32);
-		return block;
-	}
+	
 }
