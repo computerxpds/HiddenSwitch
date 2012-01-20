@@ -19,6 +19,8 @@
 
  * */package lc.Luphie.hiddenswitch.utilities;
 
+import org.bukkit.block.Block;
+
 public class KeyBlock {
 	public String id;
 	public String users;
@@ -36,6 +38,16 @@ public class KeyBlock {
 		this.z = z;
 		this.users = users;
 		this.key = key;
+	}
+	
+	public static KeyBlock blockToKey(Block block) {
+		int x = block.getX();
+		int y = block.getY();
+		int z = block.getZ();
+		String world = block.getWorld().getName();
+		String id = world + Integer.toString(x) + Integer.toString(y) + Integer.toString(z);
+		KeyBlock key = new KeyBlock(id, world, x, y, z, "", "");
+		return key;
 	}
 	
 }

@@ -88,4 +88,24 @@ public class DatabaseHandler {
 		}
 	}
 
+	public void newRecord(KeyBlock key) {
+		newRecord(
+				key.id,
+				key.world,
+				key.x,
+				key.y,
+				key.z,
+				key.users,
+				key.key);
+	}
+	
+	public void newRecord(String idstring, String world, int x, int y, int z, String user, String key) {
+		try {
+			statement.executeUpdate("INSERT INTO blocks VALUES ("+idstring+","+world+","+Integer.toString(x)+","+Integer.toString(y)+","+Integer.toString(z)+","+user+","+key+")");
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 }

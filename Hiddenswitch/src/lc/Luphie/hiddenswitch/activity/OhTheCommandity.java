@@ -21,6 +21,7 @@
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
 import lc.Luphie.hiddenswitch.utilities.BlockLocker;
+import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -53,5 +54,10 @@ public class OhTheCommandity {
 			player.sendMessage("Block cannot be used as a hidden switch.");
 			return;
 		}
+		
+		KeyBlock key = KeyBlock.blockToKey(block);
+		HiddenSwitch.instance.confV.keyblocks.put(key.id, key);
+		HiddenSwitch.instance.DBH.newRecord(key);
+		
 	}
 }

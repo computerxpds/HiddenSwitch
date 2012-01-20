@@ -111,7 +111,7 @@ public class BrockListener implements Listener {
 		
 		if(ev.isCancelled()) {return;}
 		
-		if(!checkDB(ev.getBlock())) {return;}
+		if(!removeHiddenSwitch(ev.getBlock())) {return;}
 
 	}
 
@@ -120,12 +120,12 @@ public class BrockListener implements Listener {
 		
 		if(ev.isCancelled()) {return;}
 		
-		if(!checkDB(ev.getBlock())) {return;}
+		if(!removeHiddenSwitch(ev.getBlock())) {return;}
 		
 	}
 	
 	// TODO Secure this
-	public boolean checkDB(Block block) {
+	public boolean removeHiddenSwitch(Block block) {
 
 		// See if it is a useable block
 		if(!me.confV.usableBlocks.contains(block.getTypeId())) {return false;}
