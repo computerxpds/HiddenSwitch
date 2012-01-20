@@ -26,7 +26,7 @@ import lc.Luphie.hiddenswitch.conf.ConfigHandler;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.event.Event;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -38,17 +38,23 @@ public class HiddenSwitch extends JavaPlugin {
 	public Logger log = Logger.getLogger("Minecraft");
 	public static String logName;
 	/** Player Listener */
-	public final playerListener blLs = new playerListener(this);
+	public final PlayerListener blLs = new PlayerListener();
 
 	/** Block Listener */
-	public final BrockListener brLs = new BrockListener(this);
+	public final BrockListener brLs = new BrockListener();
 
 	/** Config Handler */
 	public final ConfigHandler confV = new ConfigHandler(this);
 
 	/** PluginManager */
 	public static PluginManager pm;
+	
+	/** This Instance */
+	public static HiddenSwitch instance;
 
+	public HiddenSwitch() {
+		instance = this;
+	}
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -75,11 +81,7 @@ public class HiddenSwitch extends JavaPlugin {
 			pm.disablePlugin(this);
 
 		}
-
-		// Set on highest priority since we are not changing the event we just
-		// need to know that it actually happened
-		pm.registerEvent(Event.Type.PLAYER_INTERACT, this.blLs, Event.Priority.Highest, this);
-		pm.registerEvent(Event.Type.SIGN_CHANGE, this.brLs, Event.Priority.Highest, this);
+				
 	}
 
 	/*
@@ -95,6 +97,14 @@ public class HiddenSwitch extends JavaPlugin {
 
 			if (!confV.reloadConfig(sender)) {
 				log.warning(logName + "Could not reload config.");
+			}
+		}
+		
+		if(cmd.getName().toLowerCase().equals("lchs")) {
+			if(sender instanceof Player) {
+				
+			} else {
+				log.info(logName+"But the server is not allowed to lock blocks...");
 			}
 		}
 

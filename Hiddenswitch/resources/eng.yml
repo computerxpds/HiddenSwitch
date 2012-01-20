@@ -1,0 +1,8 @@
+lchs_messages:
+  language: english
+  author: Luphie (luphie@lumpcraft.com)
+  version: 1.0
+  messages:
+    cannotuseblock: 'Block cannot be used as a hidden switch!'
+  warnings:
+  errors:
