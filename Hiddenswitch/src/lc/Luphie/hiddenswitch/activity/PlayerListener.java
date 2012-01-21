@@ -48,15 +48,17 @@ public class PlayerListener implements Listener {
 	}
 
 	@EventHandler(priority = EventPriority.HIGHEST)
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public void onPlayerBlockSlap(PlayerInteractEvent event) {
 
 		// If event was cancelled, then nothing to do here
 		if (event.isCancelled()) {
+
 			return;
 		}
 
 		// Are sign base hidden switches enabled?
 		if (!me.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
+
 			return;
 		}
 
@@ -65,6 +67,7 @@ public class PlayerListener implements Listener {
 		// v0.0.6 PERMS check
 		// Check for the players use sign permission
 		if (playa.hasPermission("hiddenswitch.user.use") == false) {
+
 			return;
 		}
 
@@ -75,24 +78,33 @@ public class PlayerListener implements Listener {
 
 		// Compare action to allowed clicks:
 		if (cclicks) {
+
 			if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			
 				return;
 			}
 		} else {
+
 			if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			
 				return;
 			}
 		}
 
 		// See if the block that was clicked is a usable block
 		try {
+
 			if (!me.confV.usableBlocks.contains(iblock.getTypeId())) {
+			
 				return;
 			}
 		} catch (NullPointerException e) {
+
 			me.log.warning(HiddenSwitch.logName+"iblock NullPointerExeption");
 			return;
 		}
+
+		Location loc;
 
 		// Faces to check
 		BlockFace[] faces = {
@@ -105,19 +117,41 @@ public class PlayerListener implements Listener {
 
 		// Are we checking as a hiddenswitch block?
 		boolean hsb = HiddenSwitch.instance.getConfig().getBoolean("lchs.dbcontrol.allow-db");
+
 		for (BlockFace holder : faces) {
 
 			// Try and find a sign post next to the clicked block
 			if (iblock.getRelative(holder).getTypeId() == 63 || iblock.getRelative(holder).getTypeId() == 68) {
 
 				if(signSlapper(iblock.getRelative(holder), playa)) {
+
 					break;
 				}
 
 			}
 			if (hsb) {
+
 				if (iblock.getRelative(holder).getTypeId() == 69 || iblock.getRelative(holder).getTypeId() == 77) {
-					
+					String id = iblock.getWorld().getName() + Integer.toString(iblock.getX()) + Integer.toString(iblock.getY()) + Integer.toString(iblock.getZ());
+					if(me.confV.keyblocks.containsKey(id)) {
+					// Look for levers
+					if (iblock.getRelative(holder).getTypeId() == 69) {
+
+						loc = iblock.getRelative(holder).getLocation();
+						flipLever(loc, playa);
+						break;
+
+					}
+
+					// Look for buttons
+					if (iblock.getRelative(holder).getTypeId() == 77) {
+
+						loc = iblock.getRelative(holder).getLocation();
+						pushButton(loc, playa);
+						break;
+
+					}
+					}
 				}
 			}
 

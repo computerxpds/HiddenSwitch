@@ -49,5 +49,4 @@ public class KeyBlock {
 		KeyBlock key = new KeyBlock(id, world, x, y, z, "", "");
 		return key;
 	}
-	
 }
