@@ -44,7 +44,7 @@ lchs:
     # Command based hidden switches
     dbcontrol:
         # Allow command based switches (WARNING!! HAS NOT BEEN FULLY TESTED)
-        allow-db: true
+        allow-db: false
         
         # Autosave interval (0 = disable, disabling not recommended)
         autosave: 0
