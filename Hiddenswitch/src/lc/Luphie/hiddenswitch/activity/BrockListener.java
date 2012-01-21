@@ -27,24 +27,30 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.Event;
+//import org.bukkit.event.EventHandler;
+//import org.bukkit.event.EventPriority;
+//import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class BrockListener implements Listener {
+public class BrockListener extends BlockListener {
 
 	private HiddenSwitch me;
 
 	public BrockListener() {
 
 		me = HiddenSwitch.instance;
-		Bukkit.getServer().getPluginManager().registerEvents(this, me);
+		//Bukkit.getServer().getPluginManager().registerEvents(this, me);
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.SIGN_CHANGE, this, Event.Priority.Highest, me);
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK, this, Event.Priority.Highest, me);
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BURN, this, Event.Priority.Highest, me);
 
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	//@EventHandler(priority = EventPriority.HIGHEST)
+	@Override
 	public void onSignChange(SignChangeEvent ev) {
 
 		// Make sure the event wasn't canceled before this
@@ -106,16 +112,20 @@ public class BrockListener implements Listener {
 		pl.getWorld().dropItem(sign.getLocation(), signdrop);
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	//@EventHandler(priority = EventPriority.HIGHEST)
+	@Override
 	public void onBlockBreak(BlockBreakEvent ev) {
 		
 		if(ev.isCancelled()) {return;}
 		
 		if(!removeHiddenSwitch(ev.getBlock())) {return;}
+		
+		ev.getPlayer().sendMessage(me.lang.getLang().getString("language.messages.breakswitch"));
 
 	}
 
-	@EventHandler(priority = EventPriority.HIGHEST)
+	//@EventHandler(priority = EventPriority.HIGHEST)
+	@Override
 	public void onBlockBurn(BlockBurnEvent ev) {
 		
 		if(ev.isCancelled()) {return;}

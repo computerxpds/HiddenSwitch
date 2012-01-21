@@ -1,9 +1,11 @@
 language:
   language: english
   author: Luphie (luphie@lumpcraft.com)
-  version: 1.0
+  version: 1.2
   messages:
+    breakswitch: 'Hidden switch block destroyed!'
     cannotuseblock: 'Block cannot be used as a hidden switch!'
+    hiddenswitchset: 'Hidden switch set.'
     online: 'is now online.'
   warnings:
   errors:

@@ -25,6 +25,7 @@ import lc.Luphie.hiddenswitch.utilities.BlockLocker;
 import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 
 import org.bukkit.block.Block;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 
@@ -40,8 +41,16 @@ public class OhTheCommandity {
 	 * 
 	 * @param player
 	 */
-	public static void lchs(Player player) {
+	public static void lchs(CommandSender sender) {
+
+		// Did this come from a player?
+		if(!(sender instanceof Player)) {
+			HiddenSwitch.instance.log.info(HiddenSwitch.logName + "But why would the server need a hidden switch?");
+			return;
+		}
 		
+		Player player = (Player) sender;
+
 		// Is this enabled?
 		if(!HiddenSwitch.instance.getConfig().getBoolean("lchs.dbcontrol.allow-db")) {
 			return;
@@ -72,8 +81,29 @@ public class OhTheCommandity {
 		HiddenSwitch.instance.confV.keyblocks.put(key.id, key);
 		HiddenSwitch.DBH.newRecord(key);
 		
-		player.sendMessage("lcHS: Hidden switch set.");
+		player.sendMessage(HiddenSwitch.instance.lang.getLang().getString("language.messages.hiddenswitchset"));
 		
+	}
+
+	public static void lchsreload(CommandSender sender) {
+
+		if (sender instanceof Player) {
+
+			Player player = (Player) sender;
+			
+			if (player.hasPermission("hiddenswitch.admin.reload")) {
+
+				player.sendMessage("Reloading HiddenSwitch Config...");
+			
+			} else {
+			
+				return;
+			
+			}
+		}
+		
+		HiddenSwitch.instance.confV.reloadConfig();
 
 	}
 }
+

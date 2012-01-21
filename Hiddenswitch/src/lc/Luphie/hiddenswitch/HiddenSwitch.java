@@ -24,14 +24,13 @@ import java.util.logging.Logger;
 
 import lc.Luphie.hiddenswitch.activity.BrockListener;
 import lc.Luphie.hiddenswitch.activity.OhTheCommandity;
-import lc.Luphie.hiddenswitch.activity.PlayerListener;
-import lc.Luphie.hiddenswitch.conf.ConfigHandler;
+import lc.Luphie.hiddenswitch.activity.playerListener;
+import lc.Luphie.hiddenswitch.conf.HSConfig;
 import lc.Luphie.hiddenswitch.conf.DatabaseHandler;
 import lc.Luphie.hiddenswitch.conf.Lang;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,9 +43,9 @@ public class HiddenSwitch extends JavaPlugin {
 	public Logger log = Logger.getLogger("Minecraft");
 	public static DatabaseHandler DBH;
 	public static String logName;
-	public PlayerListener blLs;
+	public playerListener blLs;
 	public BrockListener brLs;
-	public final ConfigHandler confV = new ConfigHandler(this);
+	public HSConfig confV;
 	public static PluginManager pm;
 	public static HiddenSwitch instance;
 
@@ -59,7 +58,7 @@ public class HiddenSwitch extends JavaPlugin {
 	 */
 	public void onDisable() {
 
-		confV.saveConfigToFile(getConfig());
+		confV.saveToFile(getConfig());
 		log.info(logName + " is offline.");
 		
 	}
@@ -69,20 +68,19 @@ public class HiddenSwitch extends JavaPlugin {
 	 */
 	public void onEnable() {
 		
-		blLs = new PlayerListener();
+		// Verify the data folder and create it if needed
+		if(!getDataFolder().exists()) {
+			getDataFolder().mkdir();
+		}
+		
+		blLs = new playerListener();
 		brLs = new BrockListener();
 		DBH = new DatabaseHandler();
+		confV = new HSConfig();
 		
 		pm = getServer().getPluginManager();
 		logName = "[" + getDescription().getName() + "] ";
 
-		// Try and load the config file
-		if (!confV.loadConfig()) {
-
-			pm.disablePlugin(this);
-			return;
-
-		}
 		lang = new Lang();
 		
 		// Announce Ourselves
@@ -99,18 +97,11 @@ public class HiddenSwitch extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] mods) {
 
 		if (cmd.getName().toLowerCase().equals("lchsreload")) {
-
-			if (!confV.reloadConfig(sender)) {
-				log.warning(logName + "Could not reload config.");
-			}
+			OhTheCommandity.lchsreload(sender);
 		}
 		
 		if(cmd.getName().toLowerCase().equals("lchs")) {
-			if(sender instanceof Player) {
-				OhTheCommandity.lchs((Player) sender);
-			} else {
-				log.info(logName+"But the server is not allowed to lock blocks...");
-			}
+			OhTheCommandity.lchs(sender);
 		}
 
 		return true;

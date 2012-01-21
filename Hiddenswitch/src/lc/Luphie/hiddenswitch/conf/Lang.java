@@ -28,45 +28,114 @@ import lc.Luphie.hiddenswitch.HiddenSwitch;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Lang {
+
 	private YamlConfiguration text = null;
+	private File langFile = new File(HiddenSwitch.instance.getDataFolder(), "lang/eng.yml");
 	
 	public Lang() {
+		
+		text = loadDefaults();
+		
 		File file = new File(HiddenSwitch.instance.getDataFolder(), "lang/"+HiddenSwitch.instance.getConfig().getString("lchs.config.language-file"));
+
 		if(!file.exists()){
-			loadDefaults();
-		}
-	}
-	// Based off the getConfig // reloadConfig methods in bukkit's JavaPlugin.java
-	public YamlConfiguration getLang() {
-		if(text == null) {
+			
+			HiddenSwitch.instance.log.info(HiddenSwitch.logName + "No language file found, attempting to create...");
+			
+			if(!saveToFile()) {
+
+				HiddenSwitch.instance.log.severe(HiddenSwitch.logName + "Could not save default language file!");
+				
+			} else {
+				
+				HiddenSwitch.instance.log.info(HiddenSwitch.logName + "Language file \"eng.yml\" saved successfully.");
+
+			}
+			
+		} else {
+
+			langFile = file;
 			reloadLang();
+
 		}
-		return text;
+		
 	}
 	
-	public void reloadLang() {
-		String file = HiddenSwitch.instance.getConfig().getString("lchs.config.language-file");
-		File langFile = new File(HiddenSwitch.instance.getDataFolder(), "lang/"+file);
-		if(!langFile.exists()) {
-			HiddenSwitch.instance.log.warning(HiddenSwitch.logName + "Could not find language file specified in config.yml defaulting to english.");
-			loadDefaults();
-		}
-		text = YamlConfiguration.loadConfiguration(langFile);
-	}
-	public void loadDefaults() {
+	public YamlConfiguration getLang() {
 
-		File file = new File(HiddenSwitch.instance.getDataFolder(), "lang/eng.yml");
+		return text;
+
+	}
+	
+	/**
+	 * Attempts to load the language file from the disc, if not found it will
+	 * load from the default eng.yml file included in the HiddenSwitch jar file.
+	 */
+	public void reloadLang() {
+
+		text.setDefaults(loadDefaults());
+
+		if(!langFile.exists()) {
 		
-		if(!file.exists()){
-			try {
-				YamlConfiguration lang = YamlConfiguration.loadConfiguration(HiddenSwitch.instance.getResource("eng.yml"));
-				lang.save(file);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			HiddenSwitch.instance.log.warning(HiddenSwitch.logName + "Could not find language file specified in config.yml defaulting to english.");
+		
+		} else {
+
+			text.setDefaults(YamlConfiguration.loadConfiguration(langFile));
+			
+		}
+		
+		saveToFile();
+		
+	}
+	
+	
+	/**
+	 * Load the default English messages from the eng.yml file included in the
+	 * HiddenSwitch jar file.
+	 * 
+	 * @return YamlConfiguration - the default language configuration.
+	 */
+	private YamlConfiguration loadDefaults() {
+
+		return YamlConfiguration.loadConfiguration(HiddenSwitch.instance.getResource("eng.yml"));
+
+	}
+	
+	/**
+	 * Save the language configuration stored in the current instance to file.
+	 * 
+	 * @return boolean - Returns True if successful, otherwise false
+	 */
+	public boolean saveToFile() {
+		
+		return saveToFile(text);
+		
+	}
+	
+	/**
+	 * Save the provided YamlConfiguration to file.
+	 * 
+	 * @param YamlConfiguration
+	 *            The config to save.
+	 * @return boolean - True if successful, otherwise false;
+	 */
+	public boolean saveToFile(YamlConfiguration conf) {
+		
+		try {
+		
+			conf.save(langFile);
+		
+		} catch (IOException e) {
+		
+			e.printStackTrace();
+			return false;
 		
 		}
 		
+		return true;
+		
+		
 	}
+
 }
