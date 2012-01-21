@@ -23,6 +23,7 @@ package lc.Luphie.hiddenswitch;
 import java.util.logging.Logger;
 
 import lc.Luphie.hiddenswitch.activity.BrockListener;
+import lc.Luphie.hiddenswitch.activity.OhTheCommandity;
 import lc.Luphie.hiddenswitch.activity.PlayerListener;
 import lc.Luphie.hiddenswitch.conf.ConfigHandler;
 import lc.Luphie.hiddenswitch.conf.DatabaseHandler;
@@ -41,10 +42,10 @@ public class HiddenSwitch extends JavaPlugin {
 
 	public Lang lang;
 	public Logger log = Logger.getLogger("Minecraft");
-	public static DatabaseHandler DBH = new DatabaseHandler();
+	public static DatabaseHandler DBH;
 	public static String logName;
-	public final PlayerListener blLs = new PlayerListener();
-	public final BrockListener brLs = new BrockListener();
+	public PlayerListener blLs;
+	public BrockListener brLs;
 	public final ConfigHandler confV = new ConfigHandler(this);
 	public static PluginManager pm;
 	public static HiddenSwitch instance;
@@ -60,14 +61,18 @@ public class HiddenSwitch extends JavaPlugin {
 
 		confV.saveConfigToFile(getConfig());
 		log.info(logName + " is offline.");
-
+		
 	}
 
 	/**
 	 * @see org.bukkit.plugin.Plugin#onEnable()
 	 */
 	public void onEnable() {
-
+		
+		blLs = new PlayerListener();
+		brLs = new BrockListener();
+		DBH = new DatabaseHandler();
+		
 		pm = getServer().getPluginManager();
 		logName = "[" + getDescription().getName() + "] ";
 
@@ -102,7 +107,7 @@ public class HiddenSwitch extends JavaPlugin {
 		
 		if(cmd.getName().toLowerCase().equals("lchs")) {
 			if(sender instanceof Player) {
-				
+				OhTheCommandity.lchs((Player) sender);
 			} else {
 				log.info(logName+"But the server is not allowed to lock blocks...");
 			}

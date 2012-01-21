@@ -132,27 +132,30 @@ public class PlayerListener implements Listener {
 			if (hsb) {
 
 				if (iblock.getRelative(holder).getTypeId() == 69 || iblock.getRelative(holder).getTypeId() == 77) {
+
 					String id = iblock.getWorld().getName() + Integer.toString(iblock.getX()) + Integer.toString(iblock.getY()) + Integer.toString(iblock.getZ());
+					
 					if(me.confV.keyblocks.containsKey(id)) {
 					// Look for levers
-					if (iblock.getRelative(holder).getTypeId() == 69) {
-
-						loc = iblock.getRelative(holder).getLocation();
-						flipLever(loc, playa);
-						break;
-
+					
+						if (iblock.getRelative(holder).getTypeId() == 69) {
+	
+							loc = iblock.getRelative(holder).getLocation();
+							flipLever(loc, playa);
+							break;
+	
+						}
+	
+						// Look for buttons
+						if (iblock.getRelative(holder).getTypeId() == 77) {
+	
+							loc = iblock.getRelative(holder).getLocation();
+							pushButton(loc, playa);
+							break;
+	
+						}
 					}
-
-					// Look for buttons
-					if (iblock.getRelative(holder).getTypeId() == 77) {
-
-						loc = iblock.getRelative(holder).getLocation();
-						pushButton(loc, playa);
-						break;
-
-					}
-					}
-				}
+				} // END IF RELATIVE IS SWITCH
 			}
 
 		} // END FOR

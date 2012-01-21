@@ -28,6 +28,7 @@
 		<mkdir dir="${buildFolder}/src/resources" />
 		<copy file="${resourceFolder}/plugin.yml" todir="${buildFolder}/src/resources/" overwrite="true" />
 		<copy file="${resourceFolder}/config.yml" todir="${buildFolder}/src/resources/" overwrite="true" />
+		<copy file="${resourceFolder}/eng.yml" todir="${buildFolder}/src/resources/" overwrite="true" />
 		<replace file="${buildFolder}/src/resources/plugin.yml" value="${verName}">
 			<replacefilter token="@VERSION@" />
 		</replace>
@@ -35,7 +36,7 @@
 			<compilerarg value="-Xlint:-options" />
 			<classpath>
 				<fileset dir="libs">
-					<include name="scubs.jar" />
+					<include name="craftbukkit-1.1-R1.jar" />
 				</fileset>
 			</classpath>
 		</javac>
@@ -45,6 +46,7 @@
 			<fileset dir="${buildFolder}/src/resources/">
 				<include name="config.yml" />
 				<include name="plugin.yml" />
+				<include name="eng.yml" />
 			</fileset>
 			<fileset dir="${buildFolder}/src/" excludes="resources/**" />
 		</jar>

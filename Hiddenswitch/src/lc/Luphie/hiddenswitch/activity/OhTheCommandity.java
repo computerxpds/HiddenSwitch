@@ -40,7 +40,7 @@ public class OhTheCommandity {
 	 * 
 	 * @param player
 	 */
-	public void lchs(Player player) {
+	public static void lchs(Player player) {
 		
 		// Is this enabled?
 		if(!HiddenSwitch.instance.getConfig().getBoolean("lchs.dbcontrol.allow-db")) {
@@ -57,19 +57,22 @@ public class OhTheCommandity {
 		
 		// Is the block usable?
 		if(!HiddenSwitch.instance.confV.usableBlocks.contains(block.getTypeId())) {
+			player.sendMessage("Block cannot be used as a hidden switch.");
 			return;
 		}
 		
 		// Is the block already locked?
 		String searchID = block.getWorld().getName() + block.getX() + block.getY() + block.getZ();
-		if(!HiddenSwitch.instance.confV.keyblocks.containsKey(searchID)) {
-			player.sendMessage("Block cannot be used as a hidden switch.");
+		if(HiddenSwitch.instance.confV.keyblocks.containsKey(searchID)) {
+			player.sendMessage("This block cannot be used as a hidden switch.");
 			return;
 		}
 		
 		KeyBlock key = KeyBlock.blockToKey(block);
 		HiddenSwitch.instance.confV.keyblocks.put(key.id, key);
 		HiddenSwitch.DBH.newRecord(key);
+		
+		player.sendMessage("lcHS: Hidden switch set.");
 		
 
 	}

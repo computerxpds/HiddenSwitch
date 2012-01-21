@@ -8,6 +8,10 @@ commands:
         description: Reloads the config
         permission: hiddenswitch.admin.reload
         usage: /lchsreload
+    lchs:
+        description: Creates a hiddenswitch block where the user is looking
+        permission: hiddenswitch.user.command
+        usage: /lchs
 
 permissions:
 # #

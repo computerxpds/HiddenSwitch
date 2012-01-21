@@ -41,13 +41,16 @@ public class DatabaseHandler {
 		
 		try {
 			Class.forName("org.sqlite.JDBC");
-			connection = DriverManager.getConnection("jbdc:sqlite:data.db");
+			connection = DriverManager.getConnection("jdbc:sqlite:"+me.getDataFolder().getPath()+"\\data.db");
 			statement = connection.createStatement();
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS blocks (idstring text, world text, x integer, y integer, z integer, user text, key text");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS blocks (idstring TEXT, world TEXT, x INTEGER, y INTEGER, z INTEGER, user TEXT, key TEXT)");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		load();
+		
 	}
 	public boolean load(){
 		try {
@@ -81,7 +84,7 @@ public class DatabaseHandler {
 	public boolean save() {return false;}
 	public void dropRecord(String stringid) {
 		try {
-			statement.executeUpdate("DELETE FROM blocks WHERE idstring="+stringid);
+			statement.executeUpdate("DELETE FROM blocks WHERE idstring='"+stringid+"'");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -101,7 +104,7 @@ public class DatabaseHandler {
 	
 	public void newRecord(String idstring, String world, int x, int y, int z, String user, String key) {
 		try {
-			statement.executeUpdate("INSERT INTO blocks VALUES ("+idstring+","+world+","+Integer.toString(x)+","+Integer.toString(y)+","+Integer.toString(z)+","+user+","+key+")");
+			statement.executeUpdate("INSERT INTO blocks VALUES ('"+ idstring +"','"+ world +"','"+ Integer.toString(x) +"','"+ Integer.toString(y) +"','"+ Integer.toString(z) +"','"+ user +"','"+ key +"')");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
