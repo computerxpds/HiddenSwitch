@@ -138,7 +138,7 @@ public class BrockListener implements Listener {
 		if(!me.confV.keyblocks.containsKey(id)) {return false;}
 		else {
 			me.confV.keyblocks.remove(id);
-			me.DBH.dropRecord(id); //TODO verify the record was dropped
+			HiddenSwitch.DBH.dropRecord(id); //TODO verify the record was dropped
 		}
 		
 		return true;

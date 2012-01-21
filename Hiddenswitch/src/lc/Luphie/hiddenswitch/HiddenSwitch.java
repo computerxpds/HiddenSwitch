@@ -39,35 +39,21 @@ import org.bukkit.plugin.java.JavaPlugin;
  */
 public class HiddenSwitch extends JavaPlugin {
 
-	public Logger log = Logger.getLogger("Minecraft");
-	public static String logName;
-	/** Player Listener */
-	public final PlayerListener blLs = new PlayerListener();
-
-	/** Block Listener */
-	public final BrockListener brLs = new BrockListener();
-
-	/** Config Handler */
-	public final ConfigHandler confV = new ConfigHandler(this);
-
-	/** PluginManager */
-	public static PluginManager pm;
-	
-	/** This Instance */
-	public static HiddenSwitch instance;
-	
-	/** Database Handler */
-	public DatabaseHandler DBH = new DatabaseHandler();
-	
-	/** Lang Class */
 	public Lang lang;
+	public Logger log = Logger.getLogger("Minecraft");
+	public static DatabaseHandler DBH = new DatabaseHandler();
+	public static String logName;
+	public final PlayerListener blLs = new PlayerListener();
+	public final BrockListener brLs = new BrockListener();
+	public final ConfigHandler confV = new ConfigHandler(this);
+	public static PluginManager pm;
+	public static HiddenSwitch instance;
 
 	public HiddenSwitch() {
 		instance = this;
 	}
-	/*
-	 * (non-Javadoc)
-	 * 
+
+	/**
 	 * @see org.bukkit.plugin.Plugin#onDisable()
 	 */
 	public void onDisable() {
@@ -77,6 +63,9 @@ public class HiddenSwitch extends JavaPlugin {
 
 	}
 
+	/**
+	 * @see org.bukkit.plugin.Plugin#onEnable()
+	 */
 	public void onEnable() {
 
 		pm = getServer().getPluginManager();
@@ -97,9 +86,7 @@ public class HiddenSwitch extends JavaPlugin {
 		// Set Language
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
+	/**
 	 * @see
 	 * org.bukkit.plugin.java.JavaPlugin#onCommand(org.bukkit.command.CommandSender
 	 * , org.bukkit.command.Command, java.lang.String, java.lang.String[])

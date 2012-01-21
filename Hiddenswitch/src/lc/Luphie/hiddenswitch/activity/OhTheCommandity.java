@@ -27,8 +27,19 @@ import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
+
+/**
+ * A collection of command handlers.
+ * 
+ * @author Luphie
+ */
 public class OhTheCommandity {
 
+	/**
+	 * Create a new block based hidden switch.
+	 * 
+	 * @param player
+	 */
 	public void lchs(Player player) {
 		
 		// Is this enabled?
@@ -58,7 +69,7 @@ public class OhTheCommandity {
 		
 		KeyBlock key = KeyBlock.blockToKey(block);
 		HiddenSwitch.instance.confV.keyblocks.put(key.id, key);
-		HiddenSwitch.instance.DBH.newRecord(key);
+		HiddenSwitch.DBH.newRecord(key);
 		
 
 	}

@@ -75,8 +75,7 @@ public class PlayerListener implements Listener {
 
 		// Compare action to allowed clicks:
 		if (cclicks) {
-			if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK)
-				&& !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 				return;
 			}
 		} else {
@@ -104,30 +103,29 @@ public class PlayerListener implements Listener {
 			BlockFace.EAST,
 			BlockFace.WEST };
 
+		// Are we checking as a hiddenswitch block?
+		boolean hsb = HiddenSwitch.instance.getConfig().getBoolean("lchs.dbcontrol.allow-db");
 		for (BlockFace holder : faces) {
 
 			// Try and find a sign post next to the clicked block
-			if (iblock.getRelative(holder).getTypeId() == 63
-				|| iblock.getRelative(holder).getTypeId() == 68) {
+			if (iblock.getRelative(holder).getTypeId() == 63 || iblock.getRelative(holder).getTypeId() == 68) {
 
-				signSlapper(iblock.getRelative(holder), playa);
+				if(signSlapper(iblock.getRelative(holder), playa)) {
+					break;
+				}
 
+			}
+			if (hsb) {
+				if (iblock.getRelative(holder).getTypeId() == 69 || iblock.getRelative(holder).getTypeId() == 77) {
+					
+				}
 			}
 
 		} // END FOR
 	}
 
-	/**
-	 * Sign slapper.
-	 * 
-	 * Checks the sign to see if it is an lchs sign.
-	 * 
-	 * @param signToSlap
-	 *            Sign
-	 * @param playa
-	 *            the Player
-	 */
-	public void signSlapper(Block signToSlap, Player playa) {
+
+	public boolean signSlapper(Block signToSlap, Player playa) {
 
 		Sign hola = (Sign) signToSlap.getState();
 		String slappyFace = hola.getLine(0).toLowerCase();
@@ -139,7 +137,7 @@ public class PlayerListener implements Listener {
 			.getString("lchs.signcontrol.sign-text")
 			.toLowerCase())) {
 
-			return;
+			return false;
 
 		}
 
@@ -229,6 +227,8 @@ public class PlayerListener implements Listener {
 
 					loc = signToSlap.getRelative(holder).getLocation();
 					flipLever(loc, playa);
+					return true;
+
 				}
 
 				// Look for buttons
@@ -236,9 +236,12 @@ public class PlayerListener implements Listener {
 
 					loc = signToSlap.getRelative(holder).getLocation();
 					pushButton(loc, playa);
+					return true;
+
 				}
 			}
 		}
+		return false;
 	}
 
 	/**
