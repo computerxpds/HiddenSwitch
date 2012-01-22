@@ -61,6 +61,7 @@ public class BlockContainer {
 
 			}
 
+			result.close();
 		} catch (SQLException e) {
 
 			me.log.severe(HiddenSwitch.logName + me.lang.getLang().getString("language.errors.cannotloadkeyblocks"));
@@ -69,7 +70,7 @@ public class BlockContainer {
 			return;
 			
 		}
-
+		
 		if(HiddenSwitch.debug) {
 			
 			me.log.info(HiddenSwitch.logName + "Loaded " + Integer.toString(keyblocks.size()) + "KeyBlocks into memory");

@@ -25,7 +25,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
 import lc.Luphie.hiddenswitch.utilities.KeyBlock;
@@ -210,6 +209,11 @@ public class DatabaseHandler {
 				me.log.info(HiddenSwitch.logName + "Wrote " + Integer.toString(updatesI) + " changes to the database.");
 
 			}
+			
+			// Reset the counter
+			updatesI = 0;
+			
+			
 			
 		}
 
