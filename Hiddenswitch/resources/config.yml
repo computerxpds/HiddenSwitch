@@ -12,6 +12,9 @@ lchs:
         # For different languages
         language-file: eng.yml
         
+        # Send debug messages to the console?
+        debug: true
+        
     signcontrol:
         # Allow sign control?
         allow-signs: true

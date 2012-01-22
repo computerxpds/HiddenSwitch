@@ -40,14 +40,15 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class HiddenSwitch extends JavaPlugin {
 
 	public Lang lang;
-	public Logger log = Logger.getLogger("Minecraft");
 	public static DatabaseHandler DBH;
 	public static String logName;
-	public playerListener blLs;
-	public BrockListener brLs;
+	public playerListener playList;
+	public BrockListener brokList;
 	public HSConfig confV;
 	public static PluginManager pm;
 	public static HiddenSwitch instance;
+
+	public Logger log = Logger.getLogger("Minecraft");
 
 	public HiddenSwitch() {
 		instance = this;
@@ -58,8 +59,22 @@ public class HiddenSwitch extends JavaPlugin {
 	 */
 	public void onDisable() {
 
-		confV.saveToFile(getConfig());
-		log.info(logName + " is offline.");
+		if(confV instanceof HSConfig) {
+
+			confV.saveToFile();
+
+		}
+
+		if(lang instanceof Lang) {
+
+			lang.saveToFile();
+			log.info(logName + lang.getLang().getString("language.messages.offline"));
+			
+		} else {
+
+			log.info(logName + "is offline.");
+
+		}
 		
 	}
 
@@ -70,19 +85,22 @@ public class HiddenSwitch extends JavaPlugin {
 		
 		// Verify the data folder and create it if needed
 		if(!getDataFolder().exists()) {
+
 			getDataFolder().mkdir();
+
 		}
 		
 		logName = "[" + getDescription().getName() + "] ";
 
-		blLs = new playerListener();
-		brLs = new BrockListener();
+		// Yay new objects to play with
+		lang = new Lang();
+		playList = new playerListener();
+		brokList = new BrockListener();
 		DBH = new DatabaseHandler();
 		confV = new HSConfig();
 		
 		pm = getServer().getPluginManager();
 
-		lang = new Lang();
 		
 		// Announce Ourselves
 		log.info(logName + "v:" + getDescription().getVersion() + " " + lang.getLang().getString("language.messages.online"));
@@ -98,11 +116,15 @@ public class HiddenSwitch extends JavaPlugin {
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] mods) {
 
 		if (cmd.getName().toLowerCase().equals("lchsreload")) {
+
 			OhTheCommandity.lchsreload(sender);
+
 		}
 		
 		if(cmd.getName().toLowerCase().equals("lchs")) {
+
 			OhTheCommandity.lchs(sender);
+
 		}
 
 		return true;

@@ -22,16 +22,57 @@
 import org.bukkit.block.Block;
 
 public class KeyBlock {
+
+	/**
+	 * The string id of the block. The string id consists of the worldname
+	 * followed by the x, y, and z coordinates in a single spaceless string ie
+	 * "world1212553".
+	 */
 	public String id;
+
+	/**
+	 * Comma separated list of user(s) who are allowed to activate this KeyBlock
+	 */
 	public String users;
+
+	/**
+	 * Key item that must be held to activate this KeyBlock.
+	 */
 	public String key;
+	
+	/**
+	 * The name of the player who created this KeyBlock
+	 */
 	public String owner;
+	
+	/**
+	 * x coordinate of the KeyBlock
+	 */
 	public int x;
+	
+	/**
+	 * y coordinate of the KeyBlock
+	 */
 	public int y;
+	
+	/**
+	 * z coordinate of the KeyBlock
+	 */
 	public int z;
+	
+	/**
+	 * World that contains the KeyBlock
+	 */
 	public String world;
 	
-	public KeyBlock(String id, String world, int x, int y, int z, String users, String key, String owner){
+	/**
+	 * Whether or not this KeyBlock is save in the database, used for updates,
+	 * saving, and reloading the database.
+	 */
+	public boolean isInDatabase;
+	
+	public KeyBlock(String id, String world, int x, int y, int z, String users, String key, String owner, boolean isInDB){
+
 		this.id = id;
 		this.world = world;
 		this.x = x;
@@ -40,15 +81,20 @@ public class KeyBlock {
 		this.users = users;
 		this.key = key;
 		this.owner = owner;
+		this.isInDatabase = isInDB;
+
 	}
 	
 	public static KeyBlock blockToKey(Block block) {
-		int x = block.getX();
-		int y = block.getY();
-		int z = block.getZ();
-		String world = block.getWorld().getName();
-		String id = world + Integer.toString(x) + Integer.toString(y) + Integer.toString(z);
-		KeyBlock key = new KeyBlock(id, world, x, y, z, "", "", "");
+
+		int bx = block.getX();
+		int by = block.getY();
+		int bz = block.getZ();
+
+		String bworld = block.getWorld().getName();
+		String bid = bworld + Integer.toString(bx) + Integer.toString(by) + Integer.toString(bz);
+		KeyBlock key = new KeyBlock(bid, bworld, bx, by, bz, "", "", "", false);
+
 		return key;
 	}
 }

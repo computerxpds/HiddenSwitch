@@ -53,10 +53,14 @@ public class HSConfig {
 		me = HiddenSwitch.instance;
 		
 		try {
+
 			me.getConfig().loadFromString(loadDefaults().saveToString());
+
 		} catch (InvalidConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			me.log.severe(HiddenSwitch.logName + "Could not load default config!");
+			HiddenSwitch.pm.disablePlugin(me);
+
 		}
 
 		if(!confFile.exists()){
@@ -96,8 +100,11 @@ public class HSConfig {
 		usableBlocks.clear();
 
 		String[] strings = string.split(",");
+
 		for (String toInt : strings) {
+		
 			usableBlocks.add(Integer.parseInt(toInt));
+
 		}
 	}
 
