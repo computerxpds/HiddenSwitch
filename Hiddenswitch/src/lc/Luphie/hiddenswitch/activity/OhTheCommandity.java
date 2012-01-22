@@ -99,25 +99,7 @@ public class OhTheCommandity {
 	 */
 	public static void lchsreload(CommandSender sender) {
 		
-		HiddenSwitch me = HiddenSwitch.instance;
-
-		if (sender instanceof Player) {
-
-			Player player = (Player) sender;
-			
-			if (player.hasPermission("hiddenswitch.admin.reload")) {
-
-				player.sendMessage(me.lang.getLang().getString("language.messages.reload-config"));
-			
-			} else {
-			
-				return;
-			
-			}
-		}
-
-		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-config"));
-		
+		genAdminCom(sender, "hiddenswitch.admin.reload", "language.messages.reload-config");
 		HiddenSwitch.instance.confV.reloadConfig();
 
 	}
@@ -130,25 +112,9 @@ public class OhTheCommandity {
 	 */
 	public static void lchsreloadlang(CommandSender sender) {
 		
-		HiddenSwitch me = HiddenSwitch.instance;
+		genAdminCom(sender, "hiddenswitch.admin.reloadlang", "language.messages.lang");
+		HiddenSwitch.instance.lang.reloadLang();
 
-		if (sender instanceof Player) {
-
-			Player player = (Player) sender;
-			
-			if (player.hasPermission("hiddenswitch.admin.reloadlang")) {
-
-				player.sendMessage(me.lang.getLang().getString("language.messages.lang"));
-			
-			} else {
-			
-				return;
-			
-			}
-		}
-		
-		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-lang"));
-		me.lang.reloadLang();
 	}
 	
 	/**
@@ -159,25 +125,7 @@ public class OhTheCommandity {
 	 */
 	public static void lchsreloaddb(CommandSender sender) {
 
-		HiddenSwitch me = HiddenSwitch.instance;
-
-		if (sender instanceof Player) {
-
-			Player player = (Player) sender;
-			
-			if (player.hasPermission("hiddenswitch.admin.reloaddb")) {
-
-				player.sendMessage(me.lang.getLang().getString("language.messages.reload-db"));
-			
-			} else {
-			
-				return;
-			
-			}
-		}
-	
-		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-db"));
-		
+		genAdminCom(sender, "hiddenswitch.admin.reloaddb", "language.messages.reload-db");
 		
 	}
 	
@@ -190,15 +138,22 @@ public class OhTheCommandity {
 	 */
 	public static void lchsSaveDB(CommandSender sender) {
 
+		genAdminCom(sender, "hiddenswitch.admin.save", "language.messages.save-db");
+		HiddenSwitch.DBH.saveAll();
+
+	}
+
+	private static void genAdminCom(CommandSender sender, String permPath, String mesPath) {
+
 		HiddenSwitch me = HiddenSwitch.instance;
 
 		if (sender instanceof Player) {
 
 			Player player = (Player) sender;
 			
-			if (player.hasPermission("hiddenswitch.admin.save")) {
+			if (player.hasPermission(permPath)) {
 
-				player.sendMessage(me.lang.getLang().getString("language.messages.save-db"));
+				player.sendMessage(me.lang.getLang().getString(mesPath));
 			
 			} else {
 			
@@ -207,9 +162,7 @@ public class OhTheCommandity {
 			}
 		}
 	
-		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.save-db"));
-		
-		HiddenSwitch.DBH.saveAll();
+		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString(mesPath));
 	}
 }
 
