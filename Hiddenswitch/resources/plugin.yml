@@ -5,9 +5,13 @@ author: devLuphie (Luphie)
 description: 'Make your secret passages even more secret by hiding the switches that open them.'
 commands:
     lchsreload:
-        description: Reloads the config
+        description: Reloads the configuration
         permission: hiddenswitch.admin.reload
         usage: /lchsreload
+    lchsreloadlang:
+        description: Reloads the language files
+        permission: hiddenswitch.admin.reloadlang
+        usage: /lchsreloadlang
     lchs:
         description: Creates a hiddenswitch block where the user is looking
         permission: hiddenswitch.user.command
@@ -47,6 +51,7 @@ permissions:
             hiddenswitch.admin.ignorekeys.key: true
             hiddenswitch.admin.reload: true
             hiddenswitch.admin.reloaddb: true
+            hiddenswitch.admin.reloadlang: true
             hiddenswitch.admin.save: true
             hiddenswitch.use: true
 
@@ -115,4 +120,9 @@ permissions:
 # Admin Save Database
     hiddenswitch.admin.save:
         description: Allow user to save database
+        default: false
+
+# Admin reload language
+    hiddenswitch.admin.reloadlang:
+        description: Allow user to reload the language files
         default: false

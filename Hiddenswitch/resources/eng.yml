@@ -8,6 +8,7 @@ language:
     online: 'is now online.'
     offline: 'is now offline.'
     reload-config: 'Reloading HiddenSwitch Configuration...'
+    reload-lang: 'Reloading HiddenSwitch language file...'
 
 # Other messages
     breakswitch: 'Hidden switch block destroyed!'
@@ -15,3 +16,5 @@ language:
     hiddenswitchset: 'Hidden switch set.'
   warnings:
   errors:
+    cannotprepsqlstatement: 'Could not prepare SQL statement!'
+    cannotloadkeyblocks: 'Could not pull KeyBlocks from database!'

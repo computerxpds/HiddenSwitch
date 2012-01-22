@@ -67,50 +67,59 @@ public class DatabaseHandler {
 		load();
 		
 	}
-	public boolean load(){
+	public ResultSet load(){
+
 		try {
-			ResultSet result = statement.executeQuery("SELECT * FROM blocks");
-			while(result.next()) {
-				KeyBlock kb = new KeyBlock(
-						result.getString("idstring"),
-						result.getString("world"),
-						result.getInt("x"),
-						result.getInt("y"),
-						result.getInt("z"),
-						result.getString("user"),
-						result.getString("key"),
-						result.getString("owner"),
-						true
-					);
-				me.confV.keyblocks.put(kb.id,kb);
-			}
+
+			return statement.executeQuery("SELECT * FROM blocks");
+
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
+			me.log.severe(HiddenSwitch.logName + me.lang.getLang().getString("language.errors.cannotloadkeyblocks"));
+			me.log.severe(HiddenSwitch.logName + e.getMessage());
 			e.printStackTrace();
+			
 		}
-		return false;
+		return null;
 	}
-	public boolean port(){
-		portMLtoSL();
-		// or
-		portSLtoML();
-		return false;
-	}
-	private boolean portMLtoSL(){return false;}
-	private boolean portSLtoML(){return false;}
-	public boolean save() {return false;}
+
+	/**
+	 * Delete a KeyBlock record from the database.
+	 * 
+	 * @param String
+	 *            stringid - the string id belonging to the record that is being
+	 *            deleted.
+	 */
 	public void dropRecord(String stringid) {
 
 		try {
 		
-			statement.executeUpdate("DELETE FROM blocks WHERE idstring='"+stringid+"'");
+			prepDel.setString(1, stringid);
+			prepDel.executeUpdate();
 		
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
+			me.log.severe(HiddenSwitch.logName + me.lang.getLang().getString("language.errors.cannotprepsqlstatement"));
+			me.log.severe(HiddenSwitch.logName + e.getMessage());
 			e.printStackTrace();
+			return;
+
 		}
+		
+		updatesI++;
+		updates();
 	}
 
+	/**
+	 * Delete a KeyBlock record from the database.
+	 * 
+	 * @param KeyBlock
+	 *            keyblock - the block that will be removed from the database.
+	 */
+	public void dropRecord(KeyBlock keyblock) {
+		dropRecord(keyblock.id);
+	}
+	
 	/**
 	 * Insert the values from an instance of KeyBlock into a new row in the
 	 * database.
@@ -170,14 +179,13 @@ public class DatabaseHandler {
 
 				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			/*statement.executeUpdate("INSERT INTO blocks VALUES ('" + idstring
-					+ "','" + world + "','" + Integer.toString(x) + "','"
-					+ Integer.toString(y) + "','" + Integer.toString(z) + "','"
-					+ user + "','" + key + "',NULL)");*/
 
+				me.log.severe(HiddenSwitch.logName + me.lang.getLang().getString("language.errors.cannotprepsqlstatement"));
+				me.log.severe(HiddenSwitch.logName + e.getMessage());
+				e.printStackTrace();
+				return;
+
+			}
 			updatesI++;
 			updates();
 	}
@@ -189,8 +197,18 @@ public class DatabaseHandler {
 			try {
 				connection.commit();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
+				
+				me.log.severe(HiddenSwitch.logName + "Could not write updates to database!");
+				me.log.severe(HiddenSwitch.logName + e.getMessage());
 				e.printStackTrace();
+				return;
+				
+			}
+
+			if(HiddenSwitch.debug) {
+
+				me.log.info(HiddenSwitch.logName + "Wrote " + Integer.toString(updatesI) + " changes to the database.");
+
 			}
 			
 		}

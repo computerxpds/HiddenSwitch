@@ -21,7 +21,7 @@
 package lc.Luphie.hiddenswitch.activity;
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
-import lc.Luphie.hiddenswitch.utilities.BlockLocker;
+import lc.Luphie.hiddenswitch.utilities.BlockContainer;
 import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 
 import org.bukkit.block.Block;
@@ -39,7 +39,8 @@ public class OhTheCommandity {
 	/**
 	 * Create a new block based hidden switch.
 	 * 
-	 * @param player
+	 * @param sender
+	 *            An instance of what used the command either console or player.
 	 */
 	public static void lchs(CommandSender sender) {
 
@@ -64,7 +65,7 @@ public class OhTheCommandity {
 		}
 		
 		// Get the block to check if it is even usable
-		Block block = BlockLocker.getBlock(player);
+		Block block = BlockContainer.getBlock(player);
 		
 		// Is the block usable?
 		if(!me.confV.usableBlocks.contains(block.getTypeId())) {
@@ -87,6 +88,13 @@ public class OhTheCommandity {
 		
 	}
 
+	/**
+	 * Reloads the HiddenSwitch config file.
+	 * 
+	 * @param sender
+	 *            An instance of what used the command, whether console or
+	 *            player.
+	 */
 	public static void lchsreload(CommandSender sender) {
 		
 		HiddenSwitch me = HiddenSwitch.instance;
@@ -109,6 +117,33 @@ public class OhTheCommandity {
 		
 		HiddenSwitch.instance.confV.reloadConfig();
 
+	}
+	
+	public static void lchsreloadlang(CommandSender sender) {
+		
+		HiddenSwitch me = HiddenSwitch.instance;
+
+		if (sender instanceof Player) {
+
+			Player player = (Player) sender;
+			
+			if (player.hasPermission("hiddenswitch.admin.reload")) {
+
+				player.sendMessage(me.lang.getLang().getString("language.messages.lang"));
+				me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-lang"));
+			
+			} else {
+			
+				return;
+			
+			}
+		}
+		
+		me.lang.reloadLang();
+	}
+	
+	public static void lchsreloaddb(CommandSender sender) {
+		
 	}
 }
 

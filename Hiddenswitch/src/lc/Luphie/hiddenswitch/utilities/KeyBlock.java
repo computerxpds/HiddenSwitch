@@ -19,6 +19,7 @@
 
  * */package lc.Luphie.hiddenswitch.utilities;
 
+import org.bukkit.World;
 import org.bukkit.block.Block;
 
 public class KeyBlock {
@@ -84,6 +85,19 @@ public class KeyBlock {
 		this.isInDatabase = isInDB;
 
 	}
+	public KeyBlock(String world, int x, int y, int z, String users, String key, String owner, boolean isInDB){
+
+		this.id = makeIdString(world,x,y,z);
+		this.world = world;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.users = users;
+		this.key = key;
+		this.owner = owner;
+		this.isInDatabase = isInDB;
+
+	}
 	
 	public static KeyBlock blockToKey(Block block) {
 
@@ -92,9 +106,30 @@ public class KeyBlock {
 		int bz = block.getZ();
 
 		String bworld = block.getWorld().getName();
-		String bid = bworld + Integer.toString(bx) + Integer.toString(by) + Integer.toString(bz);
-		KeyBlock key = new KeyBlock(bid, bworld, bx, by, bz, "", "", "", false);
+		KeyBlock key = new KeyBlock(bworld, bx, by, bz, "", "", "", false);
 
 		return key;
 	}
+	
+	public static String makeIdString(String world, int x, int y, int z) {
+		
+		return world + Integer.toString(x) + Integer.toString(y) + Integer.toString(z);
+		
+	}
+	public static String makeIdString(World world, int x, int y, int z) {
+		
+		return makeIdString(world.getName(),x,y,z);
+		
+	}
+	public static String makeIdString(World world, String x, String y, String z) {
+		
+		return world.getName() + x + y + z ;
+		
+	}
+	public static String makeIdString(String world, String x, String y, String z) {
+		
+		return world + x + y + z ;
+		
+	}
+	
 }

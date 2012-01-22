@@ -28,6 +28,7 @@ import lc.Luphie.hiddenswitch.activity.playerListener;
 import lc.Luphie.hiddenswitch.conf.HSConfig;
 import lc.Luphie.hiddenswitch.conf.DatabaseHandler;
 import lc.Luphie.hiddenswitch.conf.Lang;
+import lc.Luphie.hiddenswitch.utilities.BlockContainer;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -44,9 +45,12 @@ public class HiddenSwitch extends JavaPlugin {
 	public static String logName;
 	public playerListener playList;
 	public BrockListener brokList;
+	public BlockContainer blkCon;
 	public HSConfig confV;
 	public static PluginManager pm;
 	public static HiddenSwitch instance;
+
+	public static boolean debug = false;
 
 	public Logger log = Logger.getLogger("Minecraft");
 
@@ -98,7 +102,9 @@ public class HiddenSwitch extends JavaPlugin {
 		brokList = new BrockListener();
 		DBH = new DatabaseHandler();
 		confV = new HSConfig();
+		blkCon = new BlockContainer();
 		
+		debug = getConfig().getBoolean("lchs.config.debug");
 		pm = getServer().getPluginManager();
 
 		

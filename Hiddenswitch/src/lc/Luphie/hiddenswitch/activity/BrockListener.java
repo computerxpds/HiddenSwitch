@@ -21,6 +21,7 @@
 package lc.Luphie.hiddenswitch.activity;
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
+import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -142,13 +143,24 @@ public class BrockListener extends BlockListener {
 		
 		// See if it is in the hashmap
 		
-		String id = block.getWorld().getName() + Integer.toString(block.getX()) + Integer.toString(block.getY()) + Integer.toString(block.getZ());
+		String id = KeyBlock.makeIdString(block.getWorld(), block.getX(), block.getY(), block.getZ());
 		
 		// If it's found remove it from the hashmap
-		if(!me.confV.keyblocks.containsKey(id)) {return false;}
-		else {
-			me.confV.keyblocks.remove(id);
-			HiddenSwitch.DBH.dropRecord(id); //TODO verify the record was dropped
+		if(!me.blkCon.keyblocks.containsKey(id)) {
+			
+			return false;
+			
+		} else {
+
+			KeyBlock key =  me.blkCon.keyblocks.get(id);
+			me.blkCon.keyblocks.remove(id);
+			
+			// If it is in the database then we need to remove it
+			if(key.isInDatabase) {
+
+				HiddenSwitch.DBH.dropRecord(id);
+
+			}
 		}
 		
 		return true;

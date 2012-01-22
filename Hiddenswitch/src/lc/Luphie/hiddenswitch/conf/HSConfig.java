@@ -23,11 +23,9 @@ package lc.Luphie.hiddenswitch.conf;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
-import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -44,7 +42,6 @@ public class HSConfig {
 
 	private static HiddenSwitch me;
 	public List<Integer> usableBlocks = new ArrayList<Integer>();
-	public HashMap<String, KeyBlock> keyblocks = new HashMap<String, KeyBlock>();
 	public File confFile = new File(HiddenSwitch.instance.getDataFolder(), "config.yml");
 
 	public HSConfig() {
