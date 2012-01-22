@@ -1,7 +1,6 @@
 language:
   language: english
   author: Luphie (luphie@lumpcraft.com)
-  version: 1.3
   messages:
 
 # Server messages
@@ -9,6 +8,8 @@ language:
     offline: 'is now offline.'
     reload-config: 'Reloading HiddenSwitch Configuration...'
     reload-lang: 'Reloading HiddenSwitch language file...'
+    reload-db: 'Reloading HiddenSwitch KeyBlock database...'
+    save-db: 'Saving database changes...'
 
 # Other messages
     breakswitch: 'Hidden switch block destroyed!'

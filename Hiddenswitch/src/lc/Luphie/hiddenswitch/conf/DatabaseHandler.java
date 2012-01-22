@@ -191,32 +191,32 @@ public class DatabaseHandler {
 	
 	private void updates() {
 
-		if(this.updatesI >= 5) {
-			
-			try {
-				connection.commit();
-			} catch (SQLException e) {
-				
-				me.log.severe(HiddenSwitch.logName + "Could not write updates to database!");
-				me.log.severe(HiddenSwitch.logName + e.getMessage());
-				e.printStackTrace();
-				return;
-				
-			}
-
-			if(HiddenSwitch.debug) {
-
-				me.log.info(HiddenSwitch.logName + "Wrote " + Integer.toString(updatesI) + " changes to the database.");
-
-			}
-			
-			// Reset the counter
-			updatesI = 0;
-			
-			
-			
+		if(this.updatesI >= me.getConfig().getInt("lchs.dbconfig.autosave")) {
+			saveAll();
 		}
 
 	}
+	
+	public void saveAll() {
 
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			
+			me.log.severe(HiddenSwitch.logName + "Could not write updates to database!");
+			me.log.severe(HiddenSwitch.logName + e.getMessage());
+			e.printStackTrace();
+			return;
+			
+		}
+
+		if(HiddenSwitch.debug) {
+
+			me.log.info(HiddenSwitch.logName + "Wrote " + Integer.toString(updatesI) + " changes to the database.");
+
+		}
+		
+		// Reset the counter
+		updatesI = 0;
+	}
 }

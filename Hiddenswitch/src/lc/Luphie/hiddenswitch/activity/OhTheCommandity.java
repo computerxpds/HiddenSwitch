@@ -42,7 +42,7 @@ public class OhTheCommandity {
 	 * @param sender
 	 *            An instance of what used the command either console or player.
 	 */
-	public static void lchs(CommandSender sender) {
+	public static void lchs(CommandSender sender, String[] args) {
 
 		HiddenSwitch me = HiddenSwitch.instance;
 		
@@ -83,6 +83,7 @@ public class OhTheCommandity {
 		KeyBlock key = KeyBlock.blockToKey(block);
 		HiddenSwitch.DBH.newRecord(key);
 		key.isInDatabase = true;
+		key.owner = player.getName();
 		me.blkCon.keyblocks.put(key.id, key);
 		
 		player.sendMessage(me.lang.getLang().getString("language.messages.hiddenswitchset"));
@@ -121,6 +122,12 @@ public class OhTheCommandity {
 
 	}
 	
+	/**
+	 * Reload the language configuration file.
+	 * 
+	 * @param sender
+	 *            An instance of what used the command, console or player.
+	 */
 	public static void lchsreloadlang(CommandSender sender) {
 		
 		HiddenSwitch me = HiddenSwitch.instance;
@@ -129,7 +136,7 @@ public class OhTheCommandity {
 
 			Player player = (Player) sender;
 			
-			if (player.hasPermission("hiddenswitch.admin.reload")) {
+			if (player.hasPermission("hiddenswitch.admin.reloadlang")) {
 
 				player.sendMessage(me.lang.getLang().getString("language.messages.lang"));
 			
@@ -145,7 +152,52 @@ public class OhTheCommandity {
 	}
 	
 	public static void lchsreloaddb(CommandSender sender) {
+
+		HiddenSwitch me = HiddenSwitch.instance;
+
+		if (sender instanceof Player) {
+
+			Player player = (Player) sender;
+			
+			if (player.hasPermission("hiddenswitch.admin.reloaddb")) {
+
+				player.sendMessage(me.lang.getLang().getString("language.messages.save-db"));
+			
+			} else {
+			
+				return;
+			
+			}
+		}
+	
+		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.save-db"));
 		
+		HiddenSwitch.DBH.saveAll();
+		
+	}
+	
+	public static void lchsSaveDB(CommandSender sender) {
+
+		HiddenSwitch me = HiddenSwitch.instance;
+
+		if (sender instanceof Player) {
+
+			Player player = (Player) sender;
+			
+			if (player.hasPermission("hiddenswitch.admin.save")) {
+
+				player.sendMessage(me.lang.getLang().getString("language.messages.save-db"));
+			
+			} else {
+			
+				return;
+			
+			}
+		}
+	
+		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.save-db"));
+		
+		HiddenSwitch.DBH.saveAll();
 	}
 }
 

@@ -4,125 +4,128 @@ version: @VERSION@
 author: devLuphie (Luphie)
 description: 'Make your secret passages even more secret by hiding the switches that open them.'
 commands:
-    lchsreload:
-        description: Reloads the configuration
-        permission: hiddenswitch.admin.reload
-        usage: /lchsreload
-    lchsreloadlang:
-        description: Reloads the language files
-        permission: hiddenswitch.admin.reloadlang
-        usage: /lchsreloadlang
-    lchs:
-        description: Creates a hiddenswitch block where the user is looking
-        permission: hiddenswitch.user.command
-        usage: /lchs
-
+  lchsreload:
+    description: Reloads the configuration
+    permission: hiddenswitch.admin.reload
+    usage: /lchsreload
+  lchsreloadlang:
+    description: Reloads the language files
+    permission: hiddenswitch.admin.reloadlang
+    usage: /lchsreloadlang
+  lchs:
+    description: Creates a hiddenswitch block where the user is looking
+    permission: hiddenswitch.user.command
+    usage: /lchs [arguments]
+  lchssave:
+    description: Saves all loose changes to the database.
+    permission: hiddenswitch.admin.save
+    usage: /lchssave
 permissions:
 # #
 # User Permission Groups
 # #
 
 # Use group
-    hiddenswitch.use:
-        description: Allows users to use hidden switches
-        default: true
-        children:
-            hiddenswitch.user.use: true
-            hiddenswitch.user.create: true
-            hiddenswitch.user.locks: true
+  hiddenswitch.use:
+    description: Allows users to use hidden switches
+    default: true
+    children:
+      hiddenswitch.user.use: true
+      hiddenswitch.user.create: true
+      hiddenswitch.user.locks: true
 
 # Locks Group
-    hiddenswitch.user.locks:
-        description: Allows users to set locks on their switches
-        default: false
-        children:
-            hiddenswitch.user.lockitem: true
-            hiddenswitch.user.lockuser: true
+  hiddenswitch.user.locks:
+    description: Allows users to set locks on their switches
+    default: false
+    children:
+      hiddenswitch.user.lockitem: true
+      hiddenswitch.user.lockuser: true
 # #
 # Admin Permission Groups
 # #
 
 # Admin group
-    hiddenswitch.admin:
-        description: Grants ALL admin permmissions
-        default: op
-        children:
-            hiddenswitch.admin.ignorekeys.user: true
-            hiddenswitch.admin.ignorekeys.key: true
-            hiddenswitch.admin.reload: true
-            hiddenswitch.admin.reloaddb: true
-            hiddenswitch.admin.reloadlang: true
-            hiddenswitch.admin.save: true
-            hiddenswitch.use: true
+  hiddenswitch.admin:
+    description: Grants ALL admin permmissions
+    default: op
+    children:
+      hiddenswitch.admin.ignorekeys.user: true
+      hiddenswitch.admin.ignorekeys.key: true
+      hiddenswitch.admin.reload: true
+      hiddenswitch.admin.reloaddb: true
+      hiddenswitch.admin.reloadlang: true
+      hiddenswitch.admin.save: true
+      hiddenswitch.use: true
 
 # IgnoreKeys Group
-    hiddenswitch.admin.ignorekeys:
-        description: Allow user to ignore player set restrictions
-        default: false
-        children:
-            hiddenswitch.admin.ignorekeys.user: true
-            hiddenswitch.admin.ignorekeys.key: true
+  hiddenswitch.admin.ignorekeys:
+    description: Allow user to ignore player set restrictions
+    default: false
+    children:
+      hiddenswitch.admin.ignorekeys.user: true
+      hiddenswitch.admin.ignorekeys.key: true
 
 # #
 # Individual User Permissions
 # #
 
 # Use Hiddenswitches
-    hiddenswitch.user.use:
-        description: Allow user to use a hidden switch
-        default: false
+  hiddenswitch.user.use:
+    description: Allow user to use a hidden switch
+    default: false
 
 # Use /lchs Command
-    hiddenswitch.user.command:
-        description: Allow user to create command based hiddenswitches
-        default: false
+  hiddenswitch.user.command:
+    description: Allow user to create command based hiddenswitches
+    default: false
 
 # Create Hiddenswitches
-    hiddenswitch.user.create:
-        description: Allow user to create a hiddenswitch
-        default: false
+  hiddenswitch.user.create:
+    description: Allow user to create a hiddenswitch
+    default: false
 
 # Lock By Item
-    hiddenswitch.user.lockitem:
-        description: Allow user to lock their hidden switch by held item
-        default: false
+  hiddenswitch.user.lockitem:
+    description: Allow user to lock their hidden switch by held item
+    default: false
 
 # Lock By Username
-    hiddenswitch.user.lockuser:
-        description.user.lockuser:
-        default: false
+  hiddenswitch.user.lockuser:
+    description.user.lockuser:
+    default: false
 
 # #
 # Individual Admin Permissions
 # #
 
 # Admin Ignore Key (Held Item) Lock
-    hiddenswitch.admin.ignorekeys.key:
-        description: Allow user to ignore key item restrictions
-        default: false
+  hiddenswitch.admin.ignorekeys.key:
+    description: Allow user to ignore key item restrictions
+    default: false
 
 # Admin Ignore User Lock
-    hiddenswitch.admin.ignorekeys.user:
-        description: Allow user to ignore user restrictions
-        default: false
+  hiddenswitch.admin.ignorekeys.user:
+    description: Allow user to ignore user restrictions
+    default: false
 
 # Admin Reload Config
-    hiddenswitch.admin.reload:
-        description: Allow user to reload config file
-        default: false
+  hiddenswitch.admin.reload:
+    description: Allow user to reload config file
+    default: false
 
 # Admin Reload Database
 # TODO Implement Database Reloads
-    hiddenswitch.admin.reloaddb:
-        description: Allow user to reload database
-        default: false
+  hiddenswitch.admin.reloaddb:
+    description: Allow user to reload database
+    default: false
 
 # Admin Save Database
-    hiddenswitch.admin.save:
-        description: Allow user to save database
-        default: false
+  hiddenswitch.admin.save:
+    description: Allow user to save database
+    default: false
 
 # Admin reload language
-    hiddenswitch.admin.reloadlang:
-        description: Allow user to reload the language files
-        default: false
+  hiddenswitch.admin.reloadlang:
+    description: Allow user to reload the language files
+    default: false

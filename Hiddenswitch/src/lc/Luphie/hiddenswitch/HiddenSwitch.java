@@ -129,7 +129,7 @@ public class HiddenSwitch extends JavaPlugin {
 		
 		if(cmd.getName().toLowerCase().equals("lchs")) {
 
-			OhTheCommandity.lchs(sender);
+			OhTheCommandity.lchs(sender, mods);
 
 		}
 
