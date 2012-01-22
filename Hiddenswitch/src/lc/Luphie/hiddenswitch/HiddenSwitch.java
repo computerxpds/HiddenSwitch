@@ -139,6 +139,12 @@ public class HiddenSwitch extends JavaPlugin {
 
 		}
 		
+		if(cmd.getName().toLowerCase().equals("lchssave")) {
+
+			OhTheCommandity.lchsSaveDB(sender);
+
+		}
+		
 		return true;
 
 	}
