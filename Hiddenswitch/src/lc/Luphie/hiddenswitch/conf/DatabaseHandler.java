@@ -66,6 +66,12 @@ public class DatabaseHandler {
 		load();
 		
 	}
+
+	/**
+	 * Grabs every entry in the blocks table.
+	 *
+	 * @return ResultSet containing every KeyBlock in the database.
+	 */
 	public ResultSet load(){
 
 		try {
@@ -143,22 +149,23 @@ public class DatabaseHandler {
 	/**
 	 * Insert a new record into the database with the provided info.
 	 * 
-	 * @param String
-	 *            idstring - The IDSTRING for the KeyBlock
-	 * @param String
-	 *            world - The world the KeyBlock resides in
-	 * @param String
-	 *            x - The x coordinate for the KeyBlock
-	 * @param String
-	 *            y - The y coordinate for the KeyBlock
-	 * @param String
-	 *            z - The z coordinate for the KeyBlock
-	 * @param String
-	 *            user - The user(s) that the KeyBlock is bound to.
-	 * @param String
-	 *            key - The item required to use the KeyBlock
-	 * @param String
-	 *            owner - The player who created the KeyBlock
+	 * @param idstring
+	 *            the idstring
+	 * @param world
+	 *            The name of the world the KeyBlock is in.
+	 * @param x
+	 *            The x coordinate of the KeyBlock.
+	 * @param y
+	 *            The y coordinate of the KeyBlock.
+	 * @param z
+	 *            The z coordinate of the KeyBlock.
+	 * @param user
+	 *            A comma seperated list of users who are allowed to use this
+	 *            KeyBlock.
+	 * @param key
+	 *            The item that must be held to use this KeyBlock.
+	 * @param owner
+	 *            The name of the player that created this KeyBlock.
 	 */
 	public void newRecord(String idstring, String world, int x, int y, int z,
 			String user, String key, String owner) {
@@ -189,6 +196,13 @@ public class DatabaseHandler {
 			updates();
 	}
 	
+	
+	/**
+	 * Checks to see if the number of open PreparedStatements is greater than or
+	 * equal to the autosave value set in the configuration file. If it is equal
+	 * to or greater, then call the {@link saveAll()} method and save the
+	 * 'floating' KeyBlocks to the database.
+	 */
 	private void updates() {
 
 		if(this.updatesI >= me.getConfig().getInt("lchs.dbconfig.autosave")) {
@@ -197,6 +211,9 @@ public class DatabaseHandler {
 
 	}
 	
+	/**
+	 * Commits all open PreparedStatements.
+	 */
 	public void saveAll() {
 
 		try {
