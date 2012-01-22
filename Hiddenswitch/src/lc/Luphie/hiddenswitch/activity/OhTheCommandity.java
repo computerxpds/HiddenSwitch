@@ -75,14 +75,15 @@ public class OhTheCommandity {
 		
 		// Is the block already locked?
 		String searchID = block.getWorld().getName() + block.getX() + block.getY() + block.getZ();
-		if(me.confV.keyblocks.containsKey(searchID)) {
+		if(me.blkCon.keyblocks.containsKey(searchID)) {
 			player.sendMessage(me.lang.getLang().getString("language.messages.cannotuseblock"));
 			return;
 		}
 		
 		KeyBlock key = KeyBlock.blockToKey(block);
-		me.confV.keyblocks.put(key.id, key);
 		HiddenSwitch.DBH.newRecord(key);
+		key.isInDatabase = true;
+		me.blkCon.keyblocks.put(key.id, key);
 		
 		player.sendMessage(me.lang.getLang().getString("language.messages.hiddenswitchset"));
 		
@@ -106,7 +107,6 @@ public class OhTheCommandity {
 			if (player.hasPermission("hiddenswitch.admin.reload")) {
 
 				player.sendMessage(me.lang.getLang().getString("language.messages.reload-config"));
-				me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-config"));
 			
 			} else {
 			
@@ -114,6 +114,8 @@ public class OhTheCommandity {
 			
 			}
 		}
+
+		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-config"));
 		
 		HiddenSwitch.instance.confV.reloadConfig();
 
@@ -130,7 +132,6 @@ public class OhTheCommandity {
 			if (player.hasPermission("hiddenswitch.admin.reload")) {
 
 				player.sendMessage(me.lang.getLang().getString("language.messages.lang"));
-				me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-lang"));
 			
 			} else {
 			
@@ -139,6 +140,7 @@ public class OhTheCommandity {
 			}
 		}
 		
+		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-lang"));
 		me.lang.reloadLang();
 	}
 	

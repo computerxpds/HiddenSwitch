@@ -121,6 +121,8 @@ public class HSConfig {
 		} else {
 		
 			me.reloadConfig();
+			me.getConfig().setDefaults(loadDefaults());
+			me.getConfig().options().copyDefaults(true);
 			me.log.info(HiddenSwitch.logName + "Configuration loaded...");
 		
 		}

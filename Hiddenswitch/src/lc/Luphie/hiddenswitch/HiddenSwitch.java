@@ -133,6 +133,12 @@ public class HiddenSwitch extends JavaPlugin {
 
 		}
 
+		if(cmd.getName().toLowerCase().equals("lchsreloadlang")) {
+
+			OhTheCommandity.lchsreloadlang(sender);
+
+		}
+		
 		return true;
 
 	}

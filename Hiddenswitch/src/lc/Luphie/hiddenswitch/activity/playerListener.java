@@ -139,7 +139,7 @@ public class playerListener extends PlayerListener {
 
 					String id = iblock.getWorld().getName() + Integer.toString(iblock.getX()) + Integer.toString(iblock.getY()) + Integer.toString(iblock.getZ());
 					
-					if(me.confV.keyblocks.containsKey(id)) {
+					if(me.blkCon.keyblocks.containsKey(id)) {
 					// Look for levers
 					
 						if (iblock.getRelative(holder).getTypeId() == 69) {

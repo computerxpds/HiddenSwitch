@@ -87,6 +87,8 @@ public class Lang {
 		} else {
 
 			text = YamlConfiguration.loadConfiguration(langFile);
+			text.setDefaults(loadDefaults());
+			text.options().copyDefaults(true);
 			
 		}
 		
