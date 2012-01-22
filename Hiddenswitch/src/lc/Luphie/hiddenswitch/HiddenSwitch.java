@@ -73,13 +73,14 @@ public class HiddenSwitch extends JavaPlugin {
 			getDataFolder().mkdir();
 		}
 		
+		logName = "[" + getDescription().getName() + "] ";
+
 		blLs = new playerListener();
 		brLs = new BrockListener();
 		DBH = new DatabaseHandler();
 		confV = new HSConfig();
 		
 		pm = getServer().getPluginManager();
-		logName = "[" + getDescription().getName() + "] ";
 
 		lang = new Lang();
 		

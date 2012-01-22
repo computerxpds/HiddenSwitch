@@ -29,6 +29,7 @@ import java.util.List;
 import lc.Luphie.hiddenswitch.HiddenSwitch;
 import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -37,7 +38,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * A set of tools to handle the HiddenSwitch Configuration.
  * 
  * @author Luphie
- * @version 2.0.0
+ * @version 2.0.1
  */
 public class HSConfig {
 
@@ -51,11 +52,16 @@ public class HSConfig {
 		// Shortcut for the main plugin instance
 		me = HiddenSwitch.instance;
 		
-		me.getConfig().setDefaults(loadDefaults());
+		try {
+			me.getConfig().loadFromString(loadDefaults().saveToString());
+		} catch (InvalidConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		if(!confFile.exists()){
 			
-			HiddenSwitch.instance.log.warning(HiddenSwitch.logName + "No configuration file found, attempting to create...");
+			HiddenSwitch.instance.log.info(HiddenSwitch.logName + "No configuration file found, attempting to create...");
 			
 			if(!saveToFile()) {
 
@@ -101,7 +107,6 @@ public class HSConfig {
 	 */
 	public void reloadConfig() {
 
-		me.log.info(HiddenSwitch.logName+"Attempting to reload configuration.");
 
 		me.getConfig().setDefaults(loadDefaults());
 		
@@ -111,8 +116,8 @@ public class HSConfig {
 		
 		} else {
 		
-			me.getConfig().setDefaults(YamlConfiguration.loadConfiguration(confFile));
-			me.log.info(HiddenSwitch.logName + "Config reloaded...");
+			me.reloadConfig();
+			me.log.info(HiddenSwitch.logName + "Configuration loaded...");
 		
 		}
 

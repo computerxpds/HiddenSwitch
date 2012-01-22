@@ -43,16 +43,18 @@ public class OhTheCommandity {
 	 */
 	public static void lchs(CommandSender sender) {
 
+		HiddenSwitch me = HiddenSwitch.instance;
+		
 		// Did this come from a player?
 		if(!(sender instanceof Player)) {
-			HiddenSwitch.instance.log.info(HiddenSwitch.logName + "But why would the server need a hidden switch?");
+			me.log.info(HiddenSwitch.logName + "But why would the server need a hidden switch?");
 			return;
 		}
 		
 		Player player = (Player) sender;
 
 		// Is this enabled?
-		if(!HiddenSwitch.instance.getConfig().getBoolean("lchs.dbcontrol.allow-db")) {
+		if(!me.getConfig().getBoolean("lchs.dbcontrol.allow-db")) {
 			return;
 		}
 		
@@ -65,27 +67,29 @@ public class OhTheCommandity {
 		Block block = BlockLocker.getBlock(player);
 		
 		// Is the block usable?
-		if(!HiddenSwitch.instance.confV.usableBlocks.contains(block.getTypeId())) {
-			player.sendMessage("Block cannot be used as a hidden switch.");
+		if(!me.confV.usableBlocks.contains(block.getTypeId())) {
+			player.sendMessage(me.lang.getLang().getString("language.messages.cannotuseblock"));
 			return;
 		}
 		
 		// Is the block already locked?
 		String searchID = block.getWorld().getName() + block.getX() + block.getY() + block.getZ();
-		if(HiddenSwitch.instance.confV.keyblocks.containsKey(searchID)) {
-			player.sendMessage("This block cannot be used as a hidden switch.");
+		if(me.confV.keyblocks.containsKey(searchID)) {
+			player.sendMessage(me.lang.getLang().getString("language.messages.cannotuseblock"));
 			return;
 		}
 		
 		KeyBlock key = KeyBlock.blockToKey(block);
-		HiddenSwitch.instance.confV.keyblocks.put(key.id, key);
+		me.confV.keyblocks.put(key.id, key);
 		HiddenSwitch.DBH.newRecord(key);
 		
-		player.sendMessage(HiddenSwitch.instance.lang.getLang().getString("language.messages.hiddenswitchset"));
+		player.sendMessage(me.lang.getLang().getString("language.messages.hiddenswitchset"));
 		
 	}
 
 	public static void lchsreload(CommandSender sender) {
+		
+		HiddenSwitch me = HiddenSwitch.instance;
 
 		if (sender instanceof Player) {
 
@@ -93,7 +97,8 @@ public class OhTheCommandity {
 			
 			if (player.hasPermission("hiddenswitch.admin.reload")) {
 
-				player.sendMessage("Reloading HiddenSwitch Config...");
+				player.sendMessage(me.lang.getLang().getString("language.messages.reload-config"));
+				me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-config"));
 			
 			} else {
 			

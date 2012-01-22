@@ -51,6 +51,7 @@ public class playerListener extends PlayerListener {
 	}
 
 	//@EventHandler(priority = EventPriority.HIGHEST)
+	@Override
 	public void onPlayerInteract(PlayerInteractEvent event) {
 
 		// If event was cancelled, then nothing to do here

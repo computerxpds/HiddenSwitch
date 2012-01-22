@@ -25,12 +25,13 @@ public class KeyBlock {
 	public String id;
 	public String users;
 	public String key;
+	public String owner;
 	public int x;
 	public int y;
 	public int z;
 	public String world;
 	
-	public KeyBlock(String id, String world, int x, int y, int z, String users, String key){
+	public KeyBlock(String id, String world, int x, int y, int z, String users, String key, String owner){
 		this.id = id;
 		this.world = world;
 		this.x = x;
@@ -38,6 +39,7 @@ public class KeyBlock {
 		this.z = z;
 		this.users = users;
 		this.key = key;
+		this.owner = owner;
 	}
 	
 	public static KeyBlock blockToKey(Block block) {
@@ -46,7 +48,7 @@ public class KeyBlock {
 		int z = block.getZ();
 		String world = block.getWorld().getName();
 		String id = world + Integer.toString(x) + Integer.toString(y) + Integer.toString(z);
-		KeyBlock key = new KeyBlock(id, world, x, y, z, "", "");
+		KeyBlock key = new KeyBlock(id, world, x, y, z, "", "", "");
 		return key;
 	}
 }

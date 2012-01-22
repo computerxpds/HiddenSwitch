@@ -43,7 +43,7 @@ public class DatabaseHandler {
 			Class.forName("org.sqlite.JDBC");
 			connection = DriverManager.getConnection("jdbc:sqlite:"+me.getDataFolder().getPath()+"\\data.db");
 			statement = connection.createStatement();
-			statement.executeUpdate("CREATE TABLE IF NOT EXISTS blocks (idstring TEXT, world TEXT, x INTEGER, y INTEGER, z INTEGER, user TEXT, key TEXT)");
+			statement.executeUpdate("CREATE TABLE IF NOT EXISTS blocks (idstring TEXT, world TEXT, x INTEGER, y INTEGER, z INTEGER, user TEXT, key TEXT, owner TEXT)");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,7 +63,8 @@ public class DatabaseHandler {
 						result.getInt("y"),
 						result.getInt("z"),
 						result.getString("user"),
-						result.getString("key")
+						result.getString("key"),
+						result.getString("owner")
 					);
 				me.confV.keyblocks.put(kb.id,kb);
 			}
@@ -104,7 +105,7 @@ public class DatabaseHandler {
 	
 	public void newRecord(String idstring, String world, int x, int y, int z, String user, String key) {
 		try {
-			statement.executeUpdate("INSERT INTO blocks VALUES ('"+ idstring +"','"+ world +"','"+ Integer.toString(x) +"','"+ Integer.toString(y) +"','"+ Integer.toString(z) +"','"+ user +"','"+ key +"')");
+			statement.executeUpdate("INSERT INTO blocks VALUES ('"+ idstring +"','"+ world +"','"+ Integer.toString(x) +"','"+ Integer.toString(y) +"','"+ Integer.toString(z) +"','"+ user +"','"+ key +"',NULL)");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
