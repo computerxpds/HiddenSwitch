@@ -3,9 +3,6 @@ lchs:
     # What blocks can be hidden switches
     usable-blocks: 1,2,3,4,5,7,17,22,24,35,41,42,43,45,47,48,49,53,57,67,80,82,87,88,98,108,109,110,114,121
 
-    # Allow left clicks?
-    left-clicks: true
-
     # Is the username checking case sensitive?
     case-sensitive-names: false
 
@@ -22,15 +19,12 @@ lchs:
     # What trigger should HiddenSwitch look for? Default:[lchs]
     sign-text: '[lchs]'
 
-    # Allow users to lock their signs so only they can use them?
-    allow-user-lock: true
-        
-    # Allow signs to require 'key' items (sign will only function if holding the specified item)
-    allow-item-lock: true
-
-    # Use this specific item, or let the users choose their own
-    # (0 = users can set their own items, any other number = item id of the 'key')
-    # IMPORTANT: THIS ONLY WORKS IF allow-item-lock IS TRUE!
+    # Item Lock Override
+    ##
+    # Specify an item id here that all hidden switches will require to function.
+    ##
+    # 0 = Override Disabled, otherwise
+    # ## = id of the global key item
     item-lock-override: 0
 
     # Username Shortcut

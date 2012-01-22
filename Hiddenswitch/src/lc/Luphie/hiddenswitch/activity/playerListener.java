@@ -21,6 +21,7 @@
 package lc.Luphie.hiddenswitch.activity;
 
 import lc.Luphie.hiddenswitch.HiddenSwitch;
+import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -52,63 +53,63 @@ public class playerListener extends PlayerListener {
 
 	//@EventHandler(priority = EventPriority.HIGHEST)
 	@Override
-	public void onPlayerInteract(PlayerInteractEvent event) {
+	public void onPlayerInteract(PlayerInteractEvent ev) {
 
-		// If event was cancelled, then nothing to do here
-		if (event.isCancelled()) {
-
-			return;
-		}
-
-		// Are sign base hidden switches enabled?
-		if (!me.getConfig().getBoolean("lchs.signcontrol.allow-signs")) {
-
-			return;
-		}
-
-		Player playa = event.getPlayer();
-
-		// v0.0.6 PERMS check
-		// Check for the players use sign permission
-		if (playa.hasPermission("hiddenswitch.user.use") == false) {
-
-			return;
-		}
-
-		Block iblock = event.getClickedBlock();
-
-		// Are left clicks allowed?
-		Boolean cclicks = me.getConfig().getBoolean("lchs.config.left-clicks");
-
-		// Compare action to allowed clicks:
-		if (cclicks) {
-
-			if (!event.getAction().equals(Action.LEFT_CLICK_BLOCK) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+		/*
+		 *  If event was cancelled, then nothing to do here
+		 */
+		if (ev.isCancelled()) {
 			
-				return;
-			}
-		} else {
-
-			if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-			
-				return;
-			}
-		}
-
-		// See if the block that was clicked is a usable block
-		try {
-
-			if (!me.confV.usableBlocks.contains(iblock.getTypeId())) {
-			
-				return;
-			}
-		} catch (NullPointerException e) {
-
-			me.log.warning(HiddenSwitch.logName+"iblock NullPointerExeption");
 			return;
+			
 		}
 
+		/*
+		 *  Make sure the interaction was a click
+		 */
+		if (!ev.getAction().equals(Action.LEFT_CLICK_BLOCK) && !ev.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+			
+			return;
+
+		}
+		
+		/*
+		 * Shortcut the config values
+		 */
+		boolean hsb = HiddenSwitch.instance.getConfig().getBoolean("lchs.dbcontrol.allow-db");
+		boolean hss = HiddenSwitch.instance.getConfig().getBoolean("lchs.signcontrol.allow-signs");
+		
+		/*
+		 * If these are both false then there is no need for the plugin to be on at all...
+		 */
+		if(!hsb && !hss) {
+			
+			return;
+			
+		}
+
+		/*
+		 *  Check the player's permissions to make sure they can activate switches
+		 */
+		if (!ev.getPlayer().hasPermission("hiddenswitch.user.use")) {
+			
+			return;
+			
+		}
+
+		/*
+		 * See if the block is in the list of usable blocks.
+		 */
+		if (!me.confV.usableBlocks.contains(ev.getClickedBlock().getTypeId())) {
+			
+			return;
+
+		}
+
+		Block blk = ev.getClickedBlock();
+		Player plr = ev.getPlayer();
 		Location loc;
+		Boolean brb = false;
 
 		// Faces to check
 		BlockFace[] faces = {
@@ -120,128 +121,144 @@ public class playerListener extends PlayerListener {
 			BlockFace.WEST };
 
 		// Are we checking as a hiddenswitch block?
-		boolean hsb = HiddenSwitch.instance.getConfig().getBoolean("lchs.dbcontrol.allow-db");
 
 		for (BlockFace holder : faces) {
 
-			// Try and find a sign post next to the clicked block
-			if (iblock.getRelative(holder).getTypeId() == 63 || iblock.getRelative(holder).getTypeId() == 68) {
+			/*
+			 * If signs are enabled check for signs.
+			 */
+			if(hss) {
 
-				if(signSlapper(iblock.getRelative(holder), playa)) {
+				if (blk.getRelative(holder).getTypeId() == 63 || blk.getRelative(holder).getTypeId() == 68) {
+	
+					if(signSlapper(blk.getRelative(holder), plr)) {
+	
+						brb = true;
 
-					break;
+					}
+	
 				}
 
 			}
+
+			/*
+			 * If KeyBlocks are enabled check for KeyBlocks
+			 */
 			if (hsb) {
 
-				if (iblock.getRelative(holder).getTypeId() == 69 || iblock.getRelative(holder).getTypeId() == 77) {
+				if (blk.getRelative(holder).getTypeId() == 69 || blk.getRelative(holder).getTypeId() == 77) {
 
-					String id = iblock.getWorld().getName() + Integer.toString(iblock.getX()) + Integer.toString(iblock.getY()) + Integer.toString(iblock.getZ());
+					String id = KeyBlock.makeIdString(blk.getWorld(), blk.getX(), blk.getY(), blk.getZ());
 					
 					if(me.blkCon.keyblocks.containsKey(id)) {
 					// Look for levers
 					
-						if (iblock.getRelative(holder).getTypeId() == 69) {
+						if (blk.getRelative(holder).getTypeId() == 69) {
 	
-							loc = iblock.getRelative(holder).getLocation();
-							flipLever(loc, playa);
-							break;
+							loc = blk.getRelative(holder).getLocation();
+							flipLever(loc, plr);
+							brb = true;
 	
 						}
 	
 						// Look for buttons
-						if (iblock.getRelative(holder).getTypeId() == 77) {
+						if (blk.getRelative(holder).getTypeId() == 77) {
 	
-							loc = iblock.getRelative(holder).getLocation();
-							pushButton(loc, playa);
-							break;
+							loc = blk.getRelative(holder).getLocation();
+							pushButton(loc, plr);
+							brb = true;
 	
 						}
 					}
 				} // END IF RELATIVE IS SWITCH
 			}
+			
+			if(brb) {
+				
+				break;
+				
+			}
 
 		} // END FOR
 	}
 
+	/**
+	 * Check the sign to see if it is a HiddenSwitch Sign and try and use it if
+	 * it is
+	 * 
+	 * @param blk
+	 *            The sign found in onPlayerInteract as an instance of
+	 *            {@link Block}
+	 * @param plr
+	 *            The player involved in the event
+	 * @return true if successful, otherwise false
+	 */
+	public boolean signSlapper(Block blk, Player plr) {
 
-	public boolean signSlapper(Block signToSlap, Player playa) {
-
-		Sign hola = (Sign) signToSlap.getState();
-		String slappyFace = hola.getLine(0).toLowerCase();
+		Sign sign = (Sign) blk.getState();
+		String slappyFace = sign.getLine(0).toLowerCase();
 		Boolean failed = false;
 
-		// Check the first line of the sign to see if we need to run
-		if (!slappyFace.equals(me
-			.getConfig()
-			.getString("lchs.signcontrol.sign-text")
-			.toLowerCase())) {
+		/*
+		 *  Check the first line of the sign to see if we need to run
+		 */
+		if (!slappyFace.equals(me.getConfig().getString("lchs.signcontrol.sign-text").toLowerCase())) {
 
 			return false;
 
 		}
 
-		// So it is, now do we allow per player restrictions?
-		// PERMS Set this to a permission
-		if (me.getConfig().getBoolean("lchs.signcontrol.allow-user-lock")) {
 
-			// Check to see if line 2 has text, if it does and the player
-			// doesn't have the ignorekeys.user permission
-			// then check their name against the sign.
-			if (!hola.getLine(1).isEmpty()
-				&& !playa.hasPermission("hiddenswitch.admin.ignorekeys.user")) {
+		/*
+		 *  Check to see if line 2 has text, if it does and the player
+		 *  doesn't have the ignorekeys.user permission
+		 *  then check their name against the sign.
+		 */
+		if (!sign.getLine(1).isEmpty() && !plr.hasPermission("hiddenswitch.admin.ignorekeys.user")) {
 
-				// Fail if names ARE case sensitive and the name on the sign
-				// DOES NOT match the player name
-				if (me.getConfig().getBoolean("lchs.config.case-sensitive-names")
-					&& !hola.getLine(1).equals(playa.getDisplayName())) {
+			// Fail if names ARE case sensitive and the name on the sign
+			// DOES NOT match the player name
+			if (me.getConfig().getBoolean("lchs.config.case-sensitive-names")
+				&& !sign.getLine(1).equals(plr.getDisplayName())) {
 
-					failed = true;
+				failed = true;
 
-					// Fail if names ARE NOT case sensitive and the name on the
-					// sign DOES NOT match the player name
-				} else if (!me.getConfig().getBoolean(
-					"lchs.config.case-sensitive-names")
-					&& !hola.getLine(1).equalsIgnoreCase(playa.getDisplayName())) {
+				// Fail if names ARE NOT case sensitive and the name on the
+				// sign DOES NOT match the player name
+			} else if (!me.getConfig().getBoolean(
+				"lchs.config.case-sensitive-names")
+				&& !sign.getLine(1).equalsIgnoreCase(plr.getDisplayName())) {
+
+				failed = true;
+
+			}
+		}
+
+
+		// if line 3 IS NOT blank and the user DOES NOT have the
+		// ignorekeys.key permission
+		if (!sign.getLine(2).isEmpty()
+			&& !plr.hasPermission("hiddenswitch.admin.ignorekeys.key")) {
+
+			// Is the key item override set?
+			if (me.getConfig().getInt("lchs.signcontrol.item-lock-override") != 0) {
+
+				// If so then is the player holding the specified key item?
+				if (plr.getItemInHand().getTypeId() != me.getConfig().getInt(
+					"lchs.signcontrol.item-lock-override")) {
 
 					failed = true;
 
 				}
+
+				// If it's player set items
+			} else if (!sign.getLine(2).equalsIgnoreCase(plr.getItemInHand().getType().toString())) {
+
+				failed = true;
+
 			}
 		}
-
-		// What about held item restrictions?
-		if (me.getConfig().getBoolean("lchs.signcontrol.allow-item-lock")) {
-
-
-			// if line 3 IS NOT blank and the user DOES NOT have the
-			// ignorekeys.key permission
-			if (!hola.getLine(2).isEmpty()
-				&& !playa.hasPermission("hiddenswitch.admin.ignorekeys.key")) {
-
-				// Is the key item override set?
-				if (me.getConfig().getInt("lchs.signcontrol.item-lock-override") != 0) {
-
-					// If so then is the player holding the specified key item?
-					if (playa.getItemInHand().getTypeId() != me.getConfig().getInt(
-						"lchs.signcontrol.item-lock-override")) {
-
-						failed = true;
-
-					}
-
-					// If it's player set items
-				} else if (!hola.getLine(2).equalsIgnoreCase(playa
-					.getItemInHand()
-					.getType()
-					.toString())) {
-
-					failed = true;
-
-				}
-			}
-		}
+		
 
 		// Flip the switch
 		if (failed == false) {
@@ -262,19 +279,19 @@ public class playerListener extends PlayerListener {
 			for (BlockFace holder : faces) {
 
 				// Look for levers
-				if (signToSlap.getRelative(holder).getTypeId() == 69) {
+				if (blk.getRelative(holder).getTypeId() == 69) {
 
-					loc = signToSlap.getRelative(holder).getLocation();
-					flipLever(loc, playa);
+					loc = blk.getRelative(holder).getLocation();
+					flipLever(loc, plr);
 					return true;
 
 				}
 
 				// Look for buttons
-				if (signToSlap.getRelative(holder).getTypeId() == 77) {
+				if (blk.getRelative(holder).getTypeId() == 77) {
 
-					loc = signToSlap.getRelative(holder).getLocation();
-					pushButton(loc, playa);
+					loc = blk.getRelative(holder).getLocation();
+					pushButton(loc, plr);
 					return true;
 
 				}
