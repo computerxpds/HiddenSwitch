@@ -151,6 +151,12 @@ public class OhTheCommandity {
 		me.lang.reloadLang();
 	}
 	
+	/**
+	 * Reload the KeyBlock database
+	 * 
+	 * @param sender
+	 *            The command sender
+	 */
 	public static void lchsreloaddb(CommandSender sender) {
 
 		HiddenSwitch me = HiddenSwitch.instance;
@@ -161,7 +167,7 @@ public class OhTheCommandity {
 			
 			if (player.hasPermission("hiddenswitch.admin.reloaddb")) {
 
-				player.sendMessage(me.lang.getLang().getString("language.messages.save-db"));
+				player.sendMessage(me.lang.getLang().getString("language.messages.reload-db"));
 			
 			} else {
 			
@@ -170,12 +176,18 @@ public class OhTheCommandity {
 			}
 		}
 	
-		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.save-db"));
+		me.log.info(HiddenSwitch.logName + me.lang.getLang().getString("language.messages.reload-db"));
 		
-		HiddenSwitch.DBH.saveAll();
 		
 	}
 	
+	/**
+	 * Save the 'floating' KeyBlocks to the database, uses the saveAll() method;
+	 * effectively a manual skip over updates().
+	 * 
+	 * @param sender
+	 *            the sender
+	 */
 	public static void lchsSaveDB(CommandSender sender) {
 
 		HiddenSwitch me = HiddenSwitch.instance;
