@@ -212,8 +212,6 @@ public class playerListener extends PlayerListener {
 		}
 
 		// What about held item restrictions?
-		// TODO: Set this to a permission
-		// DEPRECIATED
 		if (me.getConfig().getBoolean("lchs.signcontrol.allow-item-lock")) {
 
 

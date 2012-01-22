@@ -37,8 +37,6 @@ public class BlockLocker {
 		Block block = player.getTargetBlock(null,32);
 		return block;
 	}
-
-
 }
 
 

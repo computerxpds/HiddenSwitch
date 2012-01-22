@@ -61,6 +61,11 @@ public class Lang {
 		
 	}
 	
+	/**
+	 * Return the loaded language configuration.
+	 * 
+	 * @return YamlConfiguration - returns the loaded language config.
+	 */
 	public YamlConfiguration getLang() {
 
 		return text;
