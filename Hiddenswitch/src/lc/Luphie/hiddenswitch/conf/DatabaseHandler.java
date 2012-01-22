@@ -59,8 +59,11 @@ public class DatabaseHandler {
 			prepDel = connection.prepareStatement("DELETE FROM blocks WHERE idstring=?;");
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+
+			me.log.severe(HiddenSwitch.logName + me.lang.getLang().getString("language.errors.cannotdatabase"));
+			me.log.severe(HiddenSwitch.logName + e.getMessage());
 			e.printStackTrace();
+			
 		}
 		
 		load();

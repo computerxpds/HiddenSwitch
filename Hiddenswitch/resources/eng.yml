@@ -19,3 +19,4 @@ language:
   errors:
     cannotprepsqlstatement: 'Could not prepare SQL statement!'
     cannotloadkeyblocks: 'Could not pull KeyBlocks from database!'
+    cannotdatabase: 'Could not connect to the database!'
