@@ -38,7 +38,16 @@ public class BlockContainer {
 	public BlockContainer() {
 
 		me = HiddenSwitch.instance;
-		
+		loadKeyBlocks();
+	}
+	
+	public void reloadKeyBlocks() {
+		keyblocks.clear();
+		loadKeyBlocks();
+	}
+	
+	private void loadKeyBlocks() {
+
 		ResultSet result = HiddenSwitch.DBH.load();
 		try {
 
@@ -76,6 +85,7 @@ public class BlockContainer {
 			me.log.info(HiddenSwitch.logName + "Loaded " + Integer.toString(keyblocks.size()) + "KeyBlocks into memory");
 			
 		}
+
 	}
 	public static Block getBlock(Player player) {
 

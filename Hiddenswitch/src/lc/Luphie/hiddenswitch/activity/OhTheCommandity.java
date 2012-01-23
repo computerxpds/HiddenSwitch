@@ -217,6 +217,7 @@ public class OhTheCommandity {
 	public static void lchsreloaddb(CommandSender sender) {
 
 		genAdminCom(sender, "hiddenswitch.admin.reloaddb", "language.messages.reload-db");
+		HiddenSwitch.instance.blkCon.reloadKeyBlocks();
 		
 	}
 	

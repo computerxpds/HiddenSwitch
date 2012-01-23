@@ -63,12 +63,29 @@ public class HiddenSwitch extends JavaPlugin {
 	 */
 	public void onDisable() {
 
+		/*
+		 * Save any staged configuration changes
+		 */
 		if(confV instanceof HSConfig) {
 
 			confV.saveToFile();
 
 		}
+		
+		/*
+		 * Save any floating KeyBlocks to the database
+		 */
+		if (DBH instanceof DatabaseHandler) {
+			
+			DBH.saveAll();
+			
+		}
 
+		/*
+		 * If the language handler is loaded save any staged changes to file and
+		 * output the 'goodbye' from the language configuration, otherwise use
+		 * the default.
+		 */
 		if(lang instanceof Lang) {
 
 			lang.saveToFile();
@@ -146,6 +163,12 @@ public class HiddenSwitch extends JavaPlugin {
 
 		}
 		
+		if(cmd.getName().toLowerCase().equals("lchssave")) {
+
+			OhTheCommandity.lchsreloaddb(sender);
+
+		}
+
 		return true;
 
 	}

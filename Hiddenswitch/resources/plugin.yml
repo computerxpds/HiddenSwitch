@@ -8,6 +8,10 @@ commands:
     description: Reloads the configuration
     permission: hiddenswitch.admin.reload
     usage: /lchsreload
+  lchsreloaddb:
+    description: 'Reloads the keyblock database WARNING:UNSAVED KEYBLOCKS WILL BE LOST'
+    permission: hiddenswitch.admin.reload
+    usage: /lchsreload
   lchsreloadlang:
     description: Reloads the language files
     permission: hiddenswitch.admin.reloadlang
