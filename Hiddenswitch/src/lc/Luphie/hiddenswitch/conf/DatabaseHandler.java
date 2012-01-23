@@ -208,7 +208,7 @@ public class DatabaseHandler {
 	 */
 	private void updates() {
 
-		if(this.updatesI >= me.getConfig().getInt("lchs.dbconfig.autosave")) {
+		if(this.updatesI >= me.getConfig().getInt("lchs.dbcontrol.autosave")) {
 			saveAll();
 		}
 
