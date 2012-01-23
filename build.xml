@@ -15,7 +15,7 @@
 	<loadfile property="VERSION" srcFile="version" />
 
 	<condition property="verName" value="${VERSION}-b${env.BUILD_NUMBER}" else="${VERSION}">
-		<equals arg1="${env.GIT_BRANCH}" arg2="master" />
+		<equals arg1="${env.GIT_BRANCH}" arg2="development" />
 	</condition>
 	
 	<property name="jarName" value="HiddenSwitch_${verName}.jar" />
