@@ -120,6 +120,7 @@ public class HiddenSwitch extends JavaPlugin {
 	 * , org.bukkit.command.Command, java.lang.String, java.lang.String[])
 	 */
 	public boolean onCommand(CommandSender sender, Command cmd, String cmdLabel, String[] mods) {
+		
 
 		if (cmd.getName().toLowerCase().equals("lchsreload")) {
 

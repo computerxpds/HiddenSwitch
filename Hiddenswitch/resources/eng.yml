@@ -16,6 +16,8 @@ language:
     cannotuseblock: 'Block cannot be used as a hidden switch!'
     hiddenswitchset: 'Hidden switch set.'
   warnings:
+    invalidusername: 'Invalid username specified, usernames can only be letters, numbers, or _'
+    invalidkeyname: 'Invalid key item specified, key names can only be letters or _'
   errors:
     cannotprepsqlstatement: 'Could not prepare SQL statement!'
     cannotloadkeyblocks: 'Could not pull KeyBlocks from database!'

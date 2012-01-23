@@ -46,7 +46,9 @@ public class OhTheCommandity {
 
 		HiddenSwitch me = HiddenSwitch.instance;
 		
-		// Did this come from a player?
+		/*
+		 *  Did this come from a player?
+		 */
 		if(!(sender instanceof Player)) {
 			me.log.info(HiddenSwitch.logName + "But why would the server need a hidden switch?");
 			return;
@@ -54,26 +56,36 @@ public class OhTheCommandity {
 		
 		Player player = (Player) sender;
 
-		// Is this enabled?
+		/*
+		 *  Is this enabled?
+		 */
 		if(!me.getConfig().getBoolean("lchs.dbcontrol.allow-db")) {
 			return;
 		}
 		
-		// Does the user have permission for this command?
+		/*
+		 *  Does the user have permission for this command?
+		 */
 		if(!player.hasPermission("hiddenswitch.user.command")) {
 			return;
 		}
 		
-		// Get the block to check if it is even usable
+		/*
+		 *  Get the block to check if it is even usable
+		 */
 		Block block = BlockContainer.getBlock(player);
 		
-		// Is the block usable?
+		/*
+		 *  Is the block usable?
+		 */
 		if(!me.confV.usableBlocks.contains(block.getTypeId())) {
 			player.sendMessage(me.lang.getLang().getString("language.messages.cannotuseblock"));
 			return;
 		}
 		
-		// Is the block already locked?
+		/*
+		 *  Is the block already locked?
+		 */
 		String searchID = block.getWorld().getName() + block.getX() + block.getY() + block.getZ();
 		if(me.blkCon.keyblocks.containsKey(searchID)) {
 			player.sendMessage(me.lang.getLang().getString("language.messages.cannotuseblock"));
@@ -81,6 +93,80 @@ public class OhTheCommandity {
 		}
 		
 		KeyBlock key = KeyBlock.blockToKey(block);
+
+		/*
+		 * Get any arguments
+		 */
+		for (String hold : args) {
+
+			/*
+			 * For now to separate the arguments I went with a key:value setup
+			 * so here we split the arguments into 2 strings and hunt for the
+			 * key in the first so we can make use of the second
+			 */
+			String[] strings = hold.split(":", 2);
+
+			/*
+			 * If the first part is user then safety check the second part to
+			 * make sure it is safe to go into the database. (Minecraft.net says
+			 * usernames can only be letters numbers and _ so anything other
+			 * than that is disallowed.
+			 */
+			if (strings[0].equals("user")) {
+
+				// Check username
+				if(strings[1].matches("\\w{3,}")) {
+					
+					// If it is safe set it to a key
+					key.users = strings[1];
+					
+				// If it is unsafe yell at the sender	
+				} else {
+					
+					player.sendMessage(me.lang.getLang().getString("language.warnings.invalidusername"));
+					
+				}
+			
+			/*
+			 * Because long commands are a pain to use there are 2 shortcuts.
+			 * the key "me" sets the user to the command sender and if the key
+			 * "key" is provided without a value then it is set to the currently
+			 * held item.
+			 */
+			} else if (strings[0].equals("me")) {
+			
+				key.users = player.getName();
+			
+			// Now for the "key" key
+			} else if (strings[0].equals("key")) {
+			
+				/*
+				 * If there is no second part then set the key item to what the
+				 * user is currently holding
+				 */
+				if (strings.length == 1) {
+				
+					key.key = player.getItemInHand().getType().toString();
+				
+				/*
+				 * If there is a key item specified make sure it is database
+				 * safe and if it is set it as the KeyBlock's key
+				 */
+				} else if(strings[1].matches("\\w{3,}")) {
+				
+					key.key = strings[1];
+				
+				// If it is not database safe then yell at the user
+					//TODO support extra data
+				} else {
+					
+					player.sendMessage(me.lang.getLang().getString("language.warnings.invalidkeyname"));
+
+				}
+			}
+			
+		}
+		
 		HiddenSwitch.DBH.newRecord(key);
 		key.isInDatabase = true;
 		key.owner = player.getName();
