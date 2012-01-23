@@ -11,7 +11,7 @@ commands:
   lchsreloaddb:
     description: 'Reloads the keyblock database WARNING:UNSAVED KEYBLOCKS WILL BE LOST'
     permission: hiddenswitch.admin.reload
-    usage: /lchsreload
+    usage: /lchsreloaddb
   lchsreloadlang:
     description: Reloads the language files
     permission: hiddenswitch.admin.reloadlang
