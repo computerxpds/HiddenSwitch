@@ -10,7 +10,7 @@ lchs:
     language-file: eng.yml
         
     # Send debug messages to the console?
-    debug: true
+    debug: false
         
   signcontrol:
     # Allow sign control?
