@@ -93,6 +93,11 @@ public class OhTheCommandity {
 		}
 		
 		KeyBlock key = KeyBlock.blockToKey(block);
+		
+		/*
+		 * Set the keyBlock's owner
+		 */
+		key.owner = player.getName();
 
 		/*
 		 * Get any arguments

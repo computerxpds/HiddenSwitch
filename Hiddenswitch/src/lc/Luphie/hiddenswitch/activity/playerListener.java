@@ -47,7 +47,7 @@ public class playerListener extends PlayerListener {
 
 		me = HiddenSwitch.instance;
 		//Bukkit.getServer().getPluginManager().registerEvents(this, me);
-		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT,this,Event.Priority.Highest, me);
+		Bukkit.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, this, Event.Priority.Highest, me);
 
 	}
 
@@ -148,28 +148,23 @@ public class playerListener extends PlayerListener {
 
 				if (blk.getRelative(holder).getTypeId() == 69 || blk.getRelative(holder).getTypeId() == 77) {
 
-					String id = KeyBlock.makeIdString(blk.getWorld(), blk.getX(), blk.getY(), blk.getZ());
-					
-					if(me.blkCon.keyblocks.containsKey(id)) {
-					// Look for levers
-					
-						if (blk.getRelative(holder).getTypeId() == 69) {
-	
-							loc = blk.getRelative(holder).getLocation();
-							flipLever(loc, plr);
-							brb = true;
-	
+					if (canActivateBlock(blk,plr)){
+						// Look for levers
+						
+							if (blk.getRelative(holder).getTypeId() == 69) {
+
+								loc = blk.getRelative(holder).getLocation();
+								flipLever(loc, plr);
+								brb = true;
+
+							} else if (blk.getRelative(holder).getTypeId() == 77) {
+
+								loc = blk.getRelative(holder).getLocation();
+								pushButton(loc, plr);
+								brb = true;
+
+							}
 						}
-	
-						// Look for buttons
-						if (blk.getRelative(holder).getTypeId() == 77) {
-	
-							loc = blk.getRelative(holder).getLocation();
-							pushButton(loc, plr);
-							brb = true;
-	
-						}
-					}
 				} // END IF RELATIVE IS SWITCH
 			}
 			
@@ -193,7 +188,7 @@ public class playerListener extends PlayerListener {
 	 *            The player involved in the event
 	 * @return true if successful, otherwise false
 	 */
-	public boolean signSlapper(Block blk, Player plr) {
+	private boolean signSlapper (Block blk, Player plr) {
 
 		Sign sign = (Sign) blk.getState();
 		String slappyFace = sign.getLine(0).toLowerCase();
@@ -237,8 +232,7 @@ public class playerListener extends PlayerListener {
 
 		// if line 3 IS NOT blank and the user DOES NOT have the
 		// ignorekeys.key permission
-		if (!sign.getLine(2).isEmpty()
-			&& !plr.hasPermission("hiddenswitch.admin.ignorekeys.key")) {
+		if (!sign.getLine(2).isEmpty() && !plr.hasPermission("hiddenswitch.admin.ignorekeys.key")) {
 
 			// Is the key item override set?
 			if (me.getConfig().getInt("lchs.signcontrol.item-lock-override") != 0) {
@@ -300,6 +294,65 @@ public class playerListener extends PlayerListener {
 		return false;
 	}
 
+	private boolean canActivateBlock (Block blk, Player plr) {
+		
+		String id = KeyBlock.makeIdString(blk.getWorld(), blk.getX(), blk.getY(), blk.getZ());
+		KeyBlock keyblock = null;
+		
+		/*
+		 * Is this a KeyBlock? 
+		 */
+		if (!me.blkCon.keyblocks.containsKey(id)) {
+			
+			return false;
+			
+		} else {
+			
+			keyblock = me.blkCon.keyblocks.get(id);
+			
+			if(keyblock == null) {
+				
+				return false;
+				
+			}
+		
+		}
+		
+		/*
+		 * Does this KeyBlock have a user lock?
+		 */
+		if (!keyblock.users.isEmpty()) {
+			
+			/*
+			 * Does the invoking player match the user lock?
+			 */
+			if (!keyblock.users.equals(plr.getName())) {
+				
+				return false;
+				
+			}
+			
+		}
+		
+		/*
+		 * Does this KeyBlock have a key item lock?
+		 */
+		if (!keyblock.key.isEmpty()) {
+			
+			/*
+			 * Does the invoking player's held item match the key item?
+			 */
+			if (!keyblock.key.equalsIgnoreCase(plr.getItemInHand().getType().toString())) {
+				
+				return false;
+				
+			}
+			
+		}
+		
+		return true;
+		
+	}
 	/**
 	 * Push button.
 	 * 
