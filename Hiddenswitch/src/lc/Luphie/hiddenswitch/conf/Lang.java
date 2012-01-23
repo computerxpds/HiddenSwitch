@@ -123,7 +123,7 @@ public class Lang {
 	/**
 	 * Save the provided YamlConfiguration to file.
 	 * 
-	 * @param YamlConfiguration
+	 * @param conf
 	 *            The config to save.
 	 * @return boolean - True if successful, otherwise false;
 	 */

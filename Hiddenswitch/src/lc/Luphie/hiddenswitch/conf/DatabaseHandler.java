@@ -94,8 +94,8 @@ public class DatabaseHandler {
 	/**
 	 * Delete a KeyBlock record from the database.
 	 * 
-	 * @param String
-	 *            stringid - the string id belonging to the record that is being
+	 * @param stringid
+	 *            the string id belonging to the record that is being
 	 *            deleted.
 	 */
 	public void dropRecord(String stringid) {
@@ -121,7 +121,7 @@ public class DatabaseHandler {
 	/**
 	 * Delete a KeyBlock record from the database.
 	 * 
-	 * @param KeyBlock
+	 * @param keyblock
 	 *            keyblock - the block that will be removed from the database.
 	 */
 	public void dropRecord(KeyBlock keyblock) {
@@ -132,7 +132,7 @@ public class DatabaseHandler {
 	 * Insert the values from an instance of KeyBlock into a new row in the
 	 * database.
 	 * 
-	 * @param KeyBlock
+	 * @param key
 	 *            The KeyBlock instance to pull the data from
 	 */
 	public void newRecord(KeyBlock key) {
@@ -203,7 +203,7 @@ public class DatabaseHandler {
 	/**
 	 * Checks to see if the number of open PreparedStatements is greater than or
 	 * equal to the autosave value set in the configuration file. If it is equal
-	 * to or greater, then call the {@link saveAll()} method and save the
+	 * to or greater, then call the {@link #saveAll()} method and save the
 	 * 'floating' KeyBlocks to the database.
 	 */
 	private void updates() {

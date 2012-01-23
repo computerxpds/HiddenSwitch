@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="javadoc">
+    <target name="javadoc">
+        <javadoc access="private" author="true" classpath="libs/craftbukkit-1.0.1-R1.jar" destdir="doc" nodeprecated="false" nodeprecatedlist="false" noindex="false" nonavbar="false" notree="false" packagenames="lc.Luphie.hiddenswitch.conf,lc.Luphie.hiddenswitch.utilities,lc.Luphie.hiddenswitch,lc.Luphie.hiddenswitch.activity" source="1.6" sourcepath="Hiddenswitch/src" splitindex="true" use="true" version="true">
+            <link href="http://jd.bukkit.org/apidocs/"/>
+        </javadoc>
+    </target>
+</project>
