@@ -18,6 +18,8 @@ language:
   warnings:
     invalidusername: 'Invalid username specified, usernames can only be letters, numbers, or _'
     invalidkeyname: 'Invalid key item specified, key names can only be letters or _'
+    nopermsetuserlock: 'You do not have the permission required to set a user lock.'
+    nopermsetitemlock: 'You do not have the permission required to set an item lock.'
   errors:
     cannotprepsqlstatement: 'Could not prepare SQL statement!'
     cannotloadkeyblocks: 'Could not pull KeyBlocks from database!'
