@@ -159,16 +159,18 @@ public class OhTheCommandity {
                         // If it is safe set it to a key
                         key.users = strings[1];
 
-                        // If it is unsafe yell at the sender
+                    // If it is unsafe yell at the sender
                     } else {
 
                         player.sendMessage(me.lang.getLang().getString("language.warnings.invalidusername"));
+                        return;
 
                     }
 
                 } else {
 
                     player.sendMessage(me.lang.getLang().getString("language.warnings.nopermsetuserlock"));
+                    return;
 
                 }
 
@@ -190,6 +192,7 @@ public class OhTheCommandity {
                 } else {
 
                     player.sendMessage(me.lang.getLang().getString("language.warnings.nopermsetuserlock"));
+                    return;
 
                 }
 
@@ -217,15 +220,20 @@ public class OhTheCommandity {
 
                         key.key = strings[1];
 
-                        // If it is not database safe then yell at the user
-                        // TODO support extra data
+                    // If it is not database safe then yell at the user
+                    // TODO support extra data
                     } else {
 
                         player.sendMessage(me.lang.getLang().getString("language.warnings.invalidkeyname"));
+                        return;
 
                     }
+
                 } else {
+
                     player.sendMessage(me.lang.getLang().getString("language.warnings.nopermsetitemlock"));
+                    return;
+
                 }
             }
 

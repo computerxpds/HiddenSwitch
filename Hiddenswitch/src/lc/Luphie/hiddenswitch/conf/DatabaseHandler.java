@@ -42,12 +42,13 @@ import java.sql.Statement;
  *
  */
 public class DatabaseHandler {
-    private int               updatesI = 0;
-    private Connection        connection;
-    private HiddenSwitch      me;
+	
+    private int updatesI = 0;
+    private Connection connection;
+    private HiddenSwitch me;
     private PreparedStatement prepDel;
     private PreparedStatement prepIns;
-    private Statement         statement;
+    private Statement statement;
 
     public DatabaseHandler() {
 
