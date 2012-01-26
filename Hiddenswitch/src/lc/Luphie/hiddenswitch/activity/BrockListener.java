@@ -31,42 +31,26 @@ import lc.Luphie.hiddenswitch.utilities.KeyBlock;
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockBurnEvent;
-import org.bukkit.event.block.BlockListener;
-
-//import org.bukkit.event.EventHandler;
-//import org.bukkit.event.EventPriority;
-//import org.bukkit.event.Listener;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.inventory.ItemStack;
 
-public class BrockListener extends BlockListener {
+public class BrockListener implements Listener {
     private HiddenSwitch me;
 
     public BrockListener() {
 
         me = HiddenSwitch.instance;
 
-        // Bukkit.getServer().getPluginManager().registerEvents(this, me);
-        Bukkit.getServer().getPluginManager().registerEvent(Event.Type.SIGN_CHANGE,
-                this,
-                Event.Priority.Highest,
-                me);
-        Bukkit.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BREAK,
-                this,
-                Event.Priority.Highest,
-                me);
-        Bukkit.getServer().getPluginManager().registerEvent(Event.Type.BLOCK_BURN,
-                this,
-                Event.Priority.Highest,
-                me);
+        Bukkit.getServer().getPluginManager().registerEvents(this, me);
 
     }
 
-    // @EventHandler(priority = EventPriority.HIGHEST)
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBreak(BlockBreakEvent ev) {
 
         if (ev.isCancelled()) {
@@ -81,8 +65,7 @@ public class BrockListener extends BlockListener {
 
     }
 
-    // @EventHandler(priority = EventPriority.HIGHEST)
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onBlockBurn(BlockBurnEvent ev) {
 
         if (ev.isCancelled()) {
@@ -95,8 +78,7 @@ public class BrockListener extends BlockListener {
 
     }
 
-    // @EventHandler(priority = EventPriority.HIGHEST)
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onSignChange(SignChangeEvent ev) {
 
         // Make sure the event wasn't canceled before this

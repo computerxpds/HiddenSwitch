@@ -36,29 +36,21 @@ import org.bukkit.block.Sign;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.Player;
-
-//import org.bukkit.event.EventHandler;
-//import org.bukkit.event.EventPriority;
-//import org.bukkit.event.Listener;
-import org.bukkit.event.Event;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 
 
-public class playerListener extends PlayerListener {
+public class playerListener implements Listener {
     public static HiddenSwitch me;
 
     public playerListener() {
 
         me = HiddenSwitch.instance;
 
-        // Bukkit.getServer().getPluginManager().registerEvents(this, me);
-        Bukkit.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT,
-                this,
-                Event.Priority.Highest,
-                me
-        );
+        Bukkit.getServer().getPluginManager().registerEvents(this, me);
 
     }
 
@@ -146,8 +138,7 @@ public class playerListener extends PlayerListener {
 
     }
 
-    // @EventHandler(priority = EventPriority.HIGHEST)
-    @Override
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerInteract(PlayerInteractEvent ev) {
 
         /*
