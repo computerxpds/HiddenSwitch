@@ -39,7 +39,8 @@ import org.bukkit.entity.Player;
  * @author Luphie
  */
 public class OhTheCommandity {
-    private static void genAdminCom(CommandSender sender, String permPath, String mesPath) {
+	
+    private static void lazyMode(CommandSender sender, String permPath, String mesPath) {
 
         HiddenSwitch me = HiddenSwitch.instance;
 
@@ -259,7 +260,7 @@ public class OhTheCommandity {
      */
     public static void lchsSaveDB(CommandSender sender) {
 
-        genAdminCom(sender, "hiddenswitch.admin.save", "language.messages.save-db");
+        lazyMode(sender, "hiddenswitch.admin.save", "language.messages.save-db");
         HiddenSwitch.DBH.saveAll();
 
     }
@@ -273,7 +274,7 @@ public class OhTheCommandity {
      */
     public static void lchsreload(CommandSender sender) {
 
-        genAdminCom(sender, "hiddenswitch.admin.reload", "language.messages.reload-config");
+        lazyMode(sender, "hiddenswitch.admin.reload", "language.messages.reload-config");
         HiddenSwitch.instance.confV.reloadConfig();
 
     }
@@ -286,7 +287,7 @@ public class OhTheCommandity {
      */
     public static void lchsreloaddb(CommandSender sender) {
 
-        genAdminCom(sender, "hiddenswitch.admin.reloaddb", "language.messages.reload-db");
+        lazyMode(sender, "hiddenswitch.admin.reloaddb", "language.messages.reload-db");
         HiddenSwitch.instance.blkCon.reloadKeyBlocks();
 
     }
@@ -299,7 +300,7 @@ public class OhTheCommandity {
      */
     public static void lchsreloadlang(CommandSender sender) {
 
-        genAdminCom(sender, "hiddenswitch.admin.reloadlang", "language.messages.lang");
+        lazyMode(sender, "hiddenswitch.admin.reloadlang", "language.messages.lang");
         HiddenSwitch.instance.lang.reloadLang();
 
     }
