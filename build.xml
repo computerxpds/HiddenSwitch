@@ -36,7 +36,7 @@
 			<compilerarg value="-Xlint:-options" />
 			<classpath>
 				<fileset dir="libs">
-					<include name="craftbukkit-1.1-R2.jar" />
+					<include name="craftbukkit-1.1-R5-20120221.092932-12.jar" />
 				</fileset>
 			</classpath>
 		</javac>
