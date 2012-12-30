@@ -33,14 +33,15 @@ import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.Sign;
-import org.bukkit.craftbukkit.CraftWorld;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
+import org.bukkit.craftbukkit.v1_4_6.CraftWorld;
+import org.bukkit.craftbukkit.v1_4_6.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.world.WorldEvent;
 
 
 public class playerListener implements Listener {
@@ -278,12 +279,11 @@ public class playerListener implements Listener {
      */
     private void pushButton(Location loc, Player player) {
 
-        net.minecraft.server.Block.STONE_BUTTON.interact(((CraftWorld) loc.getWorld()).getHandle(),
-                loc.getBlockX(),
-                loc.getBlockY(),
-                loc.getBlockZ(),
-                ((CraftPlayer) player.getPlayer()).getHandle()
-        );
+        ((playerListener) player).pushButton(loc, player);
+                loc.getBlockX();
+                loc.getBlockY();
+                loc.getBlockZ();
+                ((CraftWorld) player.getPlayer()).getHandle();
 
     }
 
