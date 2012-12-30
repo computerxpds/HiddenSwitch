@@ -1,6 +1,10 @@
-/.project
-.settings/
-doc/
-bin/
+*.class
+
+# Package Files #
+*.jar
+*.war
+*.ear
 .classpath
 .project
+.settings
+bin/me/comp/Smite/.DS_Store
